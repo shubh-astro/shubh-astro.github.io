@@ -3,395 +3,798 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shubh | Junior Research Fellow in Astrophysics</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Use Inter font family -->
+    <title>Astrophysics | Shubh</title>
+    <!-- Using Inter font for a modern, minimalist look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0d1117; /* Deep GitHub Dark Background */
-            color: #c9d1d9; /* Light gray text */
+        /* CSS for the High-End, Minimalist Dark Theme with Soft Accents */
+        :root {
+            --color-bg: #0A111E;            /* Deep Space Blue/Black */
+            --color-text-primary: #FFFFFF;    /* Clean White */
+            --color-accent: #ECECEC;         /* Main Accent (Soft Off-White/Cream) */
+            --color-accent-red: #D0A9A9;      /* Secondary Accent (Dusty Rose/Warm Pink) */
+            --color-separator: #1A1A3F;      /* Subtle Line */
+            --font-primary: 'Inter', sans-serif;
+        }
+
+        /* Basic Reset and Scrolling Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
             scroll-behavior: smooth;
         }
-        
-        /* Custom Star Field Effect for Hero Section */
-        .star-field {
-            /* Star field layers using radial gradients */
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(200, 200, 255, 0.3) 0%, rgba(0, 0, 0, 0) 65%),
-                radial-gradient(circle at 70% 80%, rgba(255, 220, 200, 0.3) 0%, rgba(0, 0, 0, 0) 65%),
-                radial-gradient(circle at 45% 45%, rgba(150, 150, 255, 0.15) 0%, rgba(0, 0, 0, 0) 75%),
-                #0d1117;
-            background-size: 250% 250%, 250% 250%, 250% 250%, 100% 100%;
-            transition: background-position 0.05s ease-out; /* Smoother JS background update */
-            background-position: center center; /* Initial position */
-            overflow: hidden; 
-            /* CSS Animation removed here to rely entirely on JS parallax */
-        }
 
-        /* Accent Color - A sophisticated Teal/Cyan */
-        .accent-color {
-            color: #58a6ff; /* GitHub Blue for links/accents */
-        }
-        .section-header {
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: #ffffff;
-            /* Using a subtle, wide shadow instead of a hard border for flow */
-            text-shadow: 0 0 10px rgba(88, 166, 255, 0.5); 
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* --- Timeline Styles for Academic Section (softened) --- */
-        .timeline-container {
+        body {
+            /* Allow scrolling */
+            min-height: 100vh; 
+            background-color: var(--color-bg);
+            color: var(--color-text-primary);
+            font-family: var(--font-primary);
+            line-height: 1.6;
             position: relative;
-            margin: 0 0 0 10px;
+            /* Extra padding to prevent content from touching the screen edges */
+            padding-bottom: 50px; 
         }
-        /* The central line */
-        .timeline-container::after {
+
+        /* 1. Canvas for the Star Field Background (Fixed) */
+        #starCanvas {
+            position: fixed; /* Stays put as content scrolls over it */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.9;
+        }
+
+        /* 2. Main Content Wrapper */
+        main {
+            position: relative;
+            z-index: 2; /* Ensures content is above the stars */
+        }
+
+        /* Reusable Section Styling */
+        .section-container {
+            padding: 100px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .section-heading {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 60px;
+            color: var(--color-accent); 
+            border-bottom: 1px solid var(--color-separator);
+            padding-bottom: 15px;
+            display: inline-block;
+            /* REMOVED NEON SHADOW */
+        }
+        
+        /* --- About Section Specific Styles --- */
+        #about {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-content {
+            background-color: rgba(0, 0, 0, 0.4); 
+            padding: 50px 60px;
+            border-radius: 12px;
+            border: 1px solid var(--color-separator); 
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.05); /* Muted Dark Shadow */
+            backdrop-filter: blur(4px);
+        }
+
+        /* Reduced Name Size */
+        .name {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 100;
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-primary);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Muted text shadow */
+            transition: all 0.5s ease;
+        }
+        
+        .name:hover {
+            color: var(--color-accent); 
+            text-shadow: 0 0 10px rgba(236, 236, 236, 0.5); /* Muted hover text shadow */
+        }
+
+        .title {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            color: #AAAAAA;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .bio-text {
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 3. Links/Buttons */
+        .links {
+            margin-top: 4rem;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .link-button {
+            text-decoration: none;
+            color: var(--color-accent); 
+            border: 2px solid var(--color-accent); 
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .link-button:hover {
+            background-color: var(--color-accent); 
+            color: var(--color-bg);
+            /* SHADOW REMOVED */
+            box-shadow: none; 
+            transform: translateY(-2px);
+        }
+        
+        /* --- Academic Journey (Vertical Timeline) --- */
+        #academic-journey {
+            padding-top: 50px;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            padding: 20px 0;
+        }
+
+        /* The vertical line */
+        .timeline::after {
             content: '';
             position: absolute;
-            width: 3px; /* thinner line */
-            background-color: #1f2937; 
+            width: 3px;
+            background-color: var(--color-accent); 
             top: 0;
             bottom: 0;
-            left: 2px; 
-            margin-left: -3px;
+            left: 50%;
+            margin-left: -1.5px;
         }
-        /* Item structure on small screens (all left) */
+
         .timeline-item {
-            padding: 10px 0 10px 40px;
+            padding: 10px 40px;
             position: relative;
-            background-color: inherit;
+            width: 50%;
+            margin-bottom: 50px;
         }
-        /* The circle marker */
+
+        /* <<< This CSS handles the alternating sides >>> */
+        .left {
+            left: 0;
+            text-align: right;
+        }
+
+        .right {
+            left: 50%;
+            text-align: left;
+        }
+
+        /* Circle on the line */
         .timeline-item::after {
             content: '';
             position: absolute;
-            width: 16px;
-            height: 16px;
-            right: auto;
-            background-color: #58a6ff;
-            border: 3px solid #0d1117; /* Matches body background */
+            width: 15px;
+            height: 15px;
+            right: -7.5px; /* Aligns to the vertical line */
+            background-color: var(--color-bg);
+            border: 3px solid var(--color-accent); 
             top: 15px;
             border-radius: 50%;
-            z-index: 1;
-            left: 0; 
-            box-shadow: 0 0 8px rgba(88, 166, 255, 0.7); /* Subtle glow */
+            z-index: 3;
+            /* SHADOW REMOVED */
+            box-shadow: none;
         }
-        /* Media query for larger screens (desktop timeline) */
-        @media (min-width: 768px) {
-            .timeline-container::after {
-                left: 50%; 
+
+        .right::after {
+            left: -7.5px; /* Aligns to the vertical line for right-side items */
+        }
+
+        .timeline-content {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+        .timeline-content:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-content h3 {
+            color: var(--color-accent); 
+            margin-bottom: 5px;
+        }
+
+        .timeline-content p.year {
+            font-size: 0.9rem;
+            color: #AAAAAA;
+            margin-bottom: 10px;
+        }
+
+        /* Media queries for vertical timeline on mobile */
+        @media screen and (max-width: 800px) {
+            /* Stacks everything to the left on small screens */
+            .timeline::after {
+                left: 31px;
             }
             .timeline-item {
-                width: 50%;
-                padding: 10px 40px;
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
             }
-            .timeline-item:nth-child(odd) {
-                left: 0;
-                padding-right: 60px; 
+            .timeline-item::after {
+                left: 24px;
             }
-            .timeline-item:nth-child(even) {
-                left: 50%;
-                padding-left: 60px; 
+            .right {
+                left: 0%;
             }
-            /* Position circles on the central line */
-            .timeline-item:nth-child(odd)::after {
-                left: auto;
-                right: -8px;
-            }
-            .timeline-item:nth-child(even)::after {
-                left: -8px;
-                right: auto;
+            .left {
+                text-align: left;
             }
         }
-        /* --- End Timeline Styles --- */
-        .skill-badge {
-            @apply px-4 py-1.5 text-sm font-medium rounded-full bg-gray-800 text-blue-400 shadow-md transition duration-200 hover:bg-blue-900 hover:shadow-blue-500/50;
+
+        /* --- Projects Grid --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            text-align: left;
+        }
+
+        .project-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--color-separator);
+            transition: transform 0.3s, border-color 0.3s;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            display: block;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            /* SHADOW REMOVED */
+            box-shadow: none; 
+            border-color: var(--color-accent); /* Only border highlight remains */
+            border-width: 2px; /* Slight border increase for subtle highlight */
+        }
+        
+        .project-card h4 {
+            color: var(--color-accent); 
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .project-card p {
+            font-size: 0.9rem;
+            color: #AAAAAA;
+        }
+
+        /* --- Hobbies Section --- */
+        .hobby-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .hobby-item {
+            flex-basis: 250px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 3px solid var(--color-accent); 
+        }
+
+        /* --- Pictures Section --- */
+        .picture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .picture-placeholder {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: var(--color-separator);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 0.9rem;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .picture-placeholder:hover {
+            transform: scale(1.05);
+            /* SHADOW REMOVED */
+            box-shadow: none;
+        }
+
+        /* --- Contact Section (Professional Grid with Icons) --- */
+        #contact {
+            padding-bottom: 100px;
+        }
+        
+        .contact-grid {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .contact-link-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            padding: 20px 25px;
+            border: 1px solid var(--color-separator);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+        
+        .contact-link-icon:hover {
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+            /* Subtle dark background on hover */
+            background-color: rgba(255, 255, 255, 0.1); 
+            transform: translateY(-2px);
+        }
+        
+        .contact-link-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--color-text-primary);
+            margin-bottom: 8px;
+            transition: fill 0.3s;
+        }
+
+        .contact-link-icon:hover svg {
+            fill: var(--color-accent);
+        }
+
+
+        /* --- Interactive Stars (Soft & Subtle) --- */
+        .interactive-star-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .interactive-star {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-text-primary);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            pointer-events: all;
+            opacity: 0.6;
+            animation: pulse 4s infinite alternate ease-in-out;
+            text-decoration: none;
+            display: block;
+        }
+        
+        @keyframes pulse {
+            from { opacity: 0.6; transform: scale(1); }
+            to { opacity: 1.0; transform: scale(1.3); }
+        }
+
+        /* Custom Hover/Tooltip styles for varied colors */
+        .interactive-star.accent-blue:hover {
+            background-color: var(--color-accent);
+            /* SHADOW REMOVED */
+            box-shadow: none; 
+            opacity: 1;
+            transform: scale(1.5); /* Reduced scale for subtlety */
+        }
+        .interactive-star.accent-red {
+            background-color: var(--color-accent-red); 
+        }
+        .interactive-star.accent-red:hover {
+            background-color: var(--color-accent-red);
+            /* SHADOW REMOVED */
+            box-shadow: none;
+            opacity: 1;
+            transform: scale(1.5); /* Reduced scale for subtlety */
+        }
+        
+        /* Tooltip styling based on accent color */
+        .interactive-star.accent-blue .star-tooltip {
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+        }
+        .interactive-star.accent-red .star-tooltip {
+            color: var(--color-accent-red);
+            border: 1px solid var(--color-accent-red);
+        }
+
+
+        .star-tooltip {
+            position: absolute;
+            left: 15px;
+            top: -10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 400;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            transform: translateX(-10px);
+        }
+
+        .interactive-star:hover .star-tooltip {
+            opacity: 1;
+            transform: translateX(0);
         }
     </style>
 </head>
-<body class="antialiased">
+<body>
 
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-50 bg-black bg-opacity-90 shadow-2xl backdrop-blur-sm p-4 border-b border-gray-800">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="#intro" class="text-xl font-bold accent-color hover:text-white transition duration-300">
-                [Your Initials] <span class="hidden sm:inline">| Astrophysics JRF</span>
-            </a>
-            <div class="space-x-4 text-sm sm:text-base">
-                <a href="#about" class="text-gray-300 hover:accent-color transition duration-300">About</a>
-                <a href="#academic" class="text-gray-300 hover:accent-color transition duration-300">Career</a>
-                <a href="#projects" class="text-gray-300 hover:accent-color transition duration-300">Research</a>
-                <a href="#skills" class="text-gray-300 hover:accent-color transition duration-300">Skills</a>
-                <a href="#contact" class="text-gray-300 hover:accent-color transition duration-300">Contact</a>
-            </div>
-        </div>
-    </nav>
+    <!-- 1. Canvas for the Animated Star Field (Fixed Z-Index 0) -->
+    <canvas id="starCanvas"></canvas>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- 2. Explicit Interactive Stars (Fixed Z-Index 1) -->
+    <div class="interactive-star-container">
+        <!-- Star 1: Low-Mass Stellar Evolution (Soft White Accent) -->
+        <a href="#projects" class="interactive-star accent-blue" style="top: 15%; left: 10%;">
+            <span class="star-tooltip">Stellar Evolution Model &rarr;</span>
+        </a>
+        
+        <!-- Star 2: Exoplanet Transit Analysis (Dusty Rose Accent) -->
+        <a href="#projects" class="interactive-star accent-red" style="top: 30%; right: 15%;">
+            <span class="star-tooltip">Exoplanet Transit Analysis &rarr;</span>
+        </a>
+        
+        <!-- Star 3: M-Dwarf Simulator (Soft White Accent) -->
+        <a href="#projects" class="interactive-star accent-blue" style="bottom: 10%; left: 25%;">
+            <span class="star-tooltip">M-Dwarf Magnetic Field Simulator &rarr;</span>
+        </a>
 
-        <!-- 1. Intro/Hero Section (Interactive Parallax) -->
-        <!-- The star field remains static here, but will move based on mouse input when deployed live. -->
-        <section id="intro" class="star-field h-screen flex items-center justify-center text-center p-4 rounded-b-3xl shadow-2xl mb-24">
-            <div class="max-w-4xl space-y-6">
-                <h1 class="text-4xl sm:text-6xl lg:text-8xl font-extrabold text-white leading-tight">
-                    <span class="accent-color block mb-2">Dr. [Your Name]</span>
-                    Exploring the <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">Cosmic Dawn</span>
-                </h1>
-                <p class="text-lg sm:text-2xl text-gray-300 font-light italic">
-                    Junior Research Fellow in Extragalactic Astrophysics
+        <!-- Star 4: Observational Data Pipeline (Dusty Rose Accent) -->
+        <a href="#projects" class="interactive-star accent-red" style="bottom: 25%; right: 5%;">
+            <span class="star-tooltip">Observational Data Pipeline &rarr;</span>
+        </a>
+
+        <!-- Star 5: Astrophotography (Soft White Accent) -->
+        <a href="#pictures" class="interactive-star accent-blue" style="top: 20%; left: 50%;">
+            <span class="star-tooltip">Astrophotography Portfolio &rarr;</span>
+        </a>
+    </div>
+
+    <!-- 3. Main Content (Scrolling Z-Index 2) -->
+    <main>
+        
+        <!-- === SECTION 1: ABOUT === -->
+        <section id="about" class="section-container">
+            <div class="about-content">
+                <h1 class="name">[Your Name Here]</h1>
+                <h2 class="title">ASTROPHYSICIST & STELLAR SYSTEMS RESEARCHER</h2>
+                
+                <p class="bio-text">
+                    Welcome to my research interface. I specialize in computational and observational studies of **low-mass stellar systems**, focusing on their evolutionary pathways, magnetic activity, and atmospheric characterization. 
                 </p>
-                <div class="pt-4">
-                    <a href="#projects" class="inline-block px-8 py-3 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
-                        View Research
-                    </a>
+                <p class="bio-text">
+                    My current work, primarily hosted on GitHub, involves the simulation of protoplanetary disk dynamics around **M-Dwarf stars** and the development of open-source tools for astronomical data visualization. Scroll to view my journey, or explore the interactive celestial nodes scattered across the void to discover key projects.
+                </p>
+
+                <!-- Key Links -->
+                <div class="links">
+                    <a href="[YOUR GITHUB URL]" target="_blank" class="link-button">Explore Core Repository &rarr;</a>
+                    <a href="#contact" class="link-button">Get in Touch</a>
                 </div>
             </div>
         </section>
 
-        <!-- 2. About Me / Personal Profile -->
-        <section id="about" class="py-16">
-            <h2 class="section-header">About Me</h2>
-            <div class="grid md:grid-cols-3 gap-8 items-start">
-                <div class="md:col-span-2 text-lg leading-relaxed space-y-4 p-8 rounded-3xl bg-gray-900 shadow-inner hover:shadow-blue-900/50 transition duration-500">
-                    <p>
-                        I am a Junior Research Fellow at the [Your Institution Name], specializing in theoretical and observational cosmology. My work focuses on understanding the epoch of Reionization and the formation of the first stars and galaxies, utilizing large-scale simulations and data from cutting-edge telescopes like JWST.
-                    </p>
-                    <p>
-                        My core philosophy centers on bridging theoretical models with empirical data to refine our understanding of the universe's evolution. I am passionate about computational methods, high-performance computing (HPC), and translating complex astrophysical concepts for a broader audience.
-                    </p>
-                </div>
-                <div class="md:col-span-1 p-6 bg-gray-800 rounded-3xl shadow-lg hover:shadow-teal-900/50 transition duration-500">
-                    <h3 class="text-xl font-semibold mb-4 text-white border-b border-gray-700 pb-2">Interests & Hobbies</h3>
-                    <ul class="space-y-3 text-gray-400">
-                        <li class="flex items-center space-x-2"><span>🔭</span><span class="hover:text-white transition">Astrophotography & Telescopic Observation</span></li>
-                        <li class="flex items-center space-x-2"><span>💻</span><span class="hover:text-white transition">Open-Source Scientific Software Development</span></li>
-                        <li class="flex items-center space-x-2"><span>⛰️</span><span class="hover:text-white transition">Long-Distance Hiking and Exploration</span></li>
-                        <li class="flex items-center space-x-2"><span>🎹</span><span class="hover:text-white transition">Classical Music Composition</span></li>
-                        <li class="flex items-center space-x-2"><span>📚</span><span class="hover:text-white transition">Science Communication and Public Outreach</span></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+        <!-- === SECTION 2: ACADEMIC JOURNEY (Vertical Timeline) === -->
+        <section id="academic-journey" class="section-container">
+            <h2 class="section-heading">ACADEMIC JOURNEY</h2>
 
-        <!-- 3. Academic Career (Timeline Flowchart) -->
-        <section id="academic" class="py-16">
-            <h2 class="section-header">Academic Career & Positions</h2>
-            <div class="timeline-container max-w-5xl mx-auto">
+            <div class="timeline">
                 
-                <!-- Current Position -->
-                <div class="timeline-item">
-                    <div class="p-6 bg-gray-800 rounded-2xl shadow-xl transition duration-300 hover:shadow-blue-500/50">
-                        <p class="font-bold text-lg text-blue-400">2023 - Present</p>
-                        <p class="text-sm text-gray-500 mb-2">Post-Doctoral</p>
-                        <h3 class="text-xl font-semibold text-white">Junior Research Fellow (Astrophysics)</h3>
-                        <p class="text-gray-300">[Your Institution Name]</p>
-                        <ul class="list-disc list-inside mt-2 text-gray-400 text-sm">
-                            <li>Leading the "First Light Simulation" project focusing on high-redshift galaxy luminosity functions.</li>
-                            <li>Mentoring PhD and Master's students in computational physics.</li>
-                        </ul>
+                <!-- Item 1: JRF at IUCAA -->
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <p class="year">2023 - Present</p>
+                        <h3>Junior Research Fellow (JRF)</h3>
+                        <p><strong>IUCAA (Inter-University Centre for Astronomy and Astrophysics)</strong></p>
+                        <p>Focus: Working in high-resolution optical and near-IR spectroscopy.</p>
                     </div>
                 </div>
 
-                <!-- PhD Education -->
-                <div class="timeline-item">
-                    <div class="p-6 bg-gray-900 rounded-2xl shadow-xl transition duration-300 hover:shadow-teal-500/50">
-                        <p class="font-bold text-lg text-teal-400">2019 - 2023</p>
-                        <p class="text-sm text-gray-500 mb-2">Doctorate</p>
-                        <h3 class="text-xl font-semibold text-white">Ph.D. in Theoretical Cosmology</h3>
-                        <p class="text-gray-300">[University Name], [City, Country]</p>
-                        <p class="text-gray-400 text-sm mt-1">Thesis: *The Role of Dark Matter Halos in Primordial Star Formation*</p>
+                <!-- Item 2: MSc from IISER TVM -->
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <p class="year">2021 - 2023</p>
+                        <h3>MSc Physics</h3>
+                        <p><strong>IISER Thiruvananthapuram (TVM)</strong></p>
+                        <p>Master's Project: "Analysis of Prompt Emission in Gamma Ray Bursts (GRBs)."</p>
                     </div>
                 </div>
 
-                <!-- Master's Education -->
-                <div class="timeline-item">
-                    <div class="p-6 bg-gray-800 rounded-2xl shadow-xl transition duration-300 hover:shadow-indigo-500/50">
-                        <p class="font-bold text-lg text-indigo-400">2017 - 2019</p>
-                        <p class="text-sm text-gray-500 mb-2">Graduate</p>
-                        <h3 class="text-xl font-semibold text-white">M.Sc. in Physics (Specialization: High Energy)</h3>
-                        <p class="text-gray-300">[University Name], [City, Country]</p>
+                <!-- Item 3: BSc from Delhi University -->
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <p class="year">2018 - 2021</p>
+                        <h3>BSc (Honors) in Physics</h3>
+                        <p><strong>Delhi University</strong></p>
+                        <p>Foundation in classical mechanics, quantum mechanics, and astrophysics.</p>
                     </div>
                 </div>
                 
             </div>
         </section>
+        
+        <!-- === SECTION 3: PROJECTS === -->
+        <section id="projects" class="section-container">
+            <h2 class="section-heading">FEATURED PROJECTS</h2>
 
-        <!-- 4. Research Projects (Modern/Interactive) -->
-        <section id="projects" class="py-16">
-            <h2 class="section-header">Key Research Projects</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                <!-- Project 1: Reionization Simulations -->
-                <div class="bg-gray-800 rounded-2xl p-6 shadow-2xl transition duration-300 hover:bg-gray-700 hover:shadow-blue-500/80 transform hover:scale-[1.03]">
-                    <h3 class="text-2xl font-bold accent-color mb-2">Cosmic Reionization Modeling</h3>
-                    <p class="text-sm text-gray-500 mb-4">Lead Investigator | Cosmology | 2023-Present</p>
-                    <p class="text-gray-400 text-sm">
-                        Development of novel semi-analytic models to track the ionization state of the IGM during the Epoch of Reionization, integrating stellar and quasar feedback mechanisms.
-                    </p>
-                    <div class="mt-4">
-                        <a href="https://github.com/[YourGitHub]/project-reion" target="_blank" class="text-xs font-semibold text-white bg-blue-600 py-1 px-3 rounded-full hover:bg-blue-700 transition duration-300 shadow-md">
-                            GitHub Repository &rarr;
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Project 2: Dark Matter Detection (Mock) -->
-                <div class="bg-gray-800 rounded-2xl p-6 shadow-2xl transition duration-300 hover:bg-gray-700 hover:shadow-blue-500/80 transform hover:scale-[1.03]">
-                    <h3 class="text-2xl font-bold accent-color mb-2">Direct Dark Matter Detection Limits</h3>
-                    <p class="text-sm text-gray-500 mb-4">Contributor | Particle Astrophysics | 2021-2023</p>
-                    <p class="text-gray-400 text-sm">
-                        Statistical analysis of XENONnT data to constrain the cross-section of Weakly Interacting Massive Particles (WIMPs). Focus on advanced background subtraction techniques.
-                    </p>
-                    <div class="mt-4">
-                        <a href="#" class="text-xs font-semibold text-white bg-gray-600 py-1 px-3 rounded-full hover:bg-blue-700 transition duration-300 shadow-md">
-                            View Publication &rarr;
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Project 3: Planetary Dynamics Software -->
-                <div class="bg-gray-800 rounded-2xl p-6 shadow-2xl transition duration-300 hover:bg-gray-700 hover:shadow-blue-500/80 transform hover:scale-[1.03]">
-                    <h3 class="text-2xl font-bold accent-color mb-2">Exoplanet Orbital Stability Code</h3>
-                    <p class="text-sm text-gray-500 mb-4">Creator | Computational Physics | 2020</p>
-                    <p class="text-gray-400 text-sm">
-                        A Python library for N-body simulations to predict the long-term stability of multi-planet systems discovered by TESS.
-                    </p>
-                    <div class="mt-4">
-                        <a href="https://github.com/[YourGitHub]/Exo-Stability" target="_blank" class="text-xs font-semibold text-white bg-blue-600 py-1 px-3 rounded-full hover:bg-blue-700 transition duration-300 shadow-md">
-                            GitHub Repository &rarr;
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- 5. Key Skills -->
-        <section id="skills" class="py-16">
-            <h2 class="section-header">Technical & Research Skills</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Programming & Tools -->
-                <div class="p-6 bg-gray-900 rounded-3xl shadow-xl transition duration-300 hover:shadow-blue-900/50">
-                    <h3 class="text-xl font-semibold mb-4 text-white">Programming & Computing</h3>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="skill-badge">Python (Numpy, Scipy, Astropy)</span>
-                        <span class="skill-badge">C/C++ (HPC Optimisation)</span>
-                        <span class="skill-badge">Julia</span>
-                        <span class="skill-badge">MPI / OpenMP</span>
-                        <span class="skill-badge">Git & GitHub</span>
-                        <span class="skill-badge">Machine Learning (TensorFlow/PyTorch)</span>
-                        <span class="skill-badge">Bash/Linux</span>
-                    </div>
-                </div>
-
-                <!-- Research & Domain -->
-                <div class="p-6 bg-gray-900 rounded-3xl shadow-xl transition duration-300 hover:shadow-teal-900/50">
-                    <h3 class="text-xl font-semibold mb-4 text-white">Domain & Software</h3>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="skill-badge">Cosmological N-body Simulations</span>
-                        <span class="skill-badge">Radiative Transfer</span>
-                        <span class="skill-badge">Spectroscopic Data Analysis</span>
-                        <span class="skill-badge">LaTeX / Scientific Writing</span>
-                        <span class="skill-badge">FITS Format Handling</span>
-                        <span class="skill-badge">Jupyter/Colab</span>
-                        <span class="skill-badge">Data Visualisation (Matplotlib, VisIt)</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. Publications and Talks -->
-        <section id="publications" class="py-16">
-            <h2 class="section-header">Selected Publications & Talks</h2>
-            <div class="space-y-6">
-                <!-- Pub 1 -->
-                <div class="p-4 bg-gray-800 rounded-2xl shadow-xl transition duration-300 hover:bg-gray-700 hover:shadow-indigo-500/50">
-                    <p class="text-sm text-gray-500">Article | The Astrophysical Journal, 2024</p>
-                    <p class="text-lg text-white font-medium">
-                        <a href="#" target="_blank" class="hover:accent-color">The Inhomogeneous Nature of Early Cosmic Reionization</a>
-                    </p>
-                    <p class="text-xs text-gray-400">[Your Name], A. Einstein, B. S. Blackhole</p>
-                    <p class="text-xs text-gray-500 mt-1">DOI: 10.3847/XXXXX | <a href="#" class="accent-color">View PDF</a></p>
-                </div>
-                <!-- Talk 1 -->
-                <div class="p-4 bg-gray-800 rounded-2xl shadow-xl transition duration-300 hover:bg-gray-700 hover:shadow-indigo-500/50">
-                    <p class="text-sm text-gray-500">Invited Talk | IAU Symposium 385, London, UK, 2024</p>
-                    <p class="text-lg text-white font-medium">
-                        Tracing Feedback Loops in High-Redshift Dwarf Galaxies
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. Contact / Footer -->
-        <section id="contact" class="pt-16 pb-24 text-center">
-            <h2 class="section-header mb-8 inline-block">Get In Touch</h2>
-            <p class="text-xl text-gray-400 mb-8">
-                I am open to collaboration, discussion, and opportunities.
-            </p>
-            <a href="mailto:your.email@example.com" class="inline-block px-10 py-4 text-xl font-semibold text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-2xl transition duration-300 transform hover:scale-105">
-                Send an Email
-            </a>
-            
-            <div class="mt-12 flex justify-center space-x-6">
-                <!-- Mock Icons - You'll need to link these to your real profiles -->
-                <a href="https://github.com/[YourGitHub]" target="_blank" class="text-gray-400 hover:accent-color transition duration-300" aria-label="GitHub">
-                    <!-- Placeholder for GitHub Icon (SVG) -->
-                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.805 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.087-.744.084-.692.084-.692 1.205.086 1.838 1.238 1.838 1.238 1.07 1.835 2.809 1.305 3.493.998.108-.776.419-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.923.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.559 21.782 24 17.203 24 12 24 5.373 18.627 0 12 0z"/></svg>
+            <div class="projects-grid">
+                <!-- Project Card 1 -->
+                <a href="[PROJECT LINK 1]" target="_blank" class="project-card">
+                    <h4>High-Res Spectroscopy Pipeline</h4>
+                    <p>Python-based tools for reducing and analyzing spectroscopic data from optical/NIR instruments. (Corresponds to JRF work)</p>
                 </a>
-                <a href="https://linkedin.com/in/[YourLinkedIn]" target="_blank" class="text-gray-400 hover:accent-color transition duration-300" aria-label="LinkedIn">
-                    <!-- Placeholder for LinkedIn Icon (SVG) -->
-                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.367-4-3.551-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.77 7 2.456v6.779z"/></svg>
+                
+                <!-- Project Card 2 -->
+                <a href="[PROJECT LINK 2]" target="_blank" class="project-card">
+                    <h4>GRB Light Curve Analyzer</h4>
+                    <p>A C++ engine for analyzing temporal and spectral properties of Gamma Ray Burst prompt emission light curves. (Corresponds to MSc project)</p>
                 </a>
-                <a href="https://orcid.org/[YourORCID]" target="_blank" class="text-gray-400 hover:accent-color transition duration-300" aria-label="ORCID">
-                    <!-- Placeholder for ORCID Icon (SVG - simplified) -->
-                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.924 16.903c-.225 0-.406-.183-.406-.409v-8.187c0-.225.181-.409.406-.409h1.166c.225 0 .406.184.406.409v8.187c0 .226-.181.409-.406.409h-1.166zm1.716-11.458c-.571 0-1.037-.468-1.037-1.048s.466-1.047 1.037-1.047 1.037.467 1.037 1.047-.466 1.048-1.037 1.048zm6.592 11.458c-.226 0-.406-.183-.406-.409v-3.725c0-.62-.164-.997-.569-.997-.577 0-.713.513-.713 1.218v3.424c0 .225-.181.409-.406.409h-1.166c-.225 0-.406-.183-.406-.409v-8.187c0-.225.181-.409.406-.409h.996l.006.002c1.788 0 3.235 1.488 3.235 3.327v4.869c0 .225-.181.408-.406.408h-1.056z"/></svg>
+                
+                <!-- Project Card 3 -->
+                <a href="[PROJECT LINK 3]" target="_blank" class="project-card">
+                    <h4>Stellar Atmosphere Simulation</h4>
+                    <p>A foundational simulation (NumPy/SciPy) for modeling basic stellar atmospheric properties. (General/BSc level interest)</p>
                 </a>
             </div>
         </section>
 
-        <footer class="text-center py-6 border-t border-gray-800 text-sm text-gray-500">
-            &copy; 2024 Dr. [Your Name]. Crafted with <span class="accent-color">Cosmic Code</span> and Tailwind CSS.
-        </footer>
+        <!-- === SECTION 4: HOBBIES === -->
+        <section id="hobbies" class="section-container">
+            <h2 class="section-heading">OTHER INTERESTS</h2>
+
+            <p class="bio-text">Beyond stellar dynamics, I find immense satisfaction in analog photography, building mechanical keyboards, and spending time observing the night sky.</p>
+
+            <div class="hobby-list">
+                <div class="hobby-item">
+                    <h3>Astrophotography</h3>
+                    <p>Capturing deep-sky objects and planetary movements using a custom-built equatorial mount.</p>
+                </div>
+                <div class="hobby-item">
+                    <h3>Mechanical Keyboards</h3>
+                    <p>Designing custom layouts and tuning switches for the perfect typing experience.</p>
+                </div>
+                <div class="hobby-item">
+                    <h3>Electronic Music</h3>
+                    <p>Composing ambient, synth-heavy tracks that evoke a sense of cosmic exploration.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- === SECTION 5: PICTURES === -->
+        <section id="pictures" class="section-container">
+            <h2 class="section-heading">GALLERY</h2>
+
+            <div class="picture-grid">
+                <div class="picture-placeholder">Astrophoto: Orion Nebula</div>
+                <div class="picture-placeholder">Hobby: Custom Keyboard Build</div>
+                <div class="picture-placeholder">Fieldwork Photo: Observatory Site</div>
+                <div class="picture-placeholder">Hobby: Analog Camera Setup</div>
+                <div class="picture-placeholder">Astrophoto: Andromeda Galaxy</div>
+                <div class="picture-placeholder">Diagram: Stellar Classification (H-R)</div>
+            </div>
+        </section>
+
+        <!-- === SECTION 6: CONTACT ME (Minimalist & Professional with Icons) === -->
+        <section id="contact" class="section-container">
+            <h2 class="section-heading">CONNECT</h2>
+
+            <p class="bio-text" style="font-size: 1.2rem;">I'm always open to collaborations, research inquiries, or just a conversation about the cosmos. Feel free to reach out.</p>
+
+            <div class="contact-grid">
+                <!-- GitHub Icon Link -->
+                <a href="[YOUR GITHUB URL]" target="_blank" class="contact-link-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57s-.015-1.92-.015-3.795c-3.33 1.25-4.035-1.61-4.035-1.61-.54-.54-1.32-1.35-2.055-1.785-.45-.315-.855-.24-.06.24.675.585 1.155 1.77 1.155 1.77.585.99 1.545.705 1.92.54.075-.42.285-.75.525-.92-2.31-.255-4.74-1.14-4.74-5.175 0-1.14.405-2.07 1.065-2.805-.105-.255-.465-1.335.105-2.775 0 0 .87-.27 2.85 1.065 1.83-.51 3.78-.51 5.61 0 1.98-1.335 2.85-1.065 2.85-1.065.57 1.44.21 2.52.105 2.775.66.735 1.065 1.665 1.065 2.805 0 4.05-2.43 4.92-4.74 5.175.315.27.6.84.6 1.74l-.015 2.58c0 .315.21.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    <span>GitHub Repos</span>
+                </a>
+                
+                <!-- LinkedIn Icon Link -->
+                <a href="[YOUR LINKEDIN URL]" target="_blank" class="contact-link-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.5 4.5h-17a.5.5 0 0 0-.5.5v15a.5.5 0 0 0 .5.5h17a.5.5 0 0 0 .5-.5v-15a.5.5 0 0 0-.5-.5zM8 19H5V9h3v10zM6.5 7.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM19 19h-3v-5c0-1.5-.75-2-2-2a2 2 0 0 0-2 2v5h-3V9h3v1c.75-1 2-2 4-2s4 1 4 4v5z"/>
+                    </svg>
+                    <span>LinkedIn Profile</span>
+                </a>
+                
+                <!-- Email Icon Link -->
+                <a href="mailto:[YOUR EMAIL]" target="_blank" class="contact-link-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 2L12 13 3 6h18zm0 12H3V8l9 6 9-6v10z"/>
+                    </svg>
+                    <span>Email Me</span>
+                </a>
+
+                <!-- ORCID Icon Link -->
+                <a href="[YOUR ORCID ID]" target="_blank" class="contact-link-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.5 17.5h-1c-.828 0-1.5-.672-1.5-1.5v-8c0-.828.672-1.5 1.5-1.5h1c.828 0 1.5.672 1.5 1.5v8c0 .828-.672 1.5-1.5 1.5zm6.5 0h-1c-.828 0-1.5-.672-1.5-1.5v-8c0-.828.672-1.5 1.5-1.5h1c.828 0 1.5.672 1.5 1.5v8c0 .828-.672 1.5-1.5 1.5zm0-10.5c-.828 0-1.5-.672-1.5-1.5s.672-1.5 1.5-1.5 1.5.672 1.5 1.5-.672 1.5-1.5 1.5z"/>
+                    </svg>
+                    <span>ORCID iD</span>
+                </a>
+            </div>
+
+        </section>
+        
     </main>
 
-    <!-- JavaScript for Parallax Effect -->
+    <!-- 4. JavaScript for Canvas Star Animation (Realistic 3D Warp Effect) -->
     <script>
-        const handleMouseMove = (e) => {
-            const introSection = document.getElementById('intro');
-            if (introSection) {
-                // Get viewport width and height
-                const width = window.innerWidth;
-                const height = window.innerHeight;
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        const STAR_COUNT = 400; 
+        const MAX_Z = 1000;      
+        const SPEED = 5;       
+        const PERSPECTIVE = 300; 
+        // Updated star colors to match soft, whitish palette
+        const COLORS = ['#FFFFFF', '#ECECEC', '#D0A9A9']; // White, Soft Cream, Dusty Rose
 
-                // Calculate mouse position relative to center (-0.5 to 0.5)
-                const mouseX = e.clientX / width - 0.5;
-                const mouseY = e.clientY / height - 0.5;
+        // Function to get the current background color from CSS
+        function getBackgroundColor() {
+            // This reads the computed value of the CSS variable
+            return getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim() || '#0A111E';
+        }
 
-                // Sensitivity: determines how far the layers shift.
-                const sensitivity = 8; 
+        /**
+         * Initializes the canvas size and star properties (X, Y, Z for 3D effect).
+         */
+        function initCanvas() {
+            // Set canvas dimensions
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-                // Calculate new background position offsets
-                const offsetX = -mouseX * sensitivity;
-                const offsetY = -mouseY * sensitivity;
+            // Only initialize stars if the array is empty
+            if (stars.length === 0) {
+                const halfWidth = canvas.width / 2;
+                const halfHeight = canvas.height / 2;
 
-                // Applying different rates for a 3D depth effect.
-                introSection.style.backgroundPosition = 
-                    `${50 + offsetX * 1.8}% ${50 + offsetY * 1.8}%, ` + /* Closest star layer (fastest) */
-                    `${50 + offsetX * 1.2}% ${50 + offsetY * 1.2}%, ` +   /* Middle star layer */
-                    `${50 + offsetX * 0.6}% ${50 + offsetY * 0.6}%, ` + /* Farthest star layer (slowest) */
-                    `center center`; /* Static base color */
+                for (let i = 0; i < STAR_COUNT; i++) {
+                    stars.push({
+                        // X and Y are relative to the center (0,0,0) in 3D space
+                        x: (Math.random() * canvas.width) - halfWidth, 
+                        y: (Math.random() * canvas.height) - halfHeight, 
+                        z: Math.random() * MAX_Z,
+                        radius: Math.random() * 1.5 + 0.5,
+                        // Use the array of bright colors for the background stars
+                        color: COLORS[Math.floor(Math.random() * COLORS.length)], 
+                        twinkle: Math.random() * 0.5 + 0.5,
+                    });
+                }
             }
-        };
+        }
 
-        // This event listener provides the cursor-based interactivity when deployed live.
-        document.addEventListener('mousemove', handleMouseMove);
-    </script>
+        /**
+         * Draws and updates the stars, simulating forward movement (warp effect).
+         * Uses perspective projection to map 3D (X, Y, Z) to 2D screen coordinates.
+         */
+        function animateStars() {
+            // FIX: Use the calculated CSS background color for a stable, consistent background
+            ctx.fillStyle = getBackgroundColor();
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            stars.forEach(star => {
+                // 1. Move the star (push it forward in Z direction)
+                star.z -= SPEED; 
+
+                // 2. Check if star has passed the viewer (Z <= 1)
+                if (star.z <= 1) { 
+                    star.z = MAX_Z;
+                    // Reset X/Y randomly to fill the canvas area when projected from MAX_Z
+                    star.x = (Math.random() * canvas.width) - centerX;
+                    star.y = (Math.random() * canvas.height) - centerY;
+                }
+
+                // 3. Calculate Perspective Projection (p = focal length / depth)
+                const p = PERSPECTIVE / star.z; 
+                
+                // 4. Calculate 2D Screen Position
+                const projectedX = star.x * p + centerX;
+                const projectedY = star.y * p + centerY;
+                
+                // 5. Calculate size (closer stars are larger)
+                const size = star.radius * p; 
+
+                // 6. Apply twinkling opacity
+                const opacity = star.twinkle + Math.sin(Date.now() * 0.001 * star.twinkle) * 0.5;
+                
+                // 7. Draw the star (only if it's visible on the screen)
+                if (projectedX > 0 && projectedX < canvas.width && 
+                    projectedY > 0 && projectedY < canvas.height && size > 0.5) {
+                    
+                    ctx.globalAlpha = opacity;
+                    ctx.fillStyle = star.color; 
+                    ctx.beginPath();
+                    ctx.arc(projectedX, projectedY, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+
+            requestAnimationFrame(animateStars);
+        }
+
+        // --- Event Listeners ---
+
+        // Re-initialize canvas and stars on window resize to ensure fluid responsiveness
+        window.addEventListener('resize', () => {
+             // Reset stars array to force re-initialization on resize
+             stars = []; 
+             initCanvas();
+        });
+
+        // Start the animation only after the canvas is initialized
+        window.onload = function() {
+            initCanvas();
+            animateStars();
+        };
+        
+    </script> 
 </body>
 </html>
