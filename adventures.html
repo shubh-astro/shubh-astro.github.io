@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventures & Reflections | Shubh Mittal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========================================================== */
+        /* === BASE CSS COPIED FROM INDEX.HTML FOR CONSISTENCY === */
+        /* ========================================================== */
+
+        :root {
+            --color-bg: #0A111E;            /* Deep Space Blue/Black */
+            --color-text-primary: #FFFFFF;    /* Clean White */
+            --color-accent: #ECECEC;         /* Main Accent (Soft Off-White/Cream) */
+            --color-accent-red: #D0A9A9;      /* Secondary Accent (Dusty Rose/Warm Pink) */
+            --color-separator: #1A1A3F;      /* Subtle Line (still useful for lines/dividers) */
+            --font-primary: 'Inter', sans-serif;
+        }
+
+        /* Basic Reset and Scrolling Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh; 
+            background-color: var(--color-bg);
+            color: var(--color-text-primary);
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            position: relative;
+            padding-bottom: 50px; 
+        }
+
+        /* 1. Canvas for the Star Field Background (Fixed) */
+        #starCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.9;
+        }
+
+        /* 2. Sticky Header/Navigation */
+        #site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            background-color: rgba(10, 17, 30, 0.95);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--color-separator);
+            transition: background-color 0.3s;
+        }
+
+        .nav-menu {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .site-title {
+            margin-right: auto;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-accent) !important;
+            letter-spacing: 1.5px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .site-title:hover {
+             color: var(--color-text-primary) !important;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--color-text-primary);
+            font-size: 0.9rem;
+            font-weight: 300;
+            margin-left: 30px;
+            padding: 5px 0;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--color-accent);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--color-accent);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease-out;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* 3. Main Content Wrapper */
+        main {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Reusable Section Styling (for single page content) */
+        .section-container {
+            padding: 120px 20px 100px 20px; 
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .section-heading {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 60px;
+            color: var(--color-accent); 
+            border-bottom: 1px solid var(--color-separator);
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+        
+        .bio-text {
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+        /* --- Adventures Section (Image Grid with Context) --- */
+        #adventures {
+            min-height: 100vh;
+            padding-top: 120px;
+        }
+        
+        .adventure-grid {
+            display: flex;
+            flex-direction: column; 
+            gap: 60px; /* Space between each post */
+            text-align: left;
+        }
+
+        .adventure-post {
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: center;
+            gap: 30px; /* Increased gap for visual space */
+        }
+
+        /* Desktop: Alternating image/content layout */
+        .adventure-post:nth-child(even) {
+            grid-template-areas: "content image";
+        }
+        .adventure-post:nth-child(odd) {
+            grid-template-areas: "image content";
+        }
+
+        .adventure-image-container {
+            grid-area: image;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .adventure-image-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .adventure-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .adventure-image-container img:hover {
+             transform: scale(1.03);
+        }
+
+        .adventure-content-text {
+            grid-area: content;
+        }
+
+        .adventure-content-text h4 {
+            color: var(--color-accent); 
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .adventure-content-text p.date {
+            font-size: 0.9rem;
+            color: var(--color-accent-red); 
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+        
+        .adventure-content-text p {
+            font-size: 1rem;
+            color: var(--color-text-primary);
+        }
+
+        @media (min-width: 768px) {
+            .adventure-post {
+                grid-template-columns: 1fr 1fr;
+            }
+            /* Re-establishing order for mobile viewing (image on top, content below) */
+            .adventure-post:nth-child(even) .adventure-image-container { order: 2; }
+            .adventure-post:nth-child(odd) .adventure-image-container { order: 1; }
+        }
+
+        /* --- Footer Styles (Minimal for the new page) --- */
+        .footer {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #555;
+            border-top: 1px solid var(--color-separator);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. Canvas for the Animated Star Field (Fixed Z-Index 0) --><canvas id="starCanvas"></canvas>
+
+    <!-- 2. Sticky Navigation Header (Z-Index 10) -->
+    <header id="site-header">
+        <nav class="nav-menu">
+            <!-- Links back to the main index file, jumping to relevant sections -->
+            <a href="index.html#about" class="nav-link site-title">Shubh Mittal</a>
+            <a href="index.html#academic-journey" class="nav-link">Academics</a>
+            <a href="index.html#projects" class="nav-link">Projects</a>
+            <a href="#adventures" class="nav-link" style="color: var(--color-accent);">Adventures</a> <!-- Current page link highlight -->
+            <a href="index.html#hobbies" class="nav-link">Hobbies</a>
+            <a href="index.html#contact" class="nav-link">Contact</a>
+        </nav>
+    </header>
+
+    <!-- 3. Main Content --><main>
+        
+        <!-- === SECTION: ADVENTURES & REFLECTIONS (Hobby Blog) === -->
+        <section id="adventures" class="section-container">
+            <h2 class="section-heading">ADVENTURES & REFLECTIONS</h2>
+            <p class="bio-text">A journal of my time in the field, treks through challenging terrain, and explorations of hobbies, from capturing the night sky to mechanical keyboards. This is where I share my perspective outside of core research.</p>
+
+            <div class="adventure-grid">
+                
+                <!-- Adventure Post 1 (Astrophotography) -->
+                <div class="adventure-post">
+                    <div class="adventure-image-container">
+                        <img src="images/orion-nebula.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/D0A9A9?text=Astrophoto+Placeholder'" alt="Astrophoto: Orion Nebula">
+                    </div>
+                    <div class="adventure-content-text">
+                        <h4>M42: Capturing the Heart of Orion</h4>
+                        <p class="date">February 2024 | Vattiyoorkavu Observatory, Kerala</p>
+                        <p>This image is a stack of 40 x 30s exposures of the Orion Nebula (M42), a massive star-forming region. I processed the data in PixInsight and Photoshop, focusing on bringing out the delicate wisps of dust and the faint outer hydrogen-alpha regions without completely blowing out the bright stellar core. The long drive and late nights were certainly worth this result!</p>
+                    </div>
+                </div>
+
+                <!-- Adventure Post 2 (Fieldwork/Observatory) -->
+                <div class="adventure-post">
+                    <div class="adventure-image-container">
+                        <img src="images/observatory-site.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/ECECEC?text=Observatory+Placeholder'" alt="Fieldwork Photo: Observatory Site">
+                    </div>
+                    <div class="adventure-content-text">
+                        <h4>The Calm Before the Campaign</h4>
+                        <p class="date">October 2023 | Hanle, Ladakh</p>
+                        <p>Setting up the high-resolution spectrograph at the Indian Astronomical Observatory. The air is incredibly thin and the cold is biting, but the sheer clarity of the sky at 4,500m is unmatched. The challenge here is less about the stars and more about keeping the equipment operational at these extreme altitudes—a true test of engineering!</p>
+                    </div>
+                </div>
+
+                <!-- Adventure Post 3 (Hobby: Custom Keyboard) -->
+                <div class="adventure-post">
+                    <div class="adventure-image-container">
+                        <img src="images/custom-keyboard.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/D0A9A9?text=Keyboard+Placeholder'" alt="Hobby: Custom Keyboard Build">
+                    </div>
+                    <div class="adventure-content-text">
+                        <h4>The 'Cosmic Dust' Custom Build</h4>
+                        <p class="date">June 2023 | Project completion</p>
+                        <p>Taking a necessary break from coding to build a custom mechanical keyboard. This one is a 65% layout with deep blue keycaps to mimic the night sky and Gateron Black switches for that satisfying, quiet 'thock'. It's the perfect blend of engineering and aesthetic precision, and it makes those long night coding sessions much more pleasant.</p>
+                    </div>
+                </div>
+
+                <!-- Adventure Post 4 (Example: Trekking/Hobby) -->
+                <div class="adventure-post">
+                    <div class="adventure-image-container">
+                        <img src="images/trek-view.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/ECECEC?text=Trek+View+Placeholder'" alt="Trekking in the Himalayas">
+                    </div>
+                    <div class="adventure-content-text">
+                        <h4>Conquering the Deoriatal-Chandrashila Trek</h4>
+                        <p class="date">May 2024 | Uttarakhand, Himalayas</p>
+                        <p>There is nothing quite like the view of the Chaukhamba massif reflecting in the Deoriatal lake at sunrise. This three-day trek was a perfect reminder of the raw, untamed beauty of my home state. It recharges the mind and provides the perspective needed for intense research periods—a great analogy for life and work.</p>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="footer">
+        © 2025 Shubh Mittal. All rights reserved. <a href="index.html" style="color: var(--color-accent); text-decoration: none;">Back to Home</a>.
+    </footer>
+
+    <!-- 4. JavaScript for Canvas Star Animation (Realistic 3D Warp Effect) --><script>
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        const STAR_COUNT = 400; 
+        const MAX_Z = 1000;      
+        const SPEED = 5;       
+        const PERSPECTIVE = 300; 
+        const COLORS = ['#FFFFFF', '#ECECEC', '#D0A9A9'];
+        let nebulaTime = 0;
+
+        function getBackgroundColor() {
+            return getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim() || '#0A111E';
+        }
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            if (stars.length === 0) {
+                const halfWidth = canvas.width / 2;
+                const halfHeight = canvas.height / 2;
+
+                for (let i = 0; i < STAR_COUNT; i++) {
+                    stars.push({
+                        x: (Math.random() * canvas.width) - halfWidth, 
+                        y: (Math.random() * canvas.height) - halfHeight, 
+                        z: Math.random() * MAX_Z,
+                        radius: Math.random() * 1.5 + 0.5,
+                        color: COLORS[Math.floor(Math.random() * COLORS.length)], 
+                        twinkle: Math.random() * 0.5 + 0.5,
+                    });
+                }
+            }
+        }
+
+        function drawMilkyWay() {
+            nebulaTime += 0.005;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxRadius = Math.max(canvas.width, canvas.height) * 1.5;
+
+            const coreShiftX = Math.sin(nebulaTime) * 300;
+            const coreShiftY = Math.cos(nebulaTime * 0.7) * 200;
+
+            const x0 = centerX + coreShiftX;
+            const y0 = centerY + coreShiftY;
+
+            const gradient = ctx.createRadialGradient(
+                x0, y0, maxRadius * 0.05,
+                x0, y0, maxRadius * 0.6
+            );
+
+            gradient.addColorStop(0, `rgba(236, 236, 236, 0.25)`);
+            gradient.addColorStop(0.3, `rgba(208, 169, 169, 0.15)`);
+            gradient.addColorStop(0.6, `rgba(10, 17, 30, 0.01)`);
+            gradient.addColorStop(1, `rgba(10, 17, 30, 0)`);
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function animateStars() {
+            ctx.fillStyle = getBackgroundColor();
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            drawMilkyWay();
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            stars.forEach(star => {
+                star.z -= SPEED; 
+
+                if (star.z <= 1) { 
+                    star.z = MAX_Z;
+                    star.x = (Math.random() * canvas.width) - centerX;
+                    star.y = (Math.random() * canvas.height) - centerY;
+                }
+
+                const p = PERSPECTIVE / star.z; 
+                
+                const projectedX = star.x * p + centerX;
+                const projectedY = star.y * p + centerY;
+                
+                const size = star.radius * p; 
+
+                const opacity = star.twinkle + Math.sin(Date.now() * 0.001 * star.twinkle) * 0.5;
+                
+                if (projectedX > 0 && projectedX < canvas.width && 
+                    projectedY > 0 && projectedY < canvas.height && size > 0.5) {
+                    
+                    ctx.globalAlpha = opacity;
+                    ctx.fillStyle = star.color; 
+                    ctx.beginPath();
+                    ctx.arc(projectedX, projectedY, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+            
+            ctx.globalAlpha = 1.0; 
+            requestAnimationFrame(animateStars);
+        }
+
+        // --- Event Listeners ---
+
+        window.addEventListener('resize', () => {
+             stars = []; 
+             initCanvas();
+        });
+
+        window.onload = function() {
+            initCanvas();
+            animateStars();
+        };
+        
+    </script> 
+</body>
+</html>
