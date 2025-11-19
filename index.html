@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astrophysics | Shubh</title>
-    <!-- Using Inter font for a modern, minimalist look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&display=swap" rel="stylesheet">
+    <title>Stellar Systems Researcher | Portfolio Interface</title>
+    <!-- Using Inter font for a modern, minimalist look --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&display=swap" rel="stylesheet">
     <style>
+        /* ========================================================== */
+        /* === CHECKPOINT: Soft Light Minimalist Theme (Box-Free) === */
+        /* === CURRENT BASE: Version 7 (Prior to Galactic Disk) === */
+        /* ========================================================== */
+
         /* CSS for the High-End, Minimalist Dark Theme with Soft Accents */
         :root {
             --color-bg: #0A111E;            /* Deep Space Blue/Black */
             --color-text-primary: #FFFFFF;    /* Clean White */
             --color-accent: #ECECEC;         /* Main Accent (Soft Off-White/Cream) */
             --color-accent-red: #D0A9A9;      /* Secondary Accent (Dusty Rose/Warm Pink) */
-            --color-separator: #1A1A3F;      /* Subtle Line */
+            --color-separator: #1A1A3F;      /* Subtle Line (still useful for lines/dividers) */
             --font-primary: 'Inter', sans-serif;
         }
 
@@ -29,20 +33,18 @@
         }
 
         body {
-            /* Allow scrolling */
             min-height: 100vh; 
             background-color: var(--color-bg);
             color: var(--color-text-primary);
             font-family: var(--font-primary);
             line-height: 1.6;
             position: relative;
-            /* Extra padding to prevent content from touching the screen edges */
             padding-bottom: 50px; 
         }
 
         /* 1. Canvas for the Star Field Background (Fixed) */
         #starCanvas {
-            position: fixed; /* Stays put as content scrolls over it */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -50,8 +52,73 @@
             z-index: 0;
             opacity: 0.9;
         }
+        
+        /* 2. Sticky Header/Navigation */
+        #site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10; /* Highest Z-index to ensure it sits on top */
+            background-color: rgba(10, 17, 30, 0.95); /* Slightly transparent dark background */
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--color-separator);
+            transition: background-color 0.3s;
+        }
 
-        /* 2. Main Content Wrapper */
+        .nav-menu {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-end; /* Align links to the right */
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .site-title {
+            margin-right: auto; /* Pushes other links to the right */
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-accent) !important; /* Title uses the soft accent color */
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .site-title:hover {
+             color: var(--color-text-primary) !important;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--color-text-primary);
+            font-size: 0.9rem;
+            font-weight: 300;
+            margin-left: 30px;
+            padding: 5px 0;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--color-accent);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--color-accent);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease-out;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* 3. Main Content Wrapper */
         main {
             position: relative;
             z-index: 2; /* Ensures content is above the stars */
@@ -59,7 +126,8 @@
 
         /* Reusable Section Styling */
         .section-container {
-            padding: 100px 20px;
+            /* Adjusted top padding to prevent content being hidden by fixed header */
+            padding: 120px 20px 100px 20px; 
             max-width: 1000px;
             margin: 0 auto;
             text-align: center;
@@ -74,7 +142,6 @@
             border-bottom: 1px solid var(--color-separator);
             padding-bottom: 15px;
             display: inline-block;
-            /* REMOVED NEON SHADOW */
         }
         
         /* --- About Section Specific Styles --- */
@@ -83,15 +150,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding-top: 80px; /* Reduced padding here because it's centered on screen height */
         }
 
         .about-content {
-            background-color: rgba(0, 0, 0, 0.4); 
-            padding: 50px 60px;
+            padding: 50px 60px; 
             border-radius: 12px;
-            border: 1px solid var(--color-separator); 
-            box-shadow: 0 0 80px rgba(0, 0, 0, 0.05); /* Muted Dark Shadow */
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px); 
+        }
+
+        /* Profile Picture Styles */
+        .profile-pic-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--color-accent); /* Soft accent border */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Subtle depth */
         }
 
         /* Reduced Name Size */
@@ -101,13 +182,13 @@
             letter-spacing: 4px;
             margin-bottom: 0.5rem;
             color: var(--color-text-primary);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1); /* Muted text shadow */
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1); 
             transition: all 0.5s ease;
         }
         
         .name:hover {
             color: var(--color-accent); 
-            text-shadow: 0 0 10px rgba(236, 236, 236, 0.5); /* Muted hover text shadow */
+            text-shadow: 0 0 10px rgba(236, 236, 236, 0.5); 
         }
 
         .title {
@@ -127,33 +208,11 @@
             margin-right: auto;
         }
 
-        /* 3. Links/Buttons */
+        /* --- Links/Buttons (Removed from HTML, keeping original CSS vestigial) --- */
         .links {
-            margin-top: 4rem;
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .link-button {
-            text-decoration: none;
-            color: var(--color-accent); 
-            border: 2px solid var(--color-accent); 
-            padding: 10px 30px;
-            border-radius: 50px;
-            font-weight: 700;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .link-button:hover {
-            background-color: var(--color-accent); 
-            color: var(--color-bg);
-            /* SHADOW REMOVED */
-            box-shadow: none; 
-            transform: translateY(-2px);
+            /* Now an empty spacer for potential future use */
+            margin-top: 2rem; 
+            display: none;
         }
         
         /* --- Academic Journey (Vertical Timeline) --- */
@@ -205,29 +264,28 @@
             position: absolute;
             width: 15px;
             height: 15px;
-            right: -7.5px; /* Aligns to the vertical line */
+            right: -7.5px; 
             background-color: var(--color-bg);
             border: 3px solid var(--color-accent); 
             top: 15px;
             border-radius: 50%;
             z-index: 3;
-            /* SHADOW REMOVED */
             box-shadow: none;
         }
 
         .right::after {
-            left: -7.5px; /* Aligns to the vertical line for right-side items */
+            left: -7.5px; 
         }
 
         .timeline-content {
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 20px;
+            padding: 15px 20px; 
             border-radius: 6px;
-            transition: background-color 0.3s;
+            transition: color 0.3s; 
         }
 
         .timeline-content:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: transparent; 
+            color: var(--color-accent); 
         }
 
         .timeline-content h3 {
@@ -243,7 +301,6 @@
 
         /* Media queries for vertical timeline on mobile */
         @media screen and (max-width: 800px) {
-            /* Stacks everything to the left on small screens */
             .timeline::after {
                 left: 31px;
             }
@@ -261,9 +318,13 @@
             .left {
                 text-align: left;
             }
+            /* Adjust padding so header doesn't overlap content on small screen */
+            .section-container {
+                padding-top: 100px; 
+            }
         }
 
-        /* --- Projects Grid --- */
+        /* --- Projects Grid (now just styled text links) --- */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -272,22 +333,35 @@
         }
 
         .project-card {
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 25px;
-            border-radius: 8px;
-            border: 1px solid var(--color-separator);
-            transition: transform 0.3s, border-color 0.3s;
+            padding: 25px 0; 
+            transition: transform 0.3s, color 0.3s;
             text-decoration: none;
             color: var(--color-text-primary);
             display: block;
+            position: relative;
         }
+        
+        .project-card::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px; 
+            background: var(--color-accent);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease-out;
+        }
+
 
         .project-card:hover {
             transform: translateY(-5px);
-            /* SHADOW REMOVED */
             box-shadow: none; 
-            border-color: var(--color-accent); /* Only border highlight remains */
-            border-width: 2px; /* Slight border increase for subtle highlight */
+            border-color: transparent; 
+            color: var(--color-accent); 
+        }
+
+        .project-card:hover::after {
+            width: 100%;
         }
         
         .project-card h4 {
@@ -301,7 +375,7 @@
             color: #AAAAAA;
         }
 
-        /* --- Hobbies Section --- */
+        /* --- Hobbies Section (now just styled text) --- */
         .hobby-list {
             display: flex;
             justify-content: center;
@@ -312,10 +386,23 @@
 
         .hobby-item {
             flex-basis: 250px;
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 3px solid var(--color-accent); 
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .hobby-item h3 {
+            color: var(--color-accent);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hobby-item h3::before {
+            content: '•'; 
+            color: var(--color-accent);
+            position: absolute;
+            left: -15px;
+            top: 0;
         }
 
         /* --- Pictures Section --- */
@@ -341,11 +428,10 @@
 
         .picture-placeholder:hover {
             transform: scale(1.05);
-            /* SHADOW REMOVED */
             box-shadow: none;
         }
 
-        /* --- Contact Section (Professional Grid with Icons) --- */
+        /* --- Contact Section (Minimalist Icons) --- */
         #contact {
             padding-bottom: 100px;
         }
@@ -368,26 +454,24 @@
             justify-content: center;
             text-decoration: none;
             color: var(--color-text-primary);
-            padding: 20px 25px;
-            border: 1px solid var(--color-separator);
+            padding: 10px; 
             border-radius: 8px;
             font-size: 0.9rem;
             font-weight: 400;
             transition: all 0.3s ease;
-            min-width: 150px;
+            min-width: 100px; 
         }
         
         .contact-link-icon:hover {
             color: var(--color-accent);
-            border-color: var(--color-accent);
-            /* Subtle dark background on hover */
-            background-color: rgba(255, 255, 255, 0.1); 
+            border-color: transparent;
+            background-color: transparent; 
             transform: translateY(-2px);
         }
         
         .contact-link-icon svg {
-            width: 30px;
-            height: 30px;
+            width: 35px; 
+            height: 35px;
             fill: var(--color-text-primary);
             margin-bottom: 8px;
             transition: fill 0.3s;
@@ -432,20 +516,18 @@
         /* Custom Hover/Tooltip styles for varied colors */
         .interactive-star.accent-blue:hover {
             background-color: var(--color-accent);
-            /* SHADOW REMOVED */
             box-shadow: none; 
             opacity: 1;
-            transform: scale(1.5); /* Reduced scale for subtlety */
+            transform: scale(1.5); 
         }
         .interactive-star.accent-red {
             background-color: var(--color-accent-red); 
         }
         .interactive-star.accent-red:hover {
             background-color: var(--color-accent-red);
-            /* SHADOW REMOVED */
             box-shadow: none;
             opacity: 1;
-            transform: scale(1.5); /* Reduced scale for subtlety */
+            transform: scale(1.5); 
         }
         
         /* Tooltip styling based on accent color */
@@ -483,43 +565,51 @@
 </head>
 <body>
 
-    <!-- 1. Canvas for the Animated Star Field (Fixed Z-Index 0) -->
-    <canvas id="starCanvas"></canvas>
+    <!-- 1. Canvas for the Animated Star Field (Fixed Z-Index 0) --><canvas id="starCanvas"></canvas>
 
-    <!-- 2. Explicit Interactive Stars (Fixed Z-Index 1) -->
-    <div class="interactive-star-container">
-        <!-- Star 1: Low-Mass Stellar Evolution (Soft White Accent) -->
-        <a href="#projects" class="interactive-star accent-blue" style="top: 15%; left: 10%;">
+    <!-- NEW: Sticky Navigation Header (Z-Index 10) -->
+    <header id="site-header">
+        <nav class="nav-menu">
+            <a href="#about" class="nav-link site-title">Shubh Mittal</a>
+            <a href="#academic-journey" class="nav-link">Academics</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#hobbies" class="nav-link">Hobbies</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+    </header>
+
+    <!-- 2. Explicit Interactive Stars (Fixed Z-Index 1) --><div class="interactive-star-container">
+        <!-- Star 1: Low-Mass Stellar Evolution (Soft White Accent) --><a href="#projects" class="interactive-star accent-blue" style="top: 15%; left: 10%;">
             <span class="star-tooltip">Stellar Evolution Model &rarr;</span>
         </a>
         
-        <!-- Star 2: Exoplanet Transit Analysis (Dusty Rose Accent) -->
-        <a href="#projects" class="interactive-star accent-red" style="top: 30%; right: 15%;">
+        <!-- Star 2: Exoplanet Transit Analysis (Dusty Rose Accent) --><a href="#projects" class="interactive-star accent-red" style="top: 30%; right: 15%;">
             <span class="star-tooltip">Exoplanet Transit Analysis &rarr;</span>
         </a>
         
-        <!-- Star 3: M-Dwarf Simulator (Soft White Accent) -->
-        <a href="#projects" class="interactive-star accent-blue" style="bottom: 10%; left: 25%;">
+        <!-- Star 3: M-Dwarf Simulator (Soft White Accent) --><a href="#projects" class="interactive-star accent-blue" style="bottom: 10%; left: 25%;">
             <span class="star-tooltip">M-Dwarf Magnetic Field Simulator &rarr;</span>
         </a>
 
-        <!-- Star 4: Observational Data Pipeline (Dusty Rose Accent) -->
-        <a href="#projects" class="interactive-star accent-red" style="bottom: 25%; right: 5%;">
+        <!-- Star 4: Observational Data Pipeline (Dusty Rose Accent) --><a href="#projects" class="interactive-star accent-red" style="bottom: 25%; right: 5%;">
             <span class="star-tooltip">Observational Data Pipeline &rarr;</span>
         </a>
 
-        <!-- Star 5: Astrophotography (Soft White Accent) -->
-        <a href="#pictures" class="interactive-star accent-blue" style="top: 20%; left: 50%;">
+        <!-- Star 5: Astrophotography (Soft White Accent) --><a href="#pictures" class="interactive-star accent-blue" style="top: 20%; left: 50%;">
             <span class="star-tooltip">Astrophotography Portfolio &rarr;</span>
         </a>
     </div>
 
-    <!-- 3. Main Content (Scrolling Z-Index 2) -->
-    <main>
+    <!-- 3. Main Content (Scrolling Z-Index 2) --><main>
         
-        <!-- === SECTION 1: ABOUT === -->
-        <section id="about" class="section-container">
+        <!-- === SECTION 1: ABOUT === --><section id="about" class="section-container">
             <div class="about-content">
+                <!-- NEW: Profile Picture Container -->
+                <div class="profile-pic-container">
+                    <!-- Placeholder image; replace URL with your actual photo -->
+                    <img src="https://placehold.co/150x150/1A1A3F/ECECEC?text=Your+Photo" alt="Profile Picture" class="profile-pic">
+                </div>
+                
                 <h1 class="name">[Your Name Here]</h1>
                 <h2 class="title">ASTROPHYSICIST & STELLAR SYSTEMS RESEARCHER</h2>
                 
@@ -530,22 +620,18 @@
                     My current work, primarily hosted on GitHub, involves the simulation of protoplanetary disk dynamics around **M-Dwarf stars** and the development of open-source tools for astronomical data visualization. Scroll to view my journey, or explore the interactive celestial nodes scattered across the void to discover key projects.
                 </p>
 
-                <!-- Key Links -->
-                <div class="links">
-                    <a href="[YOUR GITHUB URL]" target="_blank" class="link-button">Explore Core Repository &rarr;</a>
-                    <a href="#contact" class="link-button">Get in Touch</a>
+                <!-- Key Links (Removed) --><div class="links">
+                    <!-- Empty div remains as a spacer -->
                 </div>
             </div>
         </section>
 
-        <!-- === SECTION 2: ACADEMIC JOURNEY (Vertical Timeline) === -->
-        <section id="academic-journey" class="section-container">
+        <!-- === SECTION 2: ACADEMIC JOURNEY (Vertical Timeline) === --><section id="academic-journey" class="section-container">
             <h2 class="section-heading">ACADEMIC JOURNEY</h2>
 
             <div class="timeline">
                 
-                <!-- Item 1: JRF at IUCAA -->
-                <div class="timeline-item right">
+                <!-- Item 1: JRF at IUCAA --><div class="timeline-item right">
                     <div class="timeline-content">
                         <p class="year">2023 - Present</p>
                         <h3>Junior Research Fellow (JRF)</h3>
@@ -554,8 +640,7 @@
                     </div>
                 </div>
 
-                <!-- Item 2: MSc from IISER TVM -->
-                <div class="timeline-item left">
+                <!-- Item 2: MSc from IISER TVM --><div class="timeline-item left">
                     <div class="timeline-content">
                         <p class="year">2021 - 2023</p>
                         <h3>MSc Physics</h3>
@@ -564,8 +649,7 @@
                     </div>
                 </div>
 
-                <!-- Item 3: BSc from Delhi University -->
-                <div class="timeline-item right">
+                <!-- Item 3: BSc from Delhi University --><div class="timeline-item right">
                     <div class="timeline-content">
                         <p class="year">2018 - 2021</p>
                         <h3>BSc (Honors) in Physics</h3>
@@ -577,33 +661,28 @@
             </div>
         </section>
         
-        <!-- === SECTION 3: PROJECTS === -->
-        <section id="projects" class="section-container">
+        <!-- === SECTION 3: PROJECTS === --><section id="projects" class="section-container">
             <h2 class="section-heading">FEATURED PROJECTS</h2>
 
             <div class="projects-grid">
-                <!-- Project Card 1 -->
-                <a href="[PROJECT LINK 1]" target="_blank" class="project-card">
+                <!-- Project Card 1 --><a href="[PROJECT LINK 1]" target="_blank" class="project-card">
                     <h4>High-Res Spectroscopy Pipeline</h4>
                     <p>Python-based tools for reducing and analyzing spectroscopic data from optical/NIR instruments. (Corresponds to JRF work)</p>
                 </a>
                 
-                <!-- Project Card 2 -->
-                <a href="[PROJECT LINK 2]" target="_blank" class="project-card">
+                <!-- Project Card 2 --><a href="[PROJECT LINK 2]" target="_blank" class="project-card">
                     <h4>GRB Light Curve Analyzer</h4>
                     <p>A C++ engine for analyzing temporal and spectral properties of Gamma Ray Burst prompt emission light curves. (Corresponds to MSc project)</p>
                 </a>
                 
-                <!-- Project Card 3 -->
-                <a href="[PROJECT LINK 3]" target="_blank" class="project-card">
+                <!-- Project Card 3 --><a href="[PROJECT LINK 3]" target="_blank" class="project-card">
                     <h4>Stellar Atmosphere Simulation</h4>
                     <p>A foundational simulation (NumPy/SciPy) for modeling basic stellar atmospheric properties. (General/BSc level interest)</p>
                 </a>
             </div>
         </section>
 
-        <!-- === SECTION 4: HOBBIES === -->
-        <section id="hobbies" class="section-container">
+        <!-- === SECTION 4: HOBBIES === --><section id="hobbies" class="section-container">
             <h2 class="section-heading">OTHER INTERESTS</h2>
 
             <p class="bio-text">Beyond stellar dynamics, I find immense satisfaction in analog photography, building mechanical keyboards, and spending time observing the night sky.</p>
@@ -624,8 +703,7 @@
             </div>
         </section>
 
-        <!-- === SECTION 5: PICTURES === -->
-        <section id="pictures" class="section-container">
+        <!-- === SECTION 5: PICTURES === --><section id="pictures" class="section-container">
             <h2 class="section-heading">GALLERY</h2>
 
             <div class="picture-grid">
@@ -633,44 +711,38 @@
                 <div class="picture-placeholder">Hobby: Custom Keyboard Build</div>
                 <div class="picture-placeholder">Fieldwork Photo: Observatory Site</div>
                 <div class="picture-placeholder">Hobby: Analog Camera Setup</div>
-                <div class="picture-placeholder">Astrophoto: Andromeda Galaxy</div>
                 <div class="picture-placeholder">Diagram: Stellar Classification (H-R)</div>
             </div>
         </section>
 
-        <!-- === SECTION 6: CONTACT ME (Minimalist & Professional with Icons) === -->
-        <section id="contact" class="section-container">
+        <!-- === SECTION 6: CONTACT ME (Minimalist & Professional with Icons) === --><section id="contact" class="section-container">
             <h2 class="section-heading">CONNECT</h2>
 
             <p class="bio-text" style="font-size: 1.2rem;">I'm always open to collaborations, research inquiries, or just a conversation about the cosmos. Feel free to reach out.</p>
 
             <div class="contact-grid">
-                <!-- GitHub Icon Link -->
-                <a href="[YOUR GITHUB URL]" target="_blank" class="contact-link-icon">
+                <!-- GitHub Icon Link --><a href="[YOUR GITHUB URL]" target="_blank" class="contact-link-icon">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57s-.015-1.92-.015-3.795c-3.33 1.25-4.035-1.61-4.035-1.61-.54-.54-1.32-1.35-2.055-1.785-.45-.315-.855-.24-.06.24.675.585 1.155 1.77 1.155 1.77.585.99 1.545.705 1.92.54.075-.42.285-.75.525-.92-2.31-.255-4.74-1.14-4.74-5.175 0-1.14.405-2.07 1.065-2.805-.105-.255-.465-1.335.105-2.775 0 0 .87-.27 2.85 1.065 1.83-.51 3.78-.51 5.61 0 1.98-1.335 2.85-1.065 2.85-1.065.57 1.44.21 2.52.105 2.775.66.735 1.065 1.665 1.065 2.805 0 4.05-2.43 4.92-4.74 5.175.315.27.6.84.6 1.74l-.015 2.58c0 .315.21.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/>
                     </svg>
                     <span>GitHub Repos</span>
                 </a>
                 
-                <!-- LinkedIn Icon Link -->
-                <a href="[YOUR LINKEDIN URL]" target="_blank" class="contact-link-icon">
+                <!-- LinkedIn Icon Link --><a href="[YOUR LINKEDIN URL]" target="_blank" class="contact-link-icon">
                     <svg viewBox="0 0 24 24">
                         <path d="M20.5 4.5h-17a.5.5 0 0 0-.5.5v15a.5.5 0 0 0 .5.5h17a.5.5 0 0 0 .5-.5v-15a.5.5 0 0 0-.5-.5zM8 19H5V9h3v10zM6.5 7.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM19 19h-3v-5c0-1.5-.75-2-2-2a2 2 0 0 0-2 2v5h-3V9h3v1c.75-1 2-2 4-2s4 1 4 4v5z"/>
                     </svg>
                     <span>LinkedIn Profile</span>
                 </a>
                 
-                <!-- Email Icon Link -->
-                <a href="mailto:[YOUR EMAIL]" target="_blank" class="contact-link-icon">
+                <!-- Email Icon Link --><a href="mailto:[YOUR EMAIL]" target="_blank" class="contact-link-icon">
                     <svg viewBox="0 0 24 24">
                         <path d="M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 2L12 13 3 6h18zm0 12H3V8l9 6 9-6v10z"/>
                     </svg>
                     <span>Email Me</span>
                 </a>
 
-                <!-- ORCID Icon Link -->
-                <a href="[YOUR ORCID ID]" target="_blank" class="contact-link-icon">
+                <!-- ORCID Icon Link --><a href="[YOUR ORCID ID]" target="_blank" class="contact-link-icon">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.5 17.5h-1c-.828 0-1.5-.672-1.5-1.5v-8c0-.828.672-1.5 1.5-1.5h1c.828 0 1.5.672 1.5 1.5v8c0 .828-.672 1.5-1.5 1.5zm6.5 0h-1c-.828 0-1.5-.672-1.5-1.5v-8c0-.828.672-1.5 1.5-1.5h1c.828 0 1.5.672 1.5 1.5v8c0 .828-.672 1.5-1.5 1.5zm0-10.5c-.828 0-1.5-.672-1.5-1.5s.672-1.5 1.5-1.5 1.5.672 1.5 1.5-.672 1.5-1.5 1.5z"/>
                     </svg>
@@ -682,8 +754,7 @@
         
     </main>
 
-    <!-- 4. JavaScript for Canvas Star Animation (Realistic 3D Warp Effect) -->
-    <script>
+    <!-- 4. JavaScript for Canvas Star Animation (Realistic 3D Warp Effect) --><script>
         const canvas = document.getElementById('starCanvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -693,6 +764,7 @@
         const PERSPECTIVE = 300; 
         // Updated star colors to match soft, whitish palette
         const COLORS = ['#FFFFFF', '#ECECEC', '#D0A9A9']; // White, Soft Cream, Dusty Rose
+        let nebulaTime = 0; // For subtle movement of the nebula/milky way core
 
         // Function to get the current background color from CSS
         function getBackgroundColor() {
@@ -729,43 +801,72 @@
         }
 
         /**
+         * Draws the soft, glowing nebulous region (Milky Way suggestion).
+         */
+        function drawMilkyWay() {
+            nebulaTime += 0.005; // Control the subtle shift speed
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxRadius = Math.max(canvas.width, canvas.height) * 1.5;
+
+            // Calculate subtle shift for the core position to simulate rotation/movement
+            const coreShiftX = Math.sin(nebulaTime) * 300;
+            const coreShiftY = Math.cos(nebulaTime * 0.7) * 200;
+
+            const x0 = centerX + coreShiftX;
+            const y0 = centerY + coreShiftY;
+
+            const gradient = ctx.createRadialGradient(
+                x0, y0, maxRadius * 0.05, // Inner circle (brightest core)
+                x0, y0, maxRadius * 0.6   // Outer circle (fades out)
+            );
+
+            // Using soft, whitish colors to maintain the minimalist theme
+            gradient.addColorStop(0, `rgba(236, 236, 236, 0.25)`); // Brightest core (Cream/White)
+            gradient.addColorStop(0.3, `rgba(208, 169, 169, 0.15)`); // Dusty Rose halo
+            gradient.addColorStop(0.6, `rgba(10, 17, 30, 0.01)`);  // Fading almost to background
+            gradient.addColorStop(1, `rgba(10, 17, 30, 0)`);       // Transparent (matches background color)
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        /**
          * Draws and updates the stars, simulating forward movement (warp effect).
          * Uses perspective projection to map 3D (X, Y, Z) to 2D screen coordinates.
          */
         function animateStars() {
-            // FIX: Use the calculated CSS background color for a stable, consistent background
+            // 1. Clear the canvas to the background color
             ctx.fillStyle = getBackgroundColor();
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 2. DRAW THE NEBULA/MILKY WAY EFFECT FIRST (So stars appear in front of it)
+            drawMilkyWay();
 
+            // 3. Draw the stars
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
 
             stars.forEach(star => {
-                // 1. Move the star (push it forward in Z direction)
+                // ... (existing star animation logic) ...
                 star.z -= SPEED; 
 
-                // 2. Check if star has passed the viewer (Z <= 1)
                 if (star.z <= 1) { 
                     star.z = MAX_Z;
-                    // Reset X/Y randomly to fill the canvas area when projected from MAX_Z
                     star.x = (Math.random() * canvas.width) - centerX;
                     star.y = (Math.random() * canvas.height) - centerY;
                 }
 
-                // 3. Calculate Perspective Projection (p = focal length / depth)
                 const p = PERSPECTIVE / star.z; 
                 
-                // 4. Calculate 2D Screen Position
                 const projectedX = star.x * p + centerX;
                 const projectedY = star.y * p + centerY;
                 
-                // 5. Calculate size (closer stars are larger)
                 const size = star.radius * p; 
 
-                // 6. Apply twinkling opacity
                 const opacity = star.twinkle + Math.sin(Date.now() * 0.001 * star.twinkle) * 0.5;
                 
-                // 7. Draw the star (only if it's visible on the screen)
                 if (projectedX > 0 && projectedX < canvas.width && 
                     projectedY > 0 && projectedY < canvas.height && size > 0.5) {
                     
@@ -776,7 +877,9 @@
                     ctx.fill();
                 }
             });
-
+            
+            // Ensure globalAlpha is reset for future drawings
+            ctx.globalAlpha = 1.0; 
             requestAnimationFrame(animateStars);
         }
 
