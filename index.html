@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. [Your Name] | Junior Research Fellow in Astrophysics</title>
+    <title>Shubh | Junior Research Fellow in Astrophysics</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Use Inter font family -->
@@ -15,17 +15,6 @@
             color: #c9d1d9; /* Light gray text */
             scroll-behavior: smooth;
         }
-
-        /* --- CSS-ONLY STAR SHIFT ANIMATION --- */
-        @keyframes star-shift {
-            0% {
-                background-position: 50% 50%, 50% 50%, 50% 50%, 0 0;
-            }
-            100% {
-                /* Shifts the background layers slightly over time */
-                background-position: 55% 55%, 45% 45%, 52% 48%, 0 0;
-            }
-        }
         
         /* Custom Star Field Effect for Hero Section */
         .star-field {
@@ -36,10 +25,10 @@
                 radial-gradient(circle at 45% 45%, rgba(150, 150, 255, 0.15) 0%, rgba(0, 0, 0, 0) 75%),
                 #0d1117;
             background-size: 250% 250%, 250% 250%, 250% 250%, 100% 100%;
+            transition: background-position 0.05s ease-out; /* Smoother JS background update */
+            background-position: center center; /* Initial position */
             overflow: hidden; 
-
-            /* Apply the subtle animation for a guaranteed flowing effect */
-            animation: star-shift 60s linear infinite alternate;
+            /* CSS Animation removed here to rely entirely on JS parallax */
         }
 
         /* Accent Color - A sophisticated Teal/Cyan */
@@ -146,8 +135,8 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <!-- 1. Intro/Hero Section (Interactive Parallax + CSS Fallback) -->
-        <!-- The CSS animation now ensures the stars move subtly regardless of mouse input. -->
+        <!-- 1. Intro/Hero Section (Interactive Parallax) -->
+        <!-- The star field remains static here, but will move based on mouse input when deployed live. -->
         <section id="intro" class="star-field h-screen flex items-center justify-center text-center p-4 rounded-b-3xl shadow-2xl mb-24">
             <div class="max-w-4xl space-y-6">
                 <h1 class="text-4xl sm:text-6xl lg:text-8xl font-extrabold text-white leading-tight">
@@ -393,7 +382,6 @@
                 const offsetY = -mouseY * sensitivity;
 
                 // Applying different rates for a 3D depth effect.
-                // NOTE: When this script runs, it overrides the CSS animation.
                 introSection.style.backgroundPosition = 
                     `${50 + offsetX * 1.8}% ${50 + offsetY * 1.8}%, ` + /* Closest star layer (fastest) */
                     `${50 + offsetX * 1.2}% ${50 + offsetY * 1.2}%, ` +   /* Middle star layer */
