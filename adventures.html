@@ -257,8 +257,9 @@
             border-top: 1px solid var(--color-separator);
         }
         .footer-link {
-            color: #007bff;         /* Blue link color (your accent color) */
-            text-decoration: none; /* Remove underline */
+            /* FIX: Use theme variable for link color */
+            color: #fff; 
+            text-decoration: none; 
         }
         .footer-link:hover {
             text-decoration: underline; /* Add underline on hover for better user experience */
@@ -372,7 +373,8 @@
                     <div class="adventure-content-text">
                         <h4>My favourite workplace</h4>
                         <p class="date">Jan 2025 | HPC, IISER TVM</p>
-                        <p>In my final year, I had a designated place for myself where I used to work on my Masters project. Having spent hours at this place, I enjoyed my every second. Soon I decorated it with some cool JWST images to keep me motivated whenever I used to think I am not able to find the answers to the cosmic mysteries.</p>
+                        <p>In my final year, I had a designated place for myself where I used to work on my Masters project. Having spent hours at this place, I enjoyed my every second. 
+                            Soon I decorated it with some cool JWST images to keep me motivated whenever I used to think I am can't find answers to the cosmic mysteries.</p>
                     </div>
                 </div>
 
@@ -384,7 +386,7 @@
 
     <footer class="footer">
         © 2025 Shubh Mittal. All rights reserved.
-        <a href="index.html" class="footer-link">Back to Home</a>.
+        <a href="index.html#about" class="footer-link">Back to Home</a>.
     </footer>
 
 
