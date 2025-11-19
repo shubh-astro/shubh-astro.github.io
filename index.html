@@ -8,7 +8,6 @@
     <style>
         /* ========================================================== */
         /* === CHECKPOINT: Soft Light Minimalist Theme (Box-Free) === */
-        /* === CURRENT BASE: Version 7 (Prior to Galactic Disk) === */
         /* ========================================================== */
 
         /* CSS for the High-End, Minimalist Dark Theme with Soft Accents */
@@ -80,7 +79,7 @@
             font-size: 1.25rem;
             font-weight: 700;
             color: var(--color-accent) !important; /* Title uses the soft accent color */
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-decoration: none;
             transition: color 0.3s;
         }
@@ -405,32 +404,6 @@
             top: 0;
         }
 
-        /* --- Pictures Section --- */
-        .picture-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        
-        .picture-placeholder {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            background-color: var(--color-separator);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 0.9rem;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-
-        .picture-placeholder:hover {
-            transform: scale(1.05);
-            box-shadow: none;
-        }
-
         /* --- Contact Section (Minimalist Icons) --- */
         #contact {
             padding-bottom: 100px;
@@ -573,6 +546,8 @@
             <a href="#about" class="nav-link site-title">Shubh Mittal</a>
             <a href="#academic-journey" class="nav-link">Academics</a>
             <a href="#projects" class="nav-link">Projects</a>
+            <!-- LINK UPDATED to the new separate page -->
+            <a href="adventures.html" class="nav-link">Adventures</a> 
             <a href="#hobbies" class="nav-link">Hobbies</a>
             <a href="#contact" class="nav-link">Contact</a>
         </nav>
@@ -596,7 +571,9 @@
             <span class="star-tooltip">Observational Data Pipeline &rarr;</span>
         </a>
 
-        <!-- Star 5: Astrophotography (Soft White Accent) --><a href="#pictures" class="interactive-star accent-blue" style="top: 20%; left: 50%;">
+        <!-- Star 5: Astrophotography (Soft White Accent) -->
+        <!-- LINK UPDATED to the new separate page -->
+        <a href="adventures.html" class="interactive-star accent-blue" style="top: 20%; left: 50%;">
             <span class="star-tooltip">Astrophotography Portfolio &rarr;</span>
         </a>
     </div>
@@ -608,7 +585,7 @@
                 <!-- NEW: Profile Picture Container -->
                 <div class="profile-pic-container">
                     <!-- Placeholder image; replace URL with your actual photo -->
-                    <img src="shubh_pic.jpeg" alt="Profile Picture" class="profile-pic">
+                    <img src="shubh_pic.jpeg" onerror="this.onerror=null; this.src='https://placehold.co/150x150/0A111E/ECECEC?text=SM'" alt="Profile Picture" class="profile-pic">
                 </div>
                 
                 <h1 class="name">Shubh Mittal</h1>
@@ -704,30 +681,7 @@
             </div>
         </section>
 
-        <!-- === SECTION 5: PICTURES === --><section id="pictures" class="section-container">
-            <h2 class="section-heading">Photon Pallete</h2>
-        
-            <div class="picture-grid">
-                <div class="picture-item">
-                    <img src="images/orion-nebula.jpg" alt="Astrophoto: Orion Nebula">
-                </div>
-                <div class="picture-item">
-                    <img src="images/custom-keyboard.jpg" alt="Hobby: Custom Keyboard Build">
-                </div>
-                <div class="picture-item">
-                    <img src="images/observatory-site.jpg" alt="Fieldwork Photo: Observatory Site">
-                </div>
-                <div class="picture-item">
-                    <img src="images/analog-camera.jpg" alt="Hobby: Analog Camera Setup">
-                </div>
-                <div class="picture-item">
-                    <img src="images/hr-diagram.jpg" alt="Diagram: Stellar Classification (H-R)">
-                </div>
-            </div>
-        </section>
-
-
-        <!-- === SECTION 6: CONTACT ME (Minimalist & Professional with Icons) === --><section id="contact" class="section-container">
+        <!-- === SECTION 5: CONTACT ME (Minimalist & Professional with Icons) === --><section id="contact" class="section-container">
             <h2 class="section-heading">CONNECT</h2>
 
             <p class="bio-text" style="font-size: 1.2rem;">I'm always open to collaborations, research inquiries, or just a conversation about the cosmos. Feel free to reach out.</p>
@@ -753,14 +707,6 @@
                     </svg>
                     <span>Email Me</span>
                 </a>
-
-                <!-- ORCID Icon Link -->
-                <!-- <a href="[YOUR ORCID ID]" target="_blank" class="contact-link-icon"> -->
-                    <!-- <svg viewBox="0 0 24 24">
-                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.5 17.5h-1c-.828 0-1.5-.672-1.5-1.5v-8c0-.828.672-1.5 1.5-1.5h1c.828 0 1.5.672 1.5 1.5v8c0 .828-.672 1.5-1.5 1.5zm6.5 0h-1c-.828 0-1.5-.672-1.5-1.5v-8c0-.828.672-1.5 1.5-1.5h1c.828 0 1.5.672 1.5 1.5v8c0 .828-.672 1.5-1.5 1.5zm0-10.5c-.828 0-1.5-.672-1.5-1.5s.672-1.5 1.5-1.5 1.5.672 1.5 1.5-.672 1.5-1.5 1.5z"/>
-                    </svg>
-                    <span>ORCID iD</span>
-                </a> -->
             </div>
 
         </section>
