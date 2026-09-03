@@ -195,6 +195,8 @@ a.pub-title:hover{color:var(--accent)}
 .pub-meta .yr{color:var(--accent);margin-right:.7em}
 .pub-state{color:var(--text-faint);font-size:.92rem;padding:20px 0}
 .pub-state a{color:var(--accent)}
+.pub-alt{color:var(--accent);text-decoration:none;margin-left:.7em;font-size:.78rem;letter-spacing:.08em;border:1px solid var(--line);border-radius:2px;padding:2px 7px;transition:border-color .25s}
+.pub-alt:hover{border-color:var(--accent)}
 
 /* ---------- timeline ---------- */
 .tl{position:relative;padding-left:30px}
@@ -303,8 +305,7 @@ footer{
       atmospheres, and building open-source tools to make that analysis reproducible.
     </p>
     <div class="actions">
-      <!-- TODO: add cv.pdf to the repo root, or remove this button -->
-      <a class="btn primary" href="cv.pdf">
+      <a class="btn primary" href="CV.pdf">
         <svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-7-7zm0 2.5L17.5 9H13V4.5zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg>
         Curriculum Vitae
       </a>
@@ -441,7 +442,7 @@ footer{
    Find it at orcid.org (format: 0000-0002-1825-0097).
    Leave blank and the section shows a graceful placeholder.
    ============================================================ */
-const ORCID_ID = '';
+const ORCID_ID = '0009-0000-5975-2213';
 
 /* ---------- static starfield (drawn once, no animation loop) ---------- */
 (function () {
@@ -518,8 +519,8 @@ const ORCID_ID = '';
 (function () {
   const list = document.getElementById('pub-list');
   const state = document.getElementById('pub-state');
-
-  function msg(html) { state.innerHTML = html; }
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const msg = html => { state.innerHTML = html; };
 
   if (!ORCID_ID) {
     msg('Publication list coming soon. In the meantime, see my work on ' +
@@ -532,35 +533,53 @@ const ORCID_ID = '';
   fetch('https://pub.orcid.org/v3.0/' + ORCID_ID + '/works', { headers: { Accept: 'application/json' } })
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(data => {
-      const works = (data.group || []).map(g => {
-        const s = g['work-summary'][0];
-        const ids = (s['external-ids'] || {})['external-id'] || [];
-        const doi = (ids.find(i => i['external-id-type'] === 'doi') || {})['external-id-value'];
-        return {
-          title: ((s.title || {}).title || {}).value || 'Untitled',
+      const flat = [];
+      (data.group || []).forEach(g => (g['work-summary'] || []).forEach(s => {
+        const ids = ((s['external-ids'] || {})['external-id']) || [];
+        const doi = (ids.find(i => i['external-id-type'] === 'doi') || {})['external-id-value'] || '';
+        const url = (s.url || {}).value || (doi ? 'https://doi.org/' + doi : '');
+        flat.push({
+          title:   ((s.title || {}).title || {}).value || 'Untitled',
           journal: (s['journal-title'] || {}).value || '',
-          year: (((s['publication-date'] || {}).year) || {}).value || '',
-          url: doi ? 'https://doi.org/' + doi
-                   : ((s.url || {}).value || '')
-        };
-      }).sort((a, b) => (b.year || 0) - (a.year || 0));
+          year:    (((s['publication-date'] || {}).year) || {}).value || '',
+          type:    s.type || '',
+          doi, url
+        });
+      }));
 
-      if (!works.length) {
-        msg('No publications listed on ORCID yet.');
-        return;
-      }
+      /* One paper can appear twice — the published article and its preprint.
+         Collapse on title, keep the journal version, keep the preprint as a side link. */
+      const byTitle = new Map();
+      flat.forEach(w => {
+        const key = w.title.toLowerCase().replace(/[^a-z0-9]+/g, '');
+        const prev = byTitle.get(key);
+        const isPre = w.type === 'preprint';
+        const arxiv = /arxiv/i.test(w.doi) || /arxiv\.org/i.test(w.url) ? w.url : '';
+        if (!prev) {
+          byTitle.set(key, Object.assign({}, w, { arxiv }));
+        } else {
+          if (arxiv && !prev.arxiv) prev.arxiv = arxiv;
+          if (prev.type === 'preprint' && !isPre) {
+            byTitle.set(key, Object.assign({}, w, { arxiv: prev.arxiv || arxiv }));
+          }
+        }
+      });
+
+      const works = [...byTitle.values()].sort((a, b) => (b.year || 0) - (a.year || 0));
+      if (!works.length) { msg('No publications listed on ORCID yet.'); return; }
 
       list.innerHTML = works.map(w => {
-        const tag = w.url ? 'a' : 'span';
-        const attrs = w.url ? ' href="' + w.url + '" target="_blank" rel="noopener"' : '';
-        const meta = [w.journal, w.year].filter(Boolean);
-        return '<div class="pub">' +
-                 '<' + tag + ' class="pub-title"' + attrs + '>' + w.title + '</' + tag + '>' +
-                 '<p class="pub-meta">' +
-                   (w.year ? '<span class="yr">' + w.year + '</span>' : '') +
-                   (w.journal || '') +
-                 '</p>' +
-               '</div>';
+        const t = w.url
+          ? '<a class="pub-title" href="' + esc(w.url) + '" target="_blank" rel="noopener">' + esc(w.title) + '</a>'
+          : '<span class="pub-title">' + esc(w.title) + '</span>';
+        const venue = w.journal || (w.type === 'preprint' ? 'Preprint' : '');
+        const arx = w.arxiv && w.arxiv !== w.url
+          ? ' <a href="' + esc(w.arxiv) + '" target="_blank" rel="noopener" class="pub-alt">arXiv</a>' : '';
+        return '<div class="pub">' + t +
+               '<p class="pub-meta">' +
+                 (w.year ? '<span class="yr">' + esc(w.year) + '</span>' : '') +
+                 esc(venue) + arx +
+               '</p></div>';
       }).join('');
     })
     .catch(() => {
