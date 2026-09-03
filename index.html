@@ -1,864 +1,575 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="images2/github-icon-seeklogo.svg">
-    <link rel="icon" type="image/png" href="images2/github-icon-seeklogo.svg">
-    <title>Shubh | Research</title>
-    <!-- Using Inter font for a modern, minimalist look --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&display=swap" rel="stylesheet">
-    <style>
-        /* ========================================================== */
-        /* === CHECKPOINT: Soft Light Minimalist Theme (Box-Free) === */
-        /* ========================================================== */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubh Mittal | Observational Astrophysics</title>
 
-        /* CSS for the High-End, Minimalist Dark Theme with Soft Accents */
-        :root {
-            --color-bg: #0A111E;            /* Deep Space Blue/Black */
-            --color-text-primary: #FFFFFF;    /* Clean White */
-            --color-accent: #ECECEC;         /* Main Accent (Soft Off-White/Cream) */
-            --color-accent-red: #D0A9A9;      /* Secondary Accent (Dusty Rose/Warm Pink) */
-            --color-separator: #1A1A3F;      /* Subtle Line (still useful for lines/dividers) */
-            --font-primary: 'Inter', sans-serif;
-        }
+<meta name="description" content="Shubh Mittal — Junior Research Fellow at IUCAA, Pune. High-resolution optical and near-IR spectroscopy of variable stars, Type II Cepheids, and stellar atmospheres.">
+<meta name="author" content="Shubh Mittal">
+<link rel="canonical" href="https://shubh-astro.github.io/">
 
-        /* Basic Reset and Scrolling Setup */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta property="og:type" content="website">
+<meta property="og:title" content="Shubh Mittal | Observational Astrophysics">
+<meta property="og:description" content="Junior Research Fellow at IUCAA, Pune. High-resolution spectroscopy of variable stars and Type II Cepheids.">
+<meta property="og:url" content="https://shubh-astro.github.io/">
+<meta property="og:image" content="https://shubh-astro.github.io/images2/portrait.jpg">
+<meta name="twitter:card" content="summary_large_image">
 
-        html {
-            scroll-behavior: smooth;
-        }
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230A111E'/%3E%3Cpath d='M16 6l2.3 6.9L25 15l-6.7 2.1L16 24l-2.3-6.9L7 15l6.7-2.1z' fill='%23D0A9A9'/%3E%3C/svg%3E">
 
-        body {
-            min-height: 100vh; 
-            background-color: var(--color-bg);
-            color: var(--color-text-primary);
-            font-family: var(--font-primary);
-            line-height: 1.6;
-            position: relative;
-            padding-bottom: 50px; 
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-        /* 1. Canvas for the Star Field Background (Fixed) */
-        #starCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.9;
-        }
-        
-        /* 2. Sticky Header/Navigation */
-        #site-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 10; /* Highest Z-index to ensure it sits on top */
-            background-color: rgba(10, 17, 30, 0.95); /* Slightly transparent dark background */
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid var(--color-separator);
-            transition: background-color 0.3s;
-        }
+<style>
+:root{
+  --bg:#0A111E;
+  --bg-soft:#0E1728;
+  --text:#E8ECF3;
+  --text-dim:#95A1B6;
+  --text-faint:#66738A;
+  --accent:#D0A9A9;
+  --line:rgba(255,255,255,.10);
+  --line-strong:rgba(255,255,255,.18);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --measure:68ch;
+  --gutter:clamp(20px,5vw,40px);
+  --shell:1080px;
+}
 
-        .nav-menu {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: flex-end; /* Align links to the right */
-            align-items: center;
-            padding: 15px 20px;
-        }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font);
+  font-size:clamp(15px,.4vw + 14px,17px);
+  font-weight:300;
+  line-height:1.7;
+  letter-spacing:.01em;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 
-        .site-title {
-            margin-right: auto; /* Pushes other links to the right */
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--color-accent) !important; /* Title uses the soft accent color */
-            letter-spacing: 1.5px;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .site-title:hover {
-             color: var(--color-text-primary) !important;
-        }
+/* ---------- starfield ---------- */
+#stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.veil{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 90% 55% at 50% -10%,rgba(208,169,169,.10),transparent 70%);
+}
 
-        .nav-link {
-            text-decoration: none;
-            color: var(--color-text-primary);
-            font-size: 0.9rem;
-            font-weight: 300;
-            margin-left: 30px;
-            padding: 5px 0;
-            transition: color 0.3s;
-            position: relative;
-        }
+/* ---------- header ---------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  background:rgba(10,17,30,.82);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s,background .3s;
+}
+header.scrolled{border-bottom-color:var(--line)}
+.bar{
+  max-width:var(--shell);margin:0 auto;
+  padding:16px var(--gutter);
+  display:flex;align-items:center;gap:16px;
+}
+.brand{
+  font-size:.82rem;font-weight:500;letter-spacing:.22em;
+  text-transform:uppercase;text-decoration:none;color:var(--text);
+  margin-right:auto;white-space:nowrap;
+}
+.nav{display:flex;align-items:center;gap:30px}
+.nav a{
+  position:relative;text-decoration:none;color:var(--text-dim);
+  font-size:.83rem;font-weight:400;letter-spacing:.06em;
+  padding:4px 0;transition:color .25s;
+}
+.nav a::after{
+  content:'';position:absolute;left:0;bottom:0;height:1px;width:0;
+  background:var(--accent);transition:width .25s ease;
+}
+.nav a:hover{color:var(--text)}
+.nav a:hover::after{width:100%}
 
-        .nav-link:hover {
-            color: var(--color-accent);
-        }
+.burger{
+  display:none;background:none;border:0;cursor:pointer;
+  padding:8px;margin:-8px -8px -8px 0;
+}
+.burger span{
+  display:block;width:22px;height:1.5px;background:var(--text);
+  transition:transform .3s,opacity .2s;
+}
+.burger span+span{margin-top:6px}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: var(--color-accent);
-            bottom: 0;
-            left: 0;
-            transition: width 0.3s ease-out;
-        }
+/* ---------- layout ---------- */
+main{position:relative;z-index:2}
+section{
+  max-width:var(--shell);margin:0 auto;
+  padding:clamp(80px,11vw,140px) var(--gutter);
+}
+.eyebrow{
+  display:flex;align-items:center;gap:16px;
+  font-size:.72rem;font-weight:500;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--accent);
+  margin-bottom:44px;
+}
+.eyebrow::after{content:'';flex:1;height:1px;background:var(--line)}
+.lede{max-width:var(--measure);color:var(--text-dim);font-size:1.02rem}
+.lede + .lede{margin-top:1.1em}
+.lede b,.lede strong{color:var(--text);font-weight:500}
 
-        .nav-link:hover::after {
-            width: 100%;
-        }
+/* ---------- hero ---------- */
+#about{
+  min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  padding-top:120px;
+}
+.portrait{
+  width:clamp(120px,17vw,168px);aspect-ratio:1;
+  border-radius:50%;object-fit:cover;
+  border:1px solid var(--line-strong);
+  filter:saturate(.92);
+  margin-bottom:36px;
+}
+h1{
+  font-size:clamp(2.4rem,7vw,4.1rem);
+  font-weight:300;line-height:1.04;letter-spacing:-.02em;
+  margin-bottom:22px;
+}
+.rule{width:56px;height:1px;background:var(--accent);margin-bottom:22px}
+.role{
+  font-size:clamp(.95rem,2vw,1.1rem);font-weight:400;color:var(--text);
+  letter-spacing:.02em;margin-bottom:28px;
+}
+.role span{color:var(--text-faint);margin:0 .5em}
+.hero-bio{max-width:56ch;color:var(--text-dim);margin-bottom:40px}
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:11px 20px;border:1px solid var(--line-strong);border-radius:2px;
+  font-size:.82rem;font-weight:400;letter-spacing:.06em;
+  text-decoration:none;color:var(--text);
+  transition:border-color .25s,background .25s,transform .25s;
+}
+.btn:hover{border-color:var(--accent);background:rgba(208,169,169,.07);transform:translateY(-1px)}
+.btn svg{width:15px;height:15px;fill:currentColor;flex:none}
+.btn.primary{border-color:var(--accent);color:var(--accent)}
 
-        /* 3. Main Content Wrapper */
-        main {
-            position: relative;
-            z-index: 2; /* Ensures content is above the stars */
-        }
+/* ---------- research ---------- */
+.work{border-top:1px solid var(--line)}
+.item{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:12px 32px;align-items:start;
+  padding:32px 0;border-bottom:1px solid var(--line);
+  text-decoration:none;transition:padding-left .3s;
+}
+.item:hover{padding-left:12px}
+.item h3{
+  font-size:1.12rem;font-weight:400;letter-spacing:-.01em;
+  margin-bottom:8px;transition:color .25s;
+}
+.item:hover h3{color:var(--accent)}
+.item p{color:var(--text-dim);font-size:.94rem;max-width:60ch}
+.tag{
+  align-self:center;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-faint);border:1px solid var(--line);border-radius:2px;
+  padding:5px 11px;white-space:nowrap;
+}
+.arrow{transition:transform .3s;display:inline-block;color:var(--text-faint)}
+.item:hover .arrow{transform:translateX(4px);color:var(--accent)}
 
-        /* Reusable Section Styling */
-        .section-container {
-            /* Adjusted top padding to prevent content being hidden by fixed header */
-            padding: 120px 20px 100px 20px; 
-            max-width: 1000px;
-            margin: 0 auto;
-            text-align: center;
-        }
+/* ---------- publications ---------- */
+.pub{padding:24px 0;border-bottom:1px solid var(--line)}
+.pub:first-child{border-top:1px solid var(--line)}
+.pub-title{
+  font-size:1rem;font-weight:400;line-height:1.5;
+  text-decoration:none;display:inline-block;margin-bottom:7px;
+  transition:color .25s;
+}
+a.pub-title:hover{color:var(--accent)}
+.pub-meta{font-size:.85rem;color:var(--text-faint);letter-spacing:.02em}
+.pub-meta .yr{color:var(--accent);margin-right:.7em}
+.pub-state{color:var(--text-faint);font-size:.92rem;padding:20px 0}
+.pub-state a{color:var(--accent)}
 
-        .section-heading {
-            font-size: 2.5rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 60px;
-            color: var(--color-accent); 
-            border-bottom: 1px solid var(--color-separator);
-            padding-bottom: 15px;
-            display: inline-block;
-        }
-        
-        /* --- About Section Specific Styles --- */
-        #about {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-top: 80px; /* Reduced padding here because it's centered on screen height */
-        }
+/* ---------- timeline ---------- */
+.tl{position:relative;padding-left:30px}
+.tl::before{
+  content:'';position:absolute;left:4px;top:8px;bottom:8px;width:1px;
+  background:linear-gradient(180deg,var(--accent),var(--line) 40%,transparent);
+}
+.tl-item{position:relative;padding-bottom:44px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{
+  content:'';position:absolute;left:-30px;top:9px;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--bg);border:1px solid var(--accent);
+}
+.tl-year{
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:7px;
+}
+.tl-item h3{font-size:1.08rem;font-weight:400;margin-bottom:3px}
+.tl-org{color:var(--text);font-size:.94rem;margin-bottom:7px}
+.tl-item p.note{color:var(--text-dim);font-size:.92rem;max-width:58ch}
 
-        .about-content {
-            padding: 50px 60px; 
-            border-radius: 12px;
-            backdrop-filter: blur(4px); 
-        }
+/* ---------- interests ---------- */
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:36px;margin-top:44px}
+.grid3 h3{
+  font-size:.75rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:12px;
+}
+.grid3 p{color:var(--text-dim);font-size:.93rem}
 
-        /* Profile Picture Styles */
-        .profile-pic-container {
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: center;
-        }
+/* ---------- contact ---------- */
+.contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
 
-        .profile-pic {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--color-accent); /* Soft accent border */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Subtle depth */
-        }
+footer{
+  position:relative;z-index:2;
+  border-top:1px solid var(--line);
+  max-width:var(--shell);margin:0 auto;
+  padding:32px var(--gutter) 48px;
+  display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;
+  font-size:.78rem;color:var(--text-faint);letter-spacing:.04em;
+}
 
-        /* Reduced Name Size */
-        .name {
-            font-size: clamp(1.5rem, 4vw, 3rem);
-            font-weight: 100;
-            letter-spacing: 4px;
-            margin-bottom: 0.5rem;
-            color: var(--color-text-primary);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1); 
-            transition: all 0.5s ease;
-        }
-        
-        .name:hover {
-            color: var(--color-accent); 
-            text-shadow: 0 0 10px rgba(236, 236, 236, 0.5); 
-        }
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
 
-        .title {
-            font-size: clamp(1rem, 2vw, 1.5rem);
-            font-weight: 300;
-            color: #AAAAAA;
-            margin-bottom: 2rem;
-            letter-spacing: 1px;
-        }
+/* ---------- responsive ---------- */
+@media (max-width:720px){
+  .burger{display:block}
+  .nav{
+    position:fixed;inset:57px 0 auto 0;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--bg-soft);
+    border-bottom:1px solid var(--line);
+    padding:8px var(--gutter) 20px;
+    transform:translateY(-8px);opacity:0;visibility:hidden;
+    transition:opacity .25s,transform .25s,visibility .25s;
+  }
+  .nav.open{transform:none;opacity:1;visibility:visible}
+  .nav a{padding:13px 0;font-size:.95rem;border-bottom:1px solid var(--line)}
+  .nav a:last-child{border-bottom:0}
+  .nav a::after{display:none}
+  .item{grid-template-columns:1fr;gap:10px}
+  .tag{justify-self:start}
+  .actions .btn{flex:1 1 auto;justify-content:center}
+}
 
-        .bio-text {
-            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-            margin-bottom: 1.5rem;
-            font-weight: 300;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* --- Links/Buttons (Removed from HTML, keeping original CSS vestigial) --- */
-        .links {
-            /* Now an empty spacer for potential future use */
-            margin-top: 2rem; 
-            display: none;
-        }
-        
-        /* --- Academic Journey (Vertical Timeline) --- */
-        #academic-journey {
-            padding-top: 50px;
-        }
-        
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: left;
-            padding: 20px 0;
-        }
-
-        /* The vertical line */
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 3px;
-            background-color: var(--color-accent); 
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -1.5px;
-        }
-
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            width: 50%;
-            margin-bottom: 50px;
-        }
-
-        /* <<< This CSS handles the alternating sides >>> */
-        .left {
-            left: 0;
-            text-align: right;
-        }
-
-        .right {
-            left: 50%;
-            text-align: left;
-        }
-
-        /* Circle on the line */
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            right: -7.5px; 
-            background-color: var(--color-bg);
-            border: 3px solid var(--color-accent); 
-            top: 15px;
-            border-radius: 50%;
-            z-index: 3;
-            box-shadow: none;
-        }
-
-        .right::after {
-            left: -7.5px; 
-        }
-
-        .timeline-content {
-            padding: 15px 20px; 
-            border-radius: 6px;
-            transition: color 0.3s; 
-        }
-
-        .timeline-content:hover {
-            background-color: transparent; 
-            color: var(--color-accent); 
-        }
-
-        .timeline-content h3 {
-            color: var(--color-accent); 
-            margin-bottom: 5px;
-        }
-
-        .timeline-content p.year {
-            font-size: 0.9rem;
-            color: #AAAAAA;
-            margin-bottom: 10px;
-        }
-
-        /* Media queries for vertical timeline on mobile */
-        @media screen and (max-width: 800px) {
-            .timeline::after {
-                left: 31px;
-            }
-            .timeline-item {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-            .timeline-item::after {
-                left: 24px;
-            }
-            .right {
-                left: 0%;
-            }
-            .left {
-                text-align: left;
-            }
-            /* Adjust padding so header doesn't overlap content on small screen */
-            .section-container {
-                padding-top: 100px; 
-            }
-        }
-
-        /* --- Projects Grid (now just styled text links) --- */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            text-align: left;
-        }
-
-        .project-card {
-            padding: 25px 0; 
-            transition: transform 0.3s, color 0.3s;
-            text-decoration: none;
-            color: var(--color-text-primary);
-            display: block;
-            position: relative;
-        }
-        
-        .project-card::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px; 
-            background: var(--color-accent);
-            bottom: 0;
-            left: 0;
-            transition: width 0.3s ease-out;
-        }
-
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: none; 
-            border-color: transparent; 
-            color: var(--color-accent); 
-        }
-
-        .project-card:hover::after {
-            width: 100%;
-        }
-        
-        .project-card h4 {
-            color: var(--color-accent); 
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
-        
-        .project-card p {
-            font-size: 0.9rem;
-            color: #AAAAAA;
-        }
-
-        /* --- Hobbies Section (now just styled text) --- */
-        .hobby-list {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-top: 40px;
-        }
-
-        .hobby-item {
-            flex-basis: 250px;
-            padding: 20px 0;
-            position: relative;
-        }
-
-        .hobby-item h3 {
-            color: var(--color-accent);
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .hobby-item h3::before {
-            content: '•'; 
-            color: var(--color-accent);
-            position: absolute;
-            left: -15px;
-            top: 0;
-        }
-
-        /* --- Contact Section (Minimalist Icons) --- */
-        #contact {
-            padding-bottom: 100px;
-        }
-        
-        .contact-grid {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .contact-link-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: var(--color-text-primary);
-            padding: 10px; 
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 400;
-            transition: all 0.3s ease;
-            min-width: 100px; 
-        }
-        
-        .contact-link-icon:hover {
-            color: var(--color-accent);
-            border-color: transparent;
-            background-color: transparent; 
-            transform: translateY(-2px);
-        }
-        
-        .contact-link-icon svg {
-            width: 35px; 
-            height: 35px;
-            fill: var(--color-text-primary);
-            margin-bottom: 8px;
-            transition: fill 0.3s;
-        }
-
-        .contact-link-icon:hover svg {
-            fill: var(--color-accent);
-        }
-
-
-        /* --- Interactive Stars (Soft & Subtle) --- */
-        .interactive-star-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .interactive-star {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background-color: var(--color-text-primary);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            pointer-events: all;
-            opacity: 0.6;
-            animation: pulse 4s infinite alternate ease-in-out;
-            text-decoration: none;
-            display: block;
-        }
-        
-        @keyframes pulse {
-            from { opacity: 0.6; transform: scale(1); }
-            to { opacity: 1.0; transform: scale(1.3); }
-        }
-
-        /* Custom Hover/Tooltip styles for varied colors */
-        .interactive-star.accent-blue:hover {
-            background-color: var(--color-accent);
-            box-shadow: none; 
-            opacity: 1;
-            transform: scale(1.5); 
-        }
-        .interactive-star.accent-red {
-            background-color: var(--color-accent-red); 
-        }
-        .interactive-star.accent-red:hover {
-            background-color: var(--color-accent-red);
-            box-shadow: none;
-            opacity: 1;
-            transform: scale(1.5); 
-        }
-        
-        /* Tooltip styling based on accent color */
-        .interactive-star.accent-blue .star-tooltip {
-            color: var(--color-accent);
-            border: 1px solid var(--color-accent);
-        }
-        .interactive-star.accent-red .star-tooltip {
-            color: var(--color-accent-red);
-            border: 1px solid var(--color-accent-red);
-        }
-
-
-        .star-tooltip {
-            position: absolute;
-            left: 15px;
-            top: -10px;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 400;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s, transform 0.3s;
-            transform: translateX(-10px);
-        }
-
-        .interactive-star:hover .star-tooltip {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    </style>
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
 </head>
 <body>
 
-    <!-- 1. Canvas for the Animated Star Field (Fixed Z-Index 0) --><canvas id="starCanvas"></canvas>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="veil" aria-hidden="true"></div>
 
-    <!-- NEW: Sticky Navigation Header (Z-Index 10) -->
-    <header id="site-header">
-        <nav class="nav-menu">
-            <a href="#about" class="nav-link site-title">Shubh Mittal</a>
-            <a href="#academic-journey" class="nav-link">Academics</a>
-            <a href="#projects" class="nav-link">Projects</a>
-            <!-- LINK UPDATED to the new separate page -->
-            <a href="adventures" class="nav-link">Adventures</a> 
-            <a href="#hobbies" class="nav-link">Hobbies</a>
-            <a href="#contact" class="nav-link">Contact</a>
-        </nav>
-    </header>
+<header id="hdr">
+  <div class="bar">
+    <a href="#about" class="brand">Shubh Mittal</a>
+    <nav class="nav" id="nav">
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#journey">Journey</a>
+      <a href="adventures.html">Adventures</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
 
-    <!-- 2. Explicit Interactive Stars (Fixed Z-Index 1) -->
-    <div class="interactive-star-container">
-        <!-- Star 1: Low-Mass Stellar Evolution (Soft White Accent) --><a href="#projects" class="interactive-star accent-blue" style="top: 15%; left: 10%;">
-            <span class="star-tooltip">Stellar Evolution Model &rarr;</span>
-        </a>
-        
-        <!-- Star 2: Exoplanet Transit Analysis (Dusty Rose Accent) --><a href="#projects" class="interactive-star accent-red" style="top: 30%; right: 15%;">
-            <span class="star-tooltip">Exoplanet Transit Analysis &rarr;</span>
-        </a>
-        
-        <!-- Star 3: M-Dwarf Simulator (Soft White Accent) --><a href="#projects" class="interactive-star accent-blue" style="bottom: 10%; left: 25%;">
-            <span class="star-tooltip">M-Dwarf Magnetic Field Simulator &rarr;</span>
-        </a>
+<main>
 
-        <!-- Star 4: Observational Data Pipeline (Dusty Rose Accent) --><a href="#projects" class="interactive-star accent-red" style="bottom: 25%; right: 5%;">
-            <span class="star-tooltip">Observational Data Pipeline &rarr;</span>
-        </a>
-
-        <!-- Star 5: Astrophotography (Soft White Accent) -->
-        <!-- LINK UPDATED to the new separate page -->
-        <a href="adventures" class="interactive-star accent-blue" style="top: 20%; left: 50%;">
-            <span class="star-tooltip">Astrophotography Portfolio &rarr;</span>
-        </a>
+  <section id="about">
+    <img src="images2/portrait.jpg" alt="Shubh Mittal" class="portrait" width="168" height="168" fetchpriority="high">
+    <h1>Shubh Mittal</h1>
+    <div class="rule"></div>
+    <p class="role">Junior Research Fellow<span>·</span>IUCAA, Pune</p>
+    <p class="lede hero-bio">
+      I study stars through their light. My work is in <b>high-resolution optical and
+      near-IR spectroscopy</b> of variable stars — measuring abundances, characterising
+      atmospheres, and building open-source tools to make that analysis reproducible.
+    </p>
+    <div class="actions">
+      <!-- TODO: add cv.pdf to the repo root, or remove this button -->
+      <a class="btn primary" href="cv.pdf">
+        <svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-7-7zm0 2.5L17.5 9H13V4.5zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg>
+        Curriculum Vitae
+      </a>
+      <a class="btn" href="https://github.com/shubh-astro" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57s-.015-1.92-.015-3.795c-3.33 1.25-4.035-1.61-4.035-1.61-.54-.54-1.32-1.35-2.055-1.785-.45-.315-.855-.24-.06.24.675.585 1.155 1.77 1.155 1.77.585.99 1.545.705 1.92.54.075-.42.285-.75.525-.92-2.31-.255-4.74-1.14-4.74-5.175 0-1.14.405-2.07 1.065-2.805-.105-.255-.465-1.335.105-2.775 0 0 .87-.27 2.85 1.065 1.83-.51 3.78-.51 5.61 0 1.98-1.335 2.85-1.065 2.85-1.065.57 1.44.21 2.52.105 2.775.66.735 1.065 1.665 1.065 2.805 0 4.05-2.43 4.92-4.74 5.175.315.27.6.84.6 1.74l-.015 2.58c0 .315.21.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a class="btn" href="https://orcid.org/" target="_blank" rel="noopener" id="orcid-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.37 18.11h-1.7V7.44h1.7v10.67zM6.52 6.31a1.02 1.02 0 1 1 0-2.04 1.02 1.02 0 0 1 0 2.04zm5.02 11.8H9.9V7.44h3.9c3.71 0 5.34 2.65 5.34 5.34 0 2.92-2.28 5.33-5.32 5.33h-2.28zm.3-9.16v7.63h1.83c2.6 0 3.72-1.77 3.72-3.8 0-1.94-1.2-3.83-3.72-3.83h-1.83z"/></svg>
+        ORCID
+      </a>
+      <a class="btn" href="mailto:shubh.mittal@iucaa.in">
+        <svg viewBox="0 0 24 24"><path d="M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 2L12 13 3 6h18zm0 12H3V8l9 6 9-6v10z"/></svg>
+        Email
+      </a>
     </div>
+  </section>
 
-    <!-- 3. Main Content (Scrolling Z-Index 2) --><main>
-        
-        <!-- === SECTION 1: ABOUT === --><section id="about" class="section-container">
-            <div class="about-content">
-                <!-- NEW: Profile Picture Container -->
-                <div class="profile-pic-container">
-                    <!-- Placeholder image; replace URL with your actual photo -->
-                    <img src="images2/kerala1.jpg" onerror="this.onerror=null; this.src='https://placehold.co/150x150/0A111E/ECECEC?text=SM'" alt="Profile Picture" class="profile-pic">
-                </div>
-                
-                <h1 class="name">Shubh Mittal</h1>
-                <h2 class="title">Extragalactic Astronomy and Stellar Astrophysics</h2>
-                
-                <p class="bio-text">
-                    Hi! I'm Shubh, a kid born and brought up in Uttarakhand who took himself to a journey to explore the cosmos by observing it in different shades of light. 
-                </p>
-                <p class="bio-text">
-                    My current work involves observational studies of <b>variable stars</b>, focusing on their abosrption spectra and atmospheric characterization. I am also invloved in the development of open-source tools and workflow scripts for astronomical data analysis. Scroll to view my journey, or explore the interactive celestial nodes scattered across the void to discover key projects.
-                </p>
+  <section id="research" class="reveal">
+    <p class="eyebrow">Research</p>
+    <p class="lede">
+      Observational spectroscopy at the intersection of stellar physics and the distance
+      scale — plus the software that makes the reduction repeatable.
+    </p>
+    <div class="work" style="margin-top:44px">
 
-                <!-- Key Links (Removed) --><div class="links">
-                    <!-- Empty div remains as a spacer -->
-                </div>
-            </div>
-        </section>
+      <a class="item" href="https://anupambhardwaj.weebly.com/iucaastars.html" target="_blank" rel="noopener">
+        <div>
+          <h3>High-Resolution Spectroscopy of Type&nbsp;II Cepheids <span class="arrow">&rarr;</span></h3>
+          <p>Metallicity and elemental abundance measurements from SALT and VLT high-resolution
+             data, calibrating the first rung of the cosmic distance ladder.</p>
+        </div>
+        <span class="tag">IUCAA</span>
+      </a>
 
-        <!-- === SECTION 2: ACADEMIC JOURNEY (Vertical Timeline) === --><section id="academic-journey" class="section-container">
-            <h2 class="section-heading">ACADEMIC JOURNEY</h2>
+      <a class="item" href="https://github.com/shubh-astro/PySpecTools" target="_blank" rel="noopener">
+        <div>
+          <h3>PySpecTools <span class="arrow">&rarr;</span></h3>
+          <p>An automated Python pipeline for reducing and analysing echelle stellar spectra —
+             sky subtraction, continuum normalisation, heliocentric correction, order merging
+             and radial-velocity estimation. Stellar atmosphere parameters in development.</p>
+        </div>
+        <span class="tag">Open Source</span>
+      </a>
 
-            <div class="timeline">
-                
-                <!-- Item 1: JRF at IUCAA --><div class="timeline-item right">
-                    <div class="timeline-content">
-                        <p class="year">2025 - Present</p>
-                        <h3>Junior Research Fellow (JRF)</h3>
-                        <p><strong>IUCAA (Inter-University Centre for Astronomy and Astrophysics)</strong></p>
-                        <p>Focus: Working in high-resolution optical and near-IR spectroscopy.</p>
-                    </div>
-                </div>
+      <a class="item" href="https://github.com/shubh-astro/GRB-Analysis" target="_blank" rel="noopener">
+        <div>
+          <h3>Prompt Emission in Gamma-Ray Bursts <span class="arrow">&rarr;</span></h3>
+          <p>Spectral analysis of GRB prompt emission, investigating the origin of the observed
+             non-thermal radiation. MSc thesis work at IISER Thiruvananthapuram.</p>
+        </div>
+        <span class="tag">MSc Thesis</span>
+      </a>
 
-                <!-- Item 2: MSc from IISER TVM --><div class="timeline-item left">
-                    <div class="timeline-content">
-                        <p class="year">2023 - 2025</p>
-                        <h3>MSc Physics</h3>
-                        <p><strong>IISER Thiruvananthapuram (TVM)</strong></p>
-                        <p>Master's Project: "Analysis of Prompt Emission in Gamma Ray Bursts (GRBs)."</p>
-                    </div>
-                </div>
+    </div>
+  </section>
 
-                <!-- Item 3: BSc from Delhi University --><div class="timeline-item right">
-                    <div class="timeline-content">
-                        <p class="year">2020 - 2023</p>
-                        <h3>BSc (Honors) in Physics</h3>
-                        <p><strong>Delhi University</strong></p>
-                        <p>Foundation in classical mechanics, quantum mechanics, and mathematical physics.</p>
-                    </div>
-                </div>
-                
-            </div>
-        </section>
-        
-        <!-- === SECTION 3: PROJECTS === --><section id="projects" class="section-container">
-            <h2 class="section-heading">FEATURED PROJECTS</h2>
+  <section id="publications" class="reveal">
+    <p class="eyebrow">Publications</p>
+    <div id="pub-list">
+      <p class="pub-state" id="pub-state">Loading publications…</p>
+    </div>
+  </section>
 
-            <div class="projects-grid">
-                <!-- Project Card 1 --><a href="https://anupambhardwaj.weebly.com/iucaastars.html" target="_blank" class="project-card">
-                    <h4>High-Res Spectroscopy of Type II Cepheids</h4>
-                    <p>Performing metallicity and metal abundances calculations for Type II Cepheids using SALT and VLT high-res data for precise distance measurements at the first rung of the cosmic ladder.</p>
-                </a>
-                
-                <!-- Project Card 2 --><a href="https://github.com/shubh-astro/PySpecTools" target="_blank" class="project-card">
-                    <h4>PySpecTools: High-Res Spectroscopy Pipeline (In development)</h4>
-                    <p>Python-based tools for reducing and analyzing echelle stellar spectroscopic data. Future developments involve a module to calculate stellar atmosphere parameters.</p>
-                </a>
-                
-                <!-- Project Card 3 --><a href=[] target="_blank" class="project-card">
-                    <h4>GRB Prompt Emission Analysis</h4>
-                    <p>Worked on detailed spectral analysis of the prompt emission of GRBs to explore the cause for the observed non-thermal radiation.</p>
-                </a>
-            </div>
-        </section>
+  <section id="journey" class="reveal">
+    <p class="eyebrow">Academic Journey</p>
+    <div class="tl">
+      <div class="tl-item">
+        <p class="tl-year">2025 — Present</p>
+        <h3>Junior Research Fellow</h3>
+        <p class="tl-org">IUCAA — Inter-University Centre for Astronomy &amp; Astrophysics, Pune</p>
+        <p class="note">High-resolution optical and near-IR spectroscopy of variable stars.</p>
+      </div>
+      <div class="tl-item">
+        <p class="tl-year">2023 — 2025</p>
+        <h3>MSc Physics</h3>
+        <p class="tl-org">IISER Thiruvananthapuram</p>
+        <p class="note">Thesis: “Analysis of Prompt Emission in Gamma-Ray Bursts.”</p>
+      </div>
+      <div class="tl-item">
+        <p class="tl-year">2020 — 2023</p>
+        <h3>BSc (Hons) Physics</h3>
+        <p class="tl-org">University of Delhi</p>
+        <p class="note">Foundations in classical and quantum mechanics, and mathematical physics.</p>
+      </div>
+    </div>
+  </section>
 
-        <!-- === SECTION 4: HOBBIES === --><section id="hobbies" class="section-container">
-            <h2 class="section-heading">OTHER INTERESTS</h2>
+  <section id="beyond" class="reveal">
+    <p class="eyebrow">Beyond Research</p>
+    <p class="lede">
+      Born and raised in Uttarakhand, which is probably why I say yes to every trek.
+      Photographs from the road and the night sky live on the
+      <a href="adventures.html" style="color:var(--accent)">adventures page</a>.
+    </p>
+    <div class="grid3">
+      <div>
+        <h3>Trekking</h3>
+        <p>The one plan I can never say no to. Most of my time off is spent covering hills and landscapes.</p>
+      </div>
+      <div>
+        <h3>Music</h3>
+        <p>Classical, rock or blues — different times call for different music.</p>
+      </div>
+      <div>
+        <h3>Cooking &amp; Sport</h3>
+        <p>I cook new dishes and fail at some of them. The gym and cricket handle the consequences.</p>
+      </div>
+    </div>
+  </section>
 
-            <p class="bio-text">Beyond stellar dynamics, I find immense satisfaction in trekking, cooking, exploring music and spending time in the gym</p>
+  <section id="contact" class="reveal">
+    <p class="eyebrow">Contact</p>
+    <p class="lede">
+      Always open to collaborations, research enquiries, or a conversation about the cosmos.
+    </p>
+    <div class="contact-links">
+      <a class="btn primary" href="mailto:shubh.mittal@iucaa.in">shubh.mittal@iucaa.in</a>
+      <a class="btn" href="https://github.com/shubh-astro" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/shubh-mittal-283459197/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
 
-            <div class="hobby-list">
-                <div class="hobby-item">
-                    <h3>Trekking</h3>
-                    <p>The plan I can never say no to is for a trek. I love to cover the hills and the landscapes during my holiday time.</p>
-                </div>
-                <div class="hobby-item">
-                    <h3>Music</h3>
-                    <p>Be it classical, rock or blues, different times require different music.</p>
-                </div>
-                <div class="hobby-item">
-                    <h3>Cooking and Sports</h3>
-                    <p>I love to cook new dishes even though I fail sometimes. But atleast it gives me quality time with myself. Gym and cricket are what I do to cut down on the carbs which I gained from cooking lol</p>
-                </div>
-            </div>
-        </section>
+</main>
 
-        <!-- === SECTION 5: CONTACT ME (Minimalist & Professional with Icons) === --><section id="contact" class="section-container">
-            <h2 class="section-heading">CONNECT</h2>
+<footer>
+  <span>© <span id="yr"></span> Shubh Mittal</span>
+  <span>IUCAA, Pune</span>
+</footer>
 
-            <p class="bio-text" style="font-size: 1.2rem;">I'm always open to collaborations, research inquiries, or just a conversation about the cosmos. Feel free to reach out.</p>
+<script>
+/* ============================================================
+   CONFIG — set your ORCID iD here and publications load themselves.
+   Find it at orcid.org (format: 0000-0002-1825-0097).
+   Leave blank and the section shows a graceful placeholder.
+   ============================================================ */
+const ORCID_ID = '';
 
-            <div class="contact-grid">
-                <!-- GitHub Icon Link --><a href="https://github.com/shubh-astro" target="_blank" class="contact-link-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57s-.015-1.92-.015-3.795c-3.33 1.25-4.035-1.61-4.035-1.61-.54-.54-1.32-1.35-2.055-1.785-.45-.315-.855-.24-.06.24.675.585 1.155 1.77 1.155 1.77.585.99 1.545.705 1.92.54.075-.42.285-.75.525-.92-2.31-.255-4.74-1.14-4.74-5.175 0-1.14.405-2.07 1.065-2.805-.105-.255-.465-1.335.105-2.775 0 0 .87-.27 2.85 1.065 1.83-.51 3.78-.51 5.61 0 1.98-1.335 2.85-1.065 2.85-1.065.57 1.44.21 2.52.105 2.775.66.735 1.065 1.665 1.065 2.805 0 4.05-2.43 4.92-4.74 5.175.315.27.6.84.6 1.74l-.015 2.58c0 .315.21.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/>
-                    </svg>
-                    <span>GitHub Repos</span>
-                </a>
-                
-                <!-- LinkedIn Icon Link --><a href="https://www.linkedin.com/in/shubh-mittal-283459197/" target="_blank" class="contact-link-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M20.5 4.5h-17a.5.5 0 0 0-.5.5v15a.5.5 0 0 0 .5.5h17a.5.5 0 0 0 .5-.5v-15a.5.5 0 0 0-.5-.5zM8 19H5V9h3v10zM6.5 7.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM19 19h-3v-5c0-1.5-.75-2-2-2a2 2 0 0 0-2 2v5h-3V9h3v1c.75-1 2-2 4-2s4 1 4 4v5z"/>
-                    </svg>
-                    <span>LinkedIn Profile</span>
-                </a>
-                
-                <!-- Email Icon Link --><a href="mailto:shubh.mittal@iucaa.in" target="_blank" class="contact-link-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 2L12 13 3 6h18zm0 12H3V8l9 6 9-6v10z"/>
-                    </svg>
-                    <span>Email Me</span>
-                </a>
-            </div>
+/* ---------- static starfield (drawn once, no animation loop) ---------- */
+(function () {
+  const cv = document.getElementById('stars');
+  const ctx = cv.getContext('2d');
 
-        </section>
-        
-    </main>
+  function draw() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
 
-    <!-- 4. JavaScript for Canvas Star Animation (Realistic 3D Warp Effect) --><script>
-        const canvas = document.getElementById('starCanvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        const STAR_COUNT = 400; 
-        const MAX_Z = 1000;      
-        const SPEED = 1.5;       
-        const PERSPECTIVE = 300; 
-        // Updated star colors to match soft, whitish palette
-        const COLORS = ['#FFFFFF', '#ECECEC', '#D0A9A9']; // White, Soft Cream, Dusty Rose
-        let nebulaTime = 0; // For subtle movement of the nebula/milky way core
+    const count = Math.round((w * h) / 5200);
+    for (let i = 0; i < count; i++) {
+      const x = Math.random() * w;
+      const y = Math.random() * h;
+      const r = Math.random() * 1.05 + 0.25;
+      const a = Math.random() * 0.5 + 0.12;
+      ctx.globalAlpha = a;
+      ctx.fillStyle = Math.random() > 0.9 ? '#D0A9A9' : '#FFFFFF';
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
 
-        // Function to get the current background color from CSS
-        function getBackgroundColor() {
-            // This reads the computed value of the CSS variable
-            return getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim() || '#0A111E';
-        }
+  draw();
+  let t;
+  addEventListener('resize', () => { clearTimeout(t); t = setTimeout(draw, 200); });
+})();
 
-        /**
-         * Initializes the canvas size and star properties (X, Y, Z for 3D effect).
-         */
-        function initCanvas() {
-            // Set canvas dimensions
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+/* ---------- header + mobile nav ---------- */
+(function () {
+  const hdr = document.getElementById('hdr');
+  const nav = document.getElementById('nav');
+  const burger = document.getElementById('burger');
 
-            // Only initialize stars if the array is empty
-            if (stars.length === 0) {
-                const halfWidth = canvas.width / 2;
-                const halfHeight = canvas.height / 2;
+  addEventListener('scroll', () => {
+    hdr.classList.toggle('scrolled', scrollY > 10);
+  }, { passive: true });
 
-                for (let i = 0; i < STAR_COUNT; i++) {
-                    stars.push({
-                        // X and Y are relative to the center (0,0,0) in 3D space
-                        x: (Math.random() * canvas.width) - halfWidth, 
-                        y: (Math.random() * canvas.height) - halfHeight, 
-                        z: Math.random() * MAX_Z,
-                        radius: Math.random() * 1.5 + 0.5,
-                        // Use the array of bright colors for the background stars
-                        color: COLORS[Math.floor(Math.random() * COLORS.length)], 
-                        twinkle: Math.random() * 0.5 + 0.5,
-                    });
-                }
-            }
-        }
+  burger.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(open));
+  });
 
-        /**
-         * Draws the soft, glowing nebulous region (Milky Way suggestion).
-         */
-        function drawMilkyWay() {
-            nebulaTime += 0.005; // Control the subtle shift speed
-            
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const maxRadius = Math.max(canvas.width, canvas.height) * 1.5;
+  nav.addEventListener('click', e => {
+    if (e.target.tagName === 'A') {
+      nav.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
 
-            // Calculate subtle shift for the core position to simulate rotation/movement
-            const coreShiftX = Math.sin(nebulaTime) * 300;
-            const coreShiftY = Math.cos(nebulaTime * 0.7) * 200;
+/* ---------- scroll reveal ---------- */
+(function () {
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -12% 0px' });
+  els.forEach(el => io.observe(el));
+})();
 
-            const x0 = centerX + coreShiftX;
-            const y0 = centerY + coreShiftY;
+/* ---------- publications from ORCID ---------- */
+(function () {
+  const list = document.getElementById('pub-list');
+  const state = document.getElementById('pub-state');
 
-            const gradient = ctx.createRadialGradient(
-                x0, y0, maxRadius * 0.05, // Inner circle (brightest core)
-                x0, y0, maxRadius * 0.6   // Outer circle (fades out)
-            );
+  function msg(html) { state.innerHTML = html; }
 
-            // Using soft, whitish colors to maintain the minimalist theme
-            gradient.addColorStop(0, `rgba(236, 236, 236, 0.25)`); // Brightest core (Cream/White)
-            gradient.addColorStop(0.3, `rgba(208, 169, 169, 0.15)`); // Dusty Rose halo
-            gradient.addColorStop(0.6, `rgba(10, 17, 30, 0.01)`);  // Fading almost to background
-            gradient.addColorStop(1, `rgba(10, 17, 30, 0)`);       // Transparent (matches background color)
-            
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
+  if (!ORCID_ID) {
+    msg('Publication list coming soon. In the meantime, see my work on ' +
+        '<a href="https://github.com/shubh-astro" target="_blank" rel="noopener">GitHub</a>.');
+    return;
+  }
 
-        /**
-         * Draws and updates the stars, simulating forward movement (warp effect).
-         * Uses perspective projection to map 3D (X, Y, Z) to 2D screen coordinates.
-         */
-        function animateStars() {
-            // 1. Clear the canvas to the background color
-            ctx.fillStyle = getBackgroundColor();
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // 2. DRAW THE NEBULA/MILKY WAY EFFECT FIRST (So stars appear in front of it)
-            drawMilkyWay();
+  document.getElementById('orcid-btn').href = 'https://orcid.org/' + ORCID_ID;
 
-            // 3. Draw the stars
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-
-            stars.forEach(star => {
-                // ... (existing star animation logic) ...
-                star.z -= SPEED; 
-
-                if (star.z <= 1) { 
-                    star.z = MAX_Z;
-                    star.x = (Math.random() * canvas.width) - centerX;
-                    star.y = (Math.random() * canvas.height) - centerY;
-                }
-
-                const p = PERSPECTIVE / star.z; 
-                
-                const projectedX = star.x * p + centerX;
-                const projectedY = star.y * p + centerY;
-                
-                const size = star.radius * p; 
-
-                const opacity = star.twinkle + Math.sin(Date.now() * 0.001 * star.twinkle) * 0.5;
-                
-                if (projectedX > 0 && projectedX < canvas.width && 
-                    projectedY > 0 && projectedY < canvas.height && size > 0.5) {
-                    
-                    ctx.globalAlpha = opacity;
-                    ctx.fillStyle = star.color; 
-                    ctx.beginPath();
-                    ctx.arc(projectedX, projectedY, size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            });
-            
-            // Ensure globalAlpha is reset for future drawings
-            ctx.globalAlpha = 1.0; 
-            requestAnimationFrame(animateStars);
-        }
-
-        // --- Event Listeners ---
-
-        // Re-initialize canvas and stars on window resize to ensure fluid responsiveness
-        window.addEventListener('resize', () => {
-             // Reset stars array to force re-initialization on resize
-             stars = []; 
-             initCanvas();
-        });
-
-        // Start the animation only after the canvas is initialized
-        window.onload = function() {
-            initCanvas();
-            animateStars();
+  fetch('https://pub.orcid.org/v3.0/' + ORCID_ID + '/works', { headers: { Accept: 'application/json' } })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(data => {
+      const works = (data.group || []).map(g => {
+        const s = g['work-summary'][0];
+        const ids = (s['external-ids'] || {})['external-id'] || [];
+        const doi = (ids.find(i => i['external-id-type'] === 'doi') || {})['external-id-value'];
+        return {
+          title: ((s.title || {}).title || {}).value || 'Untitled',
+          journal: (s['journal-title'] || {}).value || '',
+          year: (((s['publication-date'] || {}).year) || {}).value || '',
+          url: doi ? 'https://doi.org/' + doi
+                   : ((s.url || {}).value || '')
         };
-        
-    </script> 
+      }).sort((a, b) => (b.year || 0) - (a.year || 0));
+
+      if (!works.length) {
+        msg('No publications listed on ORCID yet.');
+        return;
+      }
+
+      list.innerHTML = works.map(w => {
+        const tag = w.url ? 'a' : 'span';
+        const attrs = w.url ? ' href="' + w.url + '" target="_blank" rel="noopener"' : '';
+        const meta = [w.journal, w.year].filter(Boolean);
+        return '<div class="pub">' +
+                 '<' + tag + ' class="pub-title"' + attrs + '>' + w.title + '</' + tag + '>' +
+                 '<p class="pub-meta">' +
+                   (w.year ? '<span class="yr">' + w.year + '</span>' : '') +
+                   (w.journal || '') +
+                 '</p>' +
+               '</div>';
+      }).join('');
+    })
+    .catch(() => {
+      msg('Could not load publications right now — view them on ' +
+          '<a href="https://orcid.org/' + ORCID_ID + '" target="_blank" rel="noopener">ORCID</a>.');
+    });
+})();
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
