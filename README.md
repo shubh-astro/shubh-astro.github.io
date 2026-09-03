@@ -18,6 +18,24 @@ high-resolution spectroscopy.
 Static HTML with no build step. Each page is self-contained: styles live in a
 `<style>` block in the head, scripts in a `<script>` block before `</body>`.
 
+## Design
+
+Brutalist-sketchy on a light paper ground: hard 2.5px black borders with solid
+offset shadows (no blur), a graph-paper background grid, Archivo Black display
+type over Space Mono labels, and hand-drawn astro icons defined once as SVG
+symbols in `<defs>` and instanced with `<use>`. The sketchy line quality comes
+from an `feTurbulence` + `feDisplacementMap` filter; there are two strengths,
+because small inline icons turn to mush past about 1px of displacement.
+
+Palette is ink `#141414` on paper `#F4F1E8`, with orange, yellow and blue
+accents. Note `--accent` (`#FF5A1F`) is for fills only — it is 2.76:1 against
+paper, so orange *text* uses `--accent-ink` (`#B93E05`, 4.95:1). Every
+foreground/background pair in use passes WCAG AA.
+
+The one full-spectrum element is the rainbow bar under the name: a dispersed
+continuum with 14 Fraunhofer-style absorption lines drawn as crisp 1-2px SVG
+rects.
+
 ## Publications
 
 The publications section on `index.html` renders from the public ORCID API at

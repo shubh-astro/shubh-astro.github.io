@@ -16,273 +16,403 @@
 <meta property="og:image" content="https://shubh-astro.github.io/images2/portrait.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230A111E'/%3E%3Cpath d='M16 6l2.3 6.9L25 15l-6.7 2.1L16 24l-2.3-6.9L7 15l6.7-2.1z' fill='%23D0A9A9'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F4F1E8'/%3E%3Cpath d='M16 4l2.6 8.4L27 15l-8.4 2.6L16 26l-2.6-8.4L5 15l8.4-2.6z' fill='none' stroke='%23141414' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#0A111E;
-  --bg-soft:#0E1728;
-  --text:#F2F5FA;
-  --text-dim:#BAC4D6;
-  --text-faint:#94A0B5;
-  --accent:#E0B9B9;
-  --line:rgba(255,255,255,.14);
-  --line-strong:rgba(255,255,255,.26);
-  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-  --measure:68ch;
-  --gutter:clamp(20px,5vw,40px);
-  --shell:1080px;
+  --paper:#F4F1E8;
+  --paper-2:#EBE7DA;
+  --ink:#141414;
+  --ink-soft:#4B4A44;
+  --accent:#FF5A1F;      /* signal orange — fills only */
+  --accent-ink:#B93E05;  /* orange for text on paper (AA) */
+  --accent-2:#1F3FD8;    /* ink blue  */
+  --accent-3:#F5C518;    /* star yellow */
+
+  --bd:2.5px solid var(--ink);
+  --bd-thin:2px solid var(--ink);
+  --shadow:6px 6px 0 var(--ink);
+  --shadow-sm:4px 4px 0 var(--ink);
+
+  --display:'Archivo Black',system-ui,sans-serif;
+  --mono:'Space Mono',ui-monospace,monospace;
+  --body:'Inter',system-ui,sans-serif;
+
+  --shell:1180px;
+  --gutter:clamp(18px,4.5vw,42px);
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:var(--font);
-  font-size:clamp(16px,.45vw + 15px,18px);
-  font-weight:400;
-  line-height:1.7;
-  letter-spacing:.01em;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:clamp(16px,.4vw + 15px,17.5px);
+  line-height:1.65;
   overflow-x:hidden;
+  /* graph paper */
+  background-image:
+    linear-gradient(rgba(20,20,20,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(20,20,20,.055) 1px,transparent 1px);
+  background-size:28px 28px;
 }
 img{max-width:100%;display:block}
 a{color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
-/* ---------- starfield ---------- */
-#stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.veil{
-  position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse 90% 55% at 50% -10%,rgba(208,169,169,.10),transparent 70%);
+/* ============ decorative sky ============ */
+.sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.sky .st{position:absolute;animation:tw 4s steps(2,end) infinite}
+@keyframes tw{0%,45%{opacity:1}50%,100%{opacity:.18}}
+.comet{
+  position:absolute;top:-60px;left:-120px;width:120px;
+  animation:fly 14s linear infinite;
+}
+@keyframes fly{
+  0%{transform:translate3d(-10vw,-10vh,0) rotate(28deg);opacity:0}
+  4%{opacity:1}
+  22%{opacity:1}
+  28%,100%{transform:translate3d(115vw,88vh,0) rotate(28deg);opacity:0}
 }
 
-/* ---------- header ---------- */
+/* ============ header ============ */
 header{
-  position:fixed;top:0;left:0;right:0;z-index:50;
-  background:rgba(10,17,30,.82);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid transparent;
-  transition:border-color .3s,background .3s;
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  background:var(--paper);border-bottom:var(--bd);
 }
-header.scrolled{border-bottom-color:var(--line)}
-.bar{
-  max-width:var(--shell);margin:0 auto;
-  padding:16px var(--gutter);
-  display:flex;align-items:center;gap:16px;
-}
+.bar{max-width:var(--shell);margin:0 auto;padding:12px var(--gutter);
+     display:flex;align-items:center;gap:16px}
 .brand{
-  font-size:.82rem;font-weight:500;letter-spacing:.22em;
-  text-transform:uppercase;text-decoration:none;color:var(--text);
-  margin-right:auto;white-space:nowrap;
+  font-family:var(--mono);font-weight:700;font-size:.9rem;letter-spacing:.02em;
+  text-decoration:none;margin-right:auto;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:9px;
 }
-.nav{display:flex;align-items:center;gap:30px}
+.brand svg{width:20px;height:20px}
+.nav{display:flex;align-items:center;gap:6px}
 .nav a{
-  position:relative;text-decoration:none;color:var(--text-dim);
-  font-size:.9rem;font-weight:400;letter-spacing:.05em;
-  padding:4px 0;transition:color .25s;
+  font-family:var(--mono);font-size:.8rem;text-decoration:none;
+  padding:6px 10px;border:2px solid transparent;transition:background .12s,border-color .12s;
 }
-.nav a::after{
-  content:'';position:absolute;left:0;bottom:0;height:1px;width:0;
-  background:var(--accent);transition:width .25s ease;
-}
-.nav a:hover{color:var(--text)}
-.nav a:hover::after{width:100%}
+.nav a::before{content:'[ ';color:var(--accent-ink)}
+.nav a::after{content:' ]';color:var(--accent-ink)}
+.nav a:hover{background:var(--ink);color:var(--paper)}
+.nav a:hover::before,.nav a:hover::after{color:var(--accent-3)}
 
-.burger{
-  display:none;background:none;border:0;cursor:pointer;
-  padding:8px;margin:-8px -8px -8px 0;
-}
-.burger span{
-  display:block;width:22px;height:1.5px;background:var(--text);
-  transition:transform .3s,opacity .2s;
-}
-.burger span+span{margin-top:6px}
-.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
-.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
-.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+.burger{display:none;background:var(--paper);border:var(--bd-thin);cursor:pointer;padding:7px 9px}
+.burger span{display:block;width:20px;height:2.5px;background:var(--ink)}
+.burger span+span{margin-top:4px}
 
-/* ---------- layout ---------- */
+/* ============ layout ============ */
 main{position:relative;z-index:2}
-section{
-  max-width:var(--shell);margin:0 auto;
-  padding:clamp(80px,11vw,140px) var(--gutter);
-}
-.eyebrow{
-  display:flex;align-items:center;gap:16px;
-  font-size:.76rem;font-weight:500;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--accent);
-  margin-bottom:44px;
-}
-.eyebrow::after{content:'';flex:1;height:1px;background:var(--line)}
-.lede{max-width:var(--measure);color:var(--text-dim);font-size:1.06rem}
-.lede + .lede{margin-top:1.1em}
-.lede b,.lede strong{color:var(--text);font-weight:500}
+section{max-width:var(--shell);margin:0 auto;padding:clamp(64px,8vw,110px) var(--gutter)}
 
-/* ---------- hero ---------- */
-#about{
-  min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-  padding-top:120px;
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;
+  font-family:var(--mono);font-size:.76rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;background:var(--ink);color:var(--paper);
+  padding:6px 12px;
 }
-.portrait{
-  width:clamp(120px,17vw,168px);aspect-ratio:1;
-  border-radius:50%;object-fit:cover;
-  border:1px solid var(--line-strong);
-  filter:saturate(.92);
-  margin-bottom:36px;
+.eyebrow svg{width:15px;height:15px}
+h2.sec{
+  font-family:var(--display);font-size:clamp(2rem,5.5vw,3.4rem);
+  line-height:.98;letter-spacing:-.02em;margin-bottom:22px;text-transform:uppercase;
 }
+.lede{max-width:62ch;color:var(--ink-soft);font-size:1.05rem}
+.lede b,.lede strong{color:var(--ink);font-weight:600}
+.lede a{color:var(--accent-2);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
+
+/* ============ hero ============ */
+#about{padding-top:clamp(104px,13vw,150px)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(28px,5vw,64px);align-items:start}
+
+.stamp{
+  display:inline-flex;align-items:center;gap:9px;margin-bottom:20px;
+  font-family:var(--mono);font-size:.76rem;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;border:var(--bd-thin);padding:6px 13px;
+  background:var(--accent-3);transform:rotate(-1.6deg);
+}
+.stamp svg{width:16px;height:16px}
+
 h1{
-  font-size:clamp(2.4rem,7vw,4.1rem);
-  font-weight:300;line-height:1.04;letter-spacing:-.02em;
-  margin-bottom:22px;
+  font-family:var(--display);
+  font-size:clamp(3.1rem,11.5vw,7.4rem);line-height:.86;letter-spacing:-.035em;
+  text-transform:uppercase;margin-bottom:22px;
 }
-.rule{width:56px;height:1px;background:var(--accent);margin-bottom:22px}
-.role{
-  font-size:clamp(1.05rem,2vw,1.2rem);font-weight:400;color:var(--text);
-  letter-spacing:.02em;margin-bottom:28px;
+h1 .l2{display:block;margin-left:.09em}
+h1 em{
+  font-style:normal;-webkit-text-stroke:2.5px var(--ink);color:transparent;
 }
-.role span{color:var(--text-faint);margin:0 .5em}
-.hero-bio{max-width:56ch;color:var(--text-dim);margin-bottom:40px}
+
+/* the spectrum you liked — kept, sized to the name */
+.spectrum{
+  position:relative;height:16px;width:min(470px,88%);margin-bottom:24px;
+  border:var(--bd-thin);
+  background:linear-gradient(90deg,#7C3AED 0%,#4F46E5 12%,#2563EB 24%,#0EA5E9 36%,#22D3EE 46%,
+             #34D399 57%,#A3E635 67%,#FCD34D 77%,#FB923C 87%,#EF4444 100%);
+}
+.spectrum::after{content:'';position:absolute;inset:0;background-size:100% 100%;background-repeat:no-repeat}
+.spectrum-cap{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);margin-top:-16px;margin-bottom:26px;display:block;
+}
+
+.role{font-family:var(--display);font-size:clamp(1.15rem,2.4vw,1.5rem);text-transform:uppercase;
+      letter-spacing:-.01em;margin-bottom:5px}
+.role-org{font-family:var(--mono);font-size:.92rem;color:var(--ink-soft);margin-bottom:24px}
+.hero-bio{max-width:56ch;color:var(--ink-soft);margin-bottom:32px}
+
 .actions{display:flex;flex-wrap:wrap;gap:12px}
 .btn{
-  display:inline-flex;align-items:center;gap:9px;
-  padding:11px 20px;border:1px solid var(--line-strong);border-radius:2px;
-  font-size:.88rem;font-weight:400;letter-spacing:.05em;
-  text-decoration:none;color:var(--text);
-  transition:border-color .25s,background .25s,transform .25s;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:12px 20px;border:var(--bd);background:var(--paper);
+  font-family:var(--mono);font-size:.84rem;font-weight:700;letter-spacing:.02em;
+  text-decoration:none;box-shadow:var(--shadow-sm);
+  transition:transform .1s ease,box-shadow .1s ease,background .1s ease;
 }
-.btn:hover{border-color:var(--accent);background:rgba(208,169,169,.07);transform:translateY(-1px)}
-.btn svg{width:15px;height:15px;fill:currentColor;flex:none}
-.btn.primary{border-color:var(--accent);color:var(--accent)}
+.btn:hover{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink);background:var(--accent-3)}
+.btn svg{width:19px;height:19px;flex:none}
+.btn.primary{background:var(--accent);color:var(--ink)}
+.btn.primary:hover{background:var(--ink);color:var(--paper)}
 
-/* ---------- research ---------- */
-.work{border-top:1px solid var(--line)}
+/* portrait: brutalist frame + orbiting moon */
+.frame{position:relative;flex:none;width:clamp(184px,23vw,258px)}
+.frame img{border:var(--bd);box-shadow:var(--shadow);filter:grayscale(1) contrast(1.12)}
+.frame .orbit{
+  position:absolute;inset:-30px;pointer-events:none;
+  animation:spin 26s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.frame .cap{
+  position:absolute;left:-14px;bottom:-16px;
+  font-family:var(--mono);font-size:.66rem;font-weight:700;text-transform:uppercase;
+  background:var(--ink);color:var(--paper);padding:5px 10px;transform:rotate(-2deg);
+}
+
+/* ============ marquee ============ */
+.ticker{
+  border-top:var(--bd);border-bottom:var(--bd);background:var(--ink);color:var(--paper);
+  overflow:hidden;white-space:nowrap;position:relative;z-index:2;
+}
+.ticker div{display:inline-block;animation:slide 30s linear infinite}
+.ticker span{
+  font-family:var(--mono);font-size:.82rem;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;padding:11px 0;display:inline-block;
+}
+.ticker i{color:var(--accent-3);font-style:normal;margin:0 20px}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ============ cards ============ */
+.work{display:grid;gap:22px;margin-top:34px}
 .item{
-  display:grid;grid-template-columns:minmax(0,1fr) auto;
-  gap:12px 32px;align-items:start;
-  padding:32px 0;border-bottom:1px solid var(--line);
-  text-decoration:none;transition:padding-left .3s;
+  position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;
+  gap:8px 20px;align-items:start;padding:24px 26px;
+  border:var(--bd);background:var(--paper);box-shadow:var(--shadow);
+  text-decoration:none;transition:transform .12s ease,box-shadow .12s ease,background .12s ease;
 }
-.item:hover{padding-left:12px}
-.item.static:hover{padding-left:0}
-.item h3{
-  font-size:1.18rem;font-weight:500;letter-spacing:-.01em;
-  margin-bottom:8px;transition:color .25s;
-}
-.item:hover h3{color:var(--accent)}
-.item p{color:var(--text-dim);font-size:1rem;max-width:60ch}
+.item:not(.static):hover{transform:translate(5px,5px);box-shadow:0 0 0 var(--ink);background:var(--paper-2)}
+.item .idx{font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--accent-ink);padding-top:3px}
+.item h3{font-family:var(--display);font-size:1.16rem;line-height:1.2;margin-bottom:9px;
+         text-transform:uppercase;letter-spacing:-.01em}
+.item p{color:var(--ink-soft);font-size:.98rem;max-width:62ch}
 .tag{
-  align-self:center;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--text-faint);border:1px solid var(--line);border-radius:2px;
-  padding:5px 11px;white-space:nowrap;
+  align-self:start;font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;border:var(--bd-thin);padding:4px 9px;white-space:nowrap;
+  background:var(--paper-2);
 }
-.arrow{transition:transform .3s;display:inline-block;color:var(--text-faint)}
-.item:hover .arrow{transform:translateX(4px);color:var(--accent)}
+.item .go{font-family:var(--mono);font-weight:700;color:var(--accent-ink)}
 
-/* ---------- publications ---------- */
-.pub{padding:24px 0;border-bottom:1px solid var(--line)}
-.pub:first-child{border-top:1px solid var(--line)}
-.pub-title{
-  font-size:1.06rem;font-weight:400;line-height:1.5;
-  text-decoration:none;display:inline-block;margin-bottom:7px;
-  transition:color .25s;
-}
-a.pub-title:hover{color:var(--accent)}
-.pub-meta{font-size:.9rem;color:var(--text-faint);letter-spacing:.02em}
-.pub-meta .yr{color:var(--accent);margin-right:.7em}
-.pub-state{color:var(--text-dim);font-size:1rem;padding:20px 0}
-.pub-state a{color:var(--accent)}
-.pub-alt{color:var(--accent);text-decoration:none;margin-left:.7em;font-size:.78rem;letter-spacing:.08em;border:1px solid var(--line);border-radius:2px;padding:2px 7px;transition:border-color .25s}
-.pub-alt:hover{border-color:var(--accent)}
+/* ============ publications ============ */
+.pub{border:var(--bd);background:var(--paper);box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px}
+.pub-title{font-family:var(--display);font-size:1.04rem;line-height:1.32;text-decoration:none;
+           display:inline-block;margin-bottom:9px}
+a.pub-title:hover{color:var(--accent-ink)}
+.pub-meta{font-family:var(--mono);font-size:.8rem;color:var(--ink-soft)}
+.pub-meta .yr{background:var(--accent-3);border:2px solid var(--ink);padding:1px 7px;
+              font-weight:700;color:var(--ink);margin-right:.6em}
+.pub-alt{font-family:var(--mono);font-weight:700;font-size:.72rem;text-decoration:none;
+         margin-left:.6em;border:2px solid var(--ink);padding:2px 8px;background:var(--paper-2)}
+.pub-alt:hover{background:var(--ink);color:var(--paper)}
+.pub-state{font-family:var(--mono);font-size:.9rem;color:var(--ink-soft);padding:14px 0}
+.pub-state a{color:var(--accent-2)}
 
-/* ---------- timeline ---------- */
-.tl{position:relative;padding-left:30px}
-.tl::before{
-  content:'';position:absolute;left:4px;top:8px;bottom:8px;width:1px;
-  background:linear-gradient(180deg,var(--accent),var(--line) 40%,transparent);
-}
-.tl-item{position:relative;padding-bottom:44px}
+/* ============ timeline ============ */
+.tl{position:relative;padding-left:40px;margin-top:26px}
+.tl::before{content:'';position:absolute;left:8px;top:12px;bottom:12px;
+            border-left:2.5px dashed var(--ink)}
+.tl-item{position:relative;padding-bottom:38px}
 .tl-item:last-child{padding-bottom:0}
 .tl-item::before{
-  content:'';position:absolute;left:-30px;top:9px;
-  width:9px;height:9px;border-radius:50%;
-  background:var(--bg);border:1px solid var(--accent);
+  content:'';position:absolute;left:-40px;top:6px;width:19px;height:19px;
+  background:var(--paper);border:var(--bd-thin);border-radius:50%;
 }
-.tl-year{
-  font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:7px;
-}
-.tl-item h3{font-size:1.14rem;font-weight:400;margin-bottom:3px}
-.tl-org{color:var(--text);font-size:1rem;margin-bottom:7px}
-.tl-item p.note{color:var(--text-dim);font-size:.98rem;max-width:58ch}
+.tl-item:first-child::before{background:var(--accent)}
+.tl-year{font-family:var(--mono);font-size:.76rem;font-weight:700;letter-spacing:.08em;
+         text-transform:uppercase;margin-bottom:6px;
+         display:inline-block;border-bottom:2.5px solid var(--accent)}
+.tl-item h3{font-family:var(--display);font-size:1.16rem;text-transform:uppercase;margin-bottom:3px}
+.tl-org{font-family:var(--mono);font-size:.86rem;margin-bottom:7px}
+.tl-item p.note{color:var(--ink-soft);font-size:.96rem;max-width:60ch}
 
-/* ---------- interests ---------- */
-.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:36px;margin-top:44px}
-.grid3 h3{
-  font-size:.8rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:12px;
-}
-.grid3 p{color:var(--text-dim);font-size:1rem}
+/* ============ interests ============ */
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:22px;margin-top:34px}
+.card{border:var(--bd);background:var(--paper);box-shadow:var(--shadow);padding:24px;
+      transition:transform .12s ease,box-shadow .12s ease}
+.card:hover{transform:translate(5px,5px);box-shadow:0 0 0 var(--ink)}
+.card .ic{width:40px;height:40px;margin-bottom:14px}
+.card h3{font-family:var(--display);font-size:.92rem;letter-spacing:.03em;text-transform:uppercase;margin-bottom:9px}
+.card p{color:var(--ink-soft);font-size:.96rem}
 
-/* ---------- contact ---------- */
-.contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
 
 footer{
-  position:relative;z-index:2;
-  border-top:1px solid var(--line);
-  max-width:var(--shell);margin:0 auto;
-  padding:32px var(--gutter) 48px;
-  display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;
-  font-size:.85rem;color:var(--text-faint);letter-spacing:.04em;
+  position:relative;z-index:2;border-top:var(--bd);background:var(--ink);color:var(--paper);
+  padding:26px var(--gutter);
 }
+.foot-in{max-width:var(--shell);margin:0 auto;display:flex;flex-wrap:wrap;gap:10px 24px;
+         justify-content:space-between;font-family:var(--mono);font-size:.78rem}
 
-/* ---------- reveal ---------- */
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+/* ============ reveal ============ */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .45s ease,transform .45s ease}
 .reveal.in{opacity:1;transform:none}
 
-/* ---------- responsive ---------- */
+/* ============ responsive ============ */
+@media (max-width:880px){
+  .hero{grid-template-columns:1fr}
+  .frame{order:-1;width:clamp(160px,42vw,220px);margin-left:22px}
+  .frame .orbit{inset:-20px}
+}
 @media (max-width:720px){
   .burger{display:block}
   .nav{
-    position:fixed;inset:57px 0 auto 0;
-    flex-direction:column;align-items:stretch;gap:0;
-    background:var(--bg-soft);
-    border-bottom:1px solid var(--line);
-    padding:8px var(--gutter) 20px;
-    transform:translateY(-8px);opacity:0;visibility:hidden;
-    transition:opacity .25s,transform .25s,visibility .25s;
+    position:fixed;inset:57px 0 auto 0;flex-direction:column;align-items:stretch;gap:0;
+    background:var(--paper);border-bottom:var(--bd);padding:8px var(--gutter) 16px;
+    display:none;
   }
-  .nav.open{transform:none;opacity:1;visibility:visible}
-  .nav a{padding:13px 0;font-size:.95rem;border-bottom:1px solid var(--line)}
+  .nav.open{display:flex}
+  .nav a{padding:12px 0;font-size:.95rem;border-bottom:2px dashed var(--ink)}
   .nav a:last-child{border-bottom:0}
-  .nav a::after{display:none}
-  .item{grid-template-columns:1fr;gap:10px}
-  .tag{justify-self:start}
+  .item{grid-template-columns:auto minmax(0,1fr);padding:20px 18px}
+  .item .tag{grid-column:2;justify-self:start;margin-top:4px}
   .actions .btn{flex:1 1 auto;justify-content:center}
 }
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
   .reveal{opacity:1;transform:none}
+  .comet{display:none}
 }
 </style>
 </head>
 <body>
 
-<canvas id="stars" aria-hidden="true"></canvas>
-<div class="veil" aria-hidden="true"></div>
+<!-- ============ sketchy astro sprite sheet ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Two strengths: small inline icons distort into mush past ~1px of
+         displacement, so they get the gentle one; big decorative art gets more. -->
+    <filter id="rough" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="1" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="0.9" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="rough-lg" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <g id="i-star">
+      <path d="M12 2.4c.9 4.6 2.1 6.9 6.9 7.8-4.8 1-6 3.2-6.9 7.8-.9-4.6-2.1-6.8-6.9-7.8 4.8-.9 6-3.2 6.9-7.8Z"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    </g>
+
+    <g id="i-planet">
+      <circle cx="12" cy="12" r="6.4" fill="none" stroke="currentColor" stroke-width="2"/>
+      <ellipse cx="12" cy="12" rx="10.6" ry="3.5" fill="none" stroke="currentColor"
+               stroke-width="2" transform="rotate(-22 12 12)"/>
+    </g>
+
+    <g id="i-telescope">
+      <path d="M3.4 14.2 15.6 8.1l2.6 5.2L6 19.4Z" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linejoin="round"/>
+      <path d="M16.8 6.1 20.9 4l1.5 3-4.1 2.1" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linejoin="round"/>
+      <path d="M9 17.4 7.4 22M13.6 15.2 16 21" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <g id="i-comet">
+      <circle cx="16.4" cy="7.8" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12.8 10.6 3 20.4M13.6 6 7.4 8.2M18.6 12.4l-1.6 5.6" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <g id="i-orbit">
+      <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <ellipse cx="12" cy="12" rx="10.4" ry="5.6" fill="none" stroke="currentColor"
+               stroke-width="2" transform="rotate(34 12 12)"/>
+      <circle cx="20.4" cy="8.4" r="1.9" fill="currentColor"/>
+    </g>
+
+    <g id="i-moon">
+      <path d="M16.6 3.4A9 9 0 1 0 20.4 15 7.2 7.2 0 0 1 16.6 3.4Z" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="9.6" cy="13.6" r="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <circle cx="13.4" cy="17.8" r="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    </g>
+
+    <g id="i-mountain">
+      <path d="M2 19.6 9 7.4l4.4 7.2 2.6-3.6L22 19.6Z" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linejoin="round"/>
+      <path d="M6.6 13.2h4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </g>
+
+    <g id="i-wave">
+      <path d="M2.4 9.6c2.6-3.4 5.2-3.4 7.8 0s5.2 3.4 7.8 0M2.4 15.4c2.6-3.4 5.2-3.4 7.8 0s5.2 3.4 7.8 0"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M20.6 7v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <g id="i-flask">
+      <path d="M10 3v6.4L4.6 18.4A2 2 0 0 0 6.3 21.4h11.4a2 2 0 0 0 1.7-3l-5.4-9V3"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M8.4 3h7.2M7.6 15.4h8.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <g id="i-mail">
+      <rect x="2.6" y="5.4" width="18.8" height="13.2" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linejoin="round"/>
+      <path d="m3.4 6.4 8.6 6.8 8.6-6.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    </g>
+
+    <g id="i-github">
+      <path d="M9.4 20.6c-4.6 1.4-4.6-2.4-6.4-2.9m12.8 5.1v-3.6a3 3 0 0 0-.9-2.4c2.9-.3 5.9-1.4 5.9-6.4a5 5 0 0 0-1.4-3.4 4.6 4.6 0 0 0-.1-3.5s-1.1-.3-3.6 1.4a12.4 12.4 0 0 0-6.4 0C6.8 3.2 5.7 3.5 5.7 3.5a4.6 4.6 0 0 0-.1 3.5 5 5 0 0 0-1.4 3.5c0 4.9 3 6 5.9 6.4a3 3 0 0 0-.9 2.3v3.6"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </defs>
+</svg>
+
+<div class="sky" id="sky" aria-hidden="true">
+  <svg class="comet" viewBox="0 0 120 40">
+    <path d="M118 6c-30 6-60 14-92 26" fill="none" stroke="#141414" stroke-width="2.4"
+          stroke-linecap="round" stroke-dasharray="3 9"/>
+    <circle cx="115" cy="6" r="4.6" fill="none" stroke="#141414" stroke-width="2.4"/>
+  </svg>
+</div>
 
 <header id="hdr">
   <div class="bar">
-    <a href="#about" class="brand">Shubh Mittal</a>
+    <a href="#about" class="brand">
+      <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-star"/></svg>
+      SHUBH MITTAL
+    </a>
     <nav class="nav" id="nav">
       <a href="#research">Research</a>
-      <a href="#publications">Publications</a>
+      <a href="#publications">Papers</a>
       <a href="#journey">Journey</a>
       <a href="adventures.html">Adventures</a>
       <a href="#contact">Contact</a>
@@ -296,47 +426,75 @@ footer{
 <main>
 
   <section id="about">
-    <img src="images2/portrait.jpg" alt="Shubh Mittal" class="portrait" width="168" height="168" fetchpriority="high">
-    <h1>Shubh Mittal</h1>
-    <div class="rule"></div>
-    <p class="role">Incoming Doctoral Student<span>·</span>Astronomical Institute, Czech Academy of Sciences</p>
-    <p class="lede hero-bio">
-      I study stars through their light. From October 2026 I join the <b>OCEANS</b>
-      project in Prague, hunting <b>Luminous Blue Variables</b> across ZTF and LSST
-      time-domain data. Before that, a year at IUCAA on <b>high-resolution
-      spectroscopy</b> of Type&nbsp;II Cepheids — measuring abundances, characterising
-      atmospheres, and building open-source tools to keep that analysis reproducible.
-    </p>
-    <div class="actions">
-      <a class="btn primary" href="CV.pdf">
-        <svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-7-7zm0 2.5L17.5 9H13V4.5zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg>
-        Curriculum Vitae
-      </a>
-      <a class="btn" href="https://github.com/shubh-astro" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57s-.015-1.92-.015-3.795c-3.33 1.25-4.035-1.61-4.035-1.61-.54-.54-1.32-1.35-2.055-1.785-.45-.315-.855-.24-.06.24.675.585 1.155 1.77 1.155 1.77.585.99 1.545.705 1.92.54.075-.42.285-.75.525-.92-2.31-.255-4.74-1.14-4.74-5.175 0-1.14.405-2.07 1.065-2.805-.105-.255-.465-1.335.105-2.775 0 0 .87-.27 2.85 1.065 1.83-.51 3.78-.51 5.61 0 1.98-1.335 2.85-1.065 2.85-1.065.57 1.44.21 2.52.105 2.775.66.735 1.065 1.665 1.065 2.805 0 4.05-2.43 4.92-4.74 5.175.315.27.6.84.6 1.74l-.015 2.58c0 .315.21.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
-        GitHub
-      </a>
-      <a class="btn" href="https://orcid.org/" target="_blank" rel="noopener" id="orcid-btn">
-        <svg viewBox="0 0 24 24"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.37 18.11h-1.7V7.44h1.7v10.67zM6.52 6.31a1.02 1.02 0 1 1 0-2.04 1.02 1.02 0 0 1 0 2.04zm5.02 11.8H9.9V7.44h3.9c3.71 0 5.34 2.65 5.34 5.34 0 2.92-2.28 5.33-5.32 5.33h-2.28zm.3-9.16v7.63h1.83c2.6 0 3.72-1.77 3.72-3.8 0-1.94-1.2-3.83-3.72-3.83h-1.83z"/></svg>
-        ORCID
-      </a>
-      <a class="btn" href="mailto:shubh.novae@gmail.com">
-        <svg viewBox="0 0 24 24"><path d="M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 2L12 13 3 6h18zm0 12H3V8l9 6 9-6v10z"/></svg>
-        Email
-      </a>
+    <div class="hero">
+      <div>
+        <span class="stamp">
+          <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-comet"/></svg>
+          Prague · from Oct 2026
+        </span>
+        <h1>Shubh<span class="l2"><em>Mittal</em></span></h1>
+        <div class="spectrum" id="spectrum"></div>
+        <span class="spectrum-cap">Fig. 1 — stellar absorption spectrum</span>
+        <p class="role">Incoming Doctoral Student</p>
+        <p class="role-org">Astronomical Institute, Czech Academy of Sciences</p>
+        <p class="lede hero-bio">
+          I study stars through their light. From October 2026 I join the <b>OCEANS</b>
+          project in Prague, hunting <b>Luminous Blue Variables</b> across ZTF and LSST
+          time-domain data. Before that, a year at IUCAA on <b>high-resolution
+          spectroscopy</b> of Type&nbsp;II Cepheids — measuring abundances, characterising
+          atmospheres, and building open-source tools to keep that analysis reproducible.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="CV.pdf">
+            <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-telescope"/></svg>
+            Curriculum Vitae
+          </a>
+          <a class="btn" href="https://github.com/shubh-astro" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-github"/></svg>
+            GitHub
+          </a>
+          <a class="btn" href="https://orcid.org/" target="_blank" rel="noopener" id="orcid-btn">
+            <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-orbit"/></svg>
+            ORCID
+          </a>
+          <a class="btn" href="mailto:shubh.novae@gmail.com">
+            <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-mail"/></svg>
+            Email
+          </a>
+        </div>
+      </div>
+
+      <div class="frame">
+        <img src="images2/portrait.jpg" alt="Shubh Mittal" width="258" height="258" fetchpriority="high">
+        <svg class="orbit" viewBox="0 0 100 100">
+          <ellipse cx="50" cy="50" rx="48" ry="48" fill="none" stroke="#141414"
+                   stroke-width="1.6" stroke-dasharray="5 7"/>
+          <g transform="translate(50 2)">
+            <circle r="6.5" fill="#F4F1E8" stroke="#141414" stroke-width="2"/>
+            <circle cx="-1.6" cy="-1.4" r="1.5" fill="none" stroke="#141414" stroke-width="1.2"/>
+            <circle cx="2" cy="2.2" r="1" fill="none" stroke="#141414" stroke-width="1.2"/>
+          </g>
+        </svg>
+        <span class="cap">Obs. 2026</span>
+      </div>
     </div>
   </section>
 
+  <div class="ticker" aria-hidden="true"><div id="tick"></div></div>
+
+
   <section id="research" class="reveal">
-    <p class="eyebrow">Research</p>
+    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-telescope"/></svg>01 — Research</p>
+    <h2 class="sec">What I work on</h2>
     <p class="lede">
       Massive stars and transients in wide-field time-domain surveys, high-resolution
       spectroscopy of variable stars — and the open-source software that keeps both
       kinds of analysis reproducible.
     </p>
-    <div class="work" style="margin-top:44px">
+    <div class="work">
 
       <div class="item static">
+        <span class="idx">01</span>
         <div>
           <h3>Luminous Blue Variables in Large Sky Surveys</h3>
           <p>Using astronomical alert brokers and machine learning to identify LBV candidates
@@ -347,8 +505,9 @@ footer{
       </div>
 
       <a class="item" href="https://anupambhardwaj.weebly.com/iucaastars.html" target="_blank" rel="noopener">
+        <span class="idx">02</span>
         <div>
-          <h3>High-Resolution Spectroscopy of Type&nbsp;II Cepheids <span class="arrow">&rarr;</span></h3>
+          <h3>High-Resolution Spectroscopy of Type&nbsp;II Cepheids <span class="go">&rarr;</span></h3>
           <p>Metallicity and elemental abundance measurements from SALT and VLT high-resolution
              data, calibrating the first rung of the cosmic distance ladder.</p>
         </div>
@@ -356,8 +515,9 @@ footer{
       </a>
 
       <a class="item" href="https://github.com/shubh-astro/PySpecTools" target="_blank" rel="noopener">
+        <span class="idx">03</span>
         <div>
-          <h3>PySpecTools <span class="arrow">&rarr;</span></h3>
+          <h3>PySpecTools <span class="go">&rarr;</span></h3>
           <p>An automated Python pipeline for reducing and analysing echelle stellar spectra —
              sky subtraction, continuum normalisation, heliocentric correction, order merging
              and radial-velocity estimation. Stellar atmosphere parameters in development.</p>
@@ -366,8 +526,9 @@ footer{
       </a>
 
       <a class="item" href="https://github.com/shubh-astro/GRB-Analysis" target="_blank" rel="noopener">
+        <span class="idx">04</span>
         <div>
-          <h3>Prompt Emission in Gamma-Ray Bursts <span class="arrow">&rarr;</span></h3>
+          <h3>Prompt Emission in Gamma-Ray Bursts <span class="go">&rarr;</span></h3>
           <p>Spectral analysis of GRB prompt emission, investigating the origin of the observed
              non-thermal radiation. MSc thesis work at IISER Thiruvananthapuram.</p>
         </div>
@@ -378,14 +539,16 @@ footer{
   </section>
 
   <section id="publications" class="reveal">
-    <p class="eyebrow">Publications</p>
+    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-flask"/></svg>02 — Publications</p>
+    <h2 class="sec">Papers</h2>
     <div id="pub-list">
       <p class="pub-state" id="pub-state">Loading publications…</p>
     </div>
   </section>
 
   <section id="journey" class="reveal">
-    <p class="eyebrow">Academic Journey</p>
+    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-orbit"/></svg>03 — Academic Journey</p>
+    <h2 class="sec">Where I've been</h2>
     <div class="tl">
       <div class="tl-item">
         <p class="tl-year">From October 2026</p>
@@ -417,22 +580,26 @@ footer{
   </section>
 
   <section id="beyond" class="reveal">
-    <p class="eyebrow">Beyond Research</p>
+    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-moon"/></svg>04 — Beyond Research</p>
+    <h2 class="sec">Off the telescope</h2>
     <p class="lede">
       Born and raised in Uttarakhand, which is probably why I say yes to every trek.
       Photographs from the road and the night sky live on the
-      <a href="adventures.html" style="color:var(--accent)">adventures page</a>.
+      <a href="adventures.html">adventures page</a>.
     </p>
     <div class="grid3">
-      <div>
+      <div class="card">
+        <svg class="ic" viewBox="0 0 24 24" filter="url(#rough-lg)"><use href="#i-mountain"/></svg>
         <h3>Trekking</h3>
         <p>The one plan I can never say no to. Most of my time off is spent covering hills and landscapes.</p>
       </div>
-      <div>
+      <div class="card">
+        <svg class="ic" viewBox="0 0 24 24" filter="url(#rough-lg)"><use href="#i-wave"/></svg>
         <h3>Music</h3>
         <p>Classical, rock or blues — different times call for different music.</p>
       </div>
-      <div>
+      <div class="card">
+        <svg class="ic" viewBox="0 0 24 24" filter="url(#rough-lg)"><use href="#i-flask"/></svg>
         <h3>Cooking &amp; Sport</h3>
         <p>I cook new dishes and fail at some of them. The gym and cricket handle the consequences.</p>
       </div>
@@ -440,124 +607,97 @@ footer{
   </section>
 
   <section id="contact" class="reveal">
-    <p class="eyebrow">Contact</p>
+    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-mail"/></svg>05 — Contact</p>
+    <h2 class="sec">Get in touch</h2>
     <p class="lede">
       Always open to collaborations, research enquiries, or a conversation about the cosmos.
     </p>
     <div class="contact-links">
-      <a class="btn primary" href="mailto:shubh.novae@gmail.com">shubh.novae@gmail.com</a>
-      <a class="btn" href="https://github.com/shubh-astro" target="_blank" rel="noopener">GitHub</a>
-      <a class="btn" href="https://www.linkedin.com/in/shubh-mittal-283459197/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn primary" href="mailto:shubh.novae@gmail.com">
+        <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-mail"/></svg>
+        shubh.novae@gmail.com
+      </a>
+      <a class="btn" href="https://github.com/shubh-astro" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-github"/></svg>
+        GitHub
+      </a>
+      <a class="btn" href="https://www.linkedin.com/in/shubh-mittal-283459197/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-planet"/></svg>
+        LinkedIn
+      </a>
     </div>
   </section>
 
 </main>
 
 <footer>
-  <span>© <span id="yr"></span> Shubh Mittal</span>
-  <span>Prague, Czech Republic</span>
+  <div class="foot-in">
+    <span>© <span id="yr"></span> SHUBH MITTAL</span>
+    <span>PRAGUE, CZ · 50.0755° N, 14.4378° E</span>
+  </div>
 </footer>
 
 <script>
 /* ============================================================
-   CONFIG — set your ORCID iD here and publications load themselves.
-   Find it at orcid.org (format: 0000-0002-1825-0097).
-   Leave blank and the section shows a graceful placeholder.
+   CONFIG — publications load themselves from this ORCID iD.
    ============================================================ */
 const ORCID_ID = '0009-0000-5975-2213';
 
-/* ---------- drifting starfield ----------
-   Perspective travel through a star field. Deliberately slow, so it reads as
-   drift rather than warp. Pauses when the tab is hidden and falls back to a
-   single static frame when the visitor asks for reduced motion.            */
+/* ---------- absorption lines over the spectrum (crisp 1-2px rects) ---------- */
 (function () {
-  const cv = document.getElementById('stars');
-  const ctx = cv.getContext('2d');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-
-  const COLORS = ['#FFFFFF', '#FFFFFF', '#EAF0FA', '#E0B9B9'];
-  const MAX_Z = 1000, PERSPECTIVE = 340, SPEED = 0.32;
-
-  let stars = [], w = 0, h = 0, raf = null;
-
-  const spawn = z => ({
-    x: (Math.random() - 0.5) * 2.2,
-    y: (Math.random() - 0.5) * 2.2,
-    z: z,
-    r: Math.random() * 1.0 + 0.35,
-    c: COLORS[(Math.random() * COLORS.length) | 0],
-    t: Math.random() * Math.PI * 2
-  });
-
-  function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = window.innerWidth; h = window.innerHeight;
-    cv.width = w * dpr; cv.height = h * dpr;
-    cv.style.width = w + 'px'; cv.style.height = h + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const want = Math.min(460, Math.round((w * h) / 3600));
-    stars = [];
-    for (let i = 0; i < want; i++) stars.push(spawn(Math.random() * MAX_Z));
-  }
-
-  function render(step) {
-    ctx.clearRect(0, 0, w, h);
-    const cx = w / 2, cy = h / 2, span = Math.max(w, h);
-    for (const s of stars) {
-      if (step) {
-        s.z -= SPEED;
-        s.t += 0.011;
-        if (s.z < 1) Object.assign(s, spawn(MAX_Z));
-      }
-      const p = PERSPECTIVE / s.z;
-      const x = cx + s.x * span * p;
-      const y = cy + s.y * span * p;
-      if (x < -6 || x > w + 6 || y < -6 || y > h + 6) continue;
-      const size = s.r * p * 1.5;
-      if (size < 0.22) continue;
-      const depth = 1 - s.z / MAX_Z;              // 0 far, 1 near
-      const twinkle = 0.78 + Math.sin(s.t) * 0.22;
-      ctx.globalAlpha = Math.min(0.92, (0.14 + depth * 0.62) * twinkle);
-      ctx.fillStyle = s.c;
-      ctx.beginPath();
-      ctx.arc(x, y, size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-  }
-
-  function loop() { render(true); raf = requestAnimationFrame(loop); }
-  function start() { if (!raf && !reduce.matches) loop(); }
-  function stop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
-
-  function boot() {
-    stop();
-    resize();
-    if (reduce.matches) render(false); else start();
-  }
-
-  let t;
-  addEventListener('resize', () => { clearTimeout(t); t = setTimeout(boot, 200); });
-  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
-  reduce.addEventListener('change', boot);
-  boot();
+  const W = 470, H = 16;
+  const lines = [[41,1,.92],[78,1,.55],[122,2,.95],[137,1,.68],[168,1,.5],
+                 [203,1,.85],[228,2,.9],[266,1,.6],[299,1,.78],[318,1,.45],
+                 [352,2,.88],[389,1,.62],[414,1,.8],[437,1,.52]];
+  const rects = lines.map(([x,w,a]) =>
+    `<rect x='${x}' y='0' width='${w}' height='${H}' fill='%23141414' opacity='${a}'/>`).join('');
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='${H}' ` +
+              `preserveAspectRatio='none' shape-rendering='crispEdges'>${rects}</svg>`;
+  const el = document.getElementById('spectrum');
+  if (el) el.style.setProperty('--lines', `url("data:image/svg+xml,${svg}")`);
+  const style = document.createElement('style');
+  style.textContent = `.spectrum::after{background-image:var(--lines)}`;
+  document.head.appendChild(style);
 })();
 
-/* ---------- header + mobile nav ---------- */
+/* ---------- twinkling sketch stars ---------- */
 (function () {
-  const hdr = document.getElementById('hdr');
+  const sky = document.getElementById('sky');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const N = 22;
+  let html = '';
+  for (let i = 0; i < N; i++) {
+    const size = 9 + Math.random() * 16;
+    const x = Math.random() * 100, y = Math.random() * 100;
+    const delay = (Math.random() * 5).toFixed(2);
+    const dur = (3 + Math.random() * 4).toFixed(2);
+    const rot = (Math.random() * 40 - 20).toFixed(1);
+    html += `<svg class="st" viewBox="0 0 24 24" style="left:${x}%;top:${y}%;` +
+            `width:${size}px;height:${size}px;color:#141414;opacity:.28;` +
+            `transform:rotate(${rot}deg);animation-delay:${delay}s;` +
+            `animation-duration:${reduce.matches ? '0s' : dur + 's'}">` +
+            `<use href="#i-star"/></svg>`;
+  }
+  sky.insertAdjacentHTML('afterbegin', html);
+})();
+
+/* ---------- ticker ---------- */
+(function () {
+  const words = ['Luminous Blue Variables','Type II Cepheids','Echelle Spectroscopy',
+                 'ZTF','LSST','Gamma-Ray Bursts','Stellar Atmospheres','SALT',
+                 'Radial Velocity','Time-Domain Astronomy','OCEANS'];
+  const run = words.map(w => `<span>${w}</span><i>✦</i>`).join('');
+  document.getElementById('tick').innerHTML = run + run;
+})();
+
+/* ---------- mobile nav ---------- */
+(function () {
   const nav = document.getElementById('nav');
   const burger = document.getElementById('burger');
-
-  addEventListener('scroll', () => {
-    hdr.classList.toggle('scrolled', scrollY > 10);
-  }, { passive: true });
-
   burger.addEventListener('click', () => {
     const open = nav.classList.toggle('open');
     burger.setAttribute('aria-expanded', String(open));
   });
-
   nav.addEventListener('click', e => {
     if (e.target.tagName === 'A') {
       nav.classList.remove('open');
@@ -577,7 +717,7 @@ const ORCID_ID = '0009-0000-5975-2213';
     entries.forEach(en => {
       if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
     });
-  }, { rootMargin: '0px 0px -12% 0px' });
+  }, { rootMargin: '0px 0px -10% 0px' });
   els.forEach(el => io.observe(el));
 })();
 

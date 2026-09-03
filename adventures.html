@@ -1,555 +1,314 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230A111E'/%3E%3Cpath d='M16 6l2.3 6.9L25 15l-6.7 2.1L16 24l-2.3-6.9L7 15l6.7-2.1z' fill='%23D0A9A9'/%3E%3C/svg%3E">
-    <title>Adventures & Reflections | Shubh Mittal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&display=swap" rel="stylesheet">
-    <style>
-        /* ========================================================== */
-        /* === BASE CSS COPIED FROM INDEX.HTML FOR CONSISTENCY === */
-        /* ========================================================== */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adventures | Shubh Mittal</title>
+<meta name="description" content="Field notes and photographs from telescope visits, treks and travels — Shubh Mittal.">
 
-        :root {
-            --color-bg: #0A111E;            /* Deep Space Blue/Black */
-            --color-text-primary: #FFFFFF;    /* Clean White */
-            --color-accent: #E0B9B9;         /* Main Accent (Soft Off-White/Cream) */
-            --color-accent-red: #E0B9B9;      /* Secondary Accent (Dusty Rose/Warm Pink) */
-            --color-separator: #1A1A3F;      /* Subtle Line (still useful for lines/dividers) */
-            --font-primary: 'Inter', sans-serif;
-        }
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F4F1E8'/%3E%3Cpath d='M16 4l2.6 8.4L27 15l-8.4 2.6L16 26l-2.6-8.4L5 15l8.4-2.6z' fill='none' stroke='%23141414' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
 
-        /* Basic Reset and Scrolling Setup */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-        html {
-            scroll-behavior: smooth;
-        }
+<style>
+:root{
+  --paper:#F4F1E8; --paper-2:#EBE7DA;
+  --ink:#141414; --ink-soft:#4B4A44;
+  --accent:#FF5A1F; --accent-ink:#B93E05; --accent-3:#F5C518;
+  --bd:2.5px solid var(--ink); --bd-thin:2px solid var(--ink);
+  --shadow:6px 6px 0 var(--ink); --shadow-sm:4px 4px 0 var(--ink);
+  --display:'Archivo Black',system-ui,sans-serif;
+  --mono:'Space Mono',ui-monospace,monospace;
+  --body:'Inter',system-ui,sans-serif;
+  --shell:1180px; --gutter:clamp(18px,4.5vw,42px);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--body);
+  font-size:clamp(16px,.4vw + 15px,17.5px);line-height:1.65;overflow-x:hidden;
+  background-image:
+    linear-gradient(rgba(20,20,20,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(20,20,20,.055) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
-        body {
-            min-height: 100vh; 
-            background-color: var(--color-bg);
-            color: var(--color-text-primary);
-            font-family: var(--font-primary);
-            font-size: clamp(16px, .45vw + 15px, 18px);
-            font-weight: 400;
-            line-height: 1.7;
-            position: relative;
-            padding-bottom: 50px; 
-        }
+.sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.sky .st{position:absolute;animation:tw 4s steps(2,end) infinite}
+@keyframes tw{0%,45%{opacity:1}50%,100%{opacity:.18}}
 
-        /* 1. Canvas for the Star Field Background (Fixed) */
-        #starCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.9;
-        }
+header{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--paper);border-bottom:var(--bd)}
+.bar{max-width:var(--shell);margin:0 auto;padding:12px var(--gutter);display:flex;align-items:center;gap:16px}
+.brand{font-family:var(--mono);font-weight:700;font-size:.9rem;text-decoration:none;margin-right:auto;
+       white-space:nowrap;display:inline-flex;align-items:center;gap:9px}
+.brand svg{width:20px;height:20px}
+.nav{display:flex;align-items:center;gap:6px}
+.nav a{font-family:var(--mono);font-size:.8rem;text-decoration:none;padding:6px 10px;
+       border:2px solid transparent;transition:background .12s}
+.nav a::before{content:'[ ';color:var(--accent-ink)}
+.nav a::after{content:' ]';color:var(--accent-ink)}
+.nav a:hover,.nav a.here{background:var(--ink);color:var(--paper)}
+.nav a:hover::before,.nav a:hover::after,.nav a.here::before,.nav a.here::after{color:var(--accent-3)}
+.burger{display:none;background:var(--paper);border:var(--bd-thin);cursor:pointer;padding:7px 9px}
+.burger span{display:block;width:20px;height:2.5px;background:var(--ink)}
+.burger span+span{margin-top:4px}
 
-        /* 2. Sticky Header/Navigation */
-        #site-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 10;
-            background-color: rgba(10, 17, 30, 0.95);
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid var(--color-separator);
-            transition: background-color 0.3s;
-        }
+main{position:relative;z-index:2}
+section{max-width:var(--shell);margin:0 auto;padding:clamp(96px,12vw,140px) var(--gutter) clamp(56px,8vw,96px)}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;
+  font-family:var(--mono);font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--ink);color:var(--paper);padding:6px 12px}
+.eyebrow svg{width:15px;height:15px}
+h1{font-family:var(--display);font-size:clamp(2.4rem,7vw,4.4rem);line-height:.95;
+   letter-spacing:-.025em;text-transform:uppercase;margin-bottom:18px}
+.lede{max-width:62ch;color:var(--ink-soft);font-size:1.05rem;margin-bottom:14px}
 
-        .nav-menu {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 15px 20px;
-        }
+.posts{display:grid;gap:clamp(34px,5vw,58px);margin-top:46px}
+.post{display:grid;grid-template-columns:1fr;gap:26px;align-items:start}
+@media (min-width:820px){
+  .post{grid-template-columns:1fr 1fr;gap:38px;align-items:center}
+  .post:nth-child(even) .shot{order:2}
+}
+.shot{position:relative;border:var(--bd);box-shadow:var(--shadow);background:var(--paper-2)}
+.stage{position:relative;padding-bottom:64%;height:0;overflow:hidden}
+.slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+       opacity:0;transition:opacity .6s ease}
+.slide.active{opacity:1}
+.dots{position:absolute;left:0;right:0;bottom:0;display:flex;gap:5px;justify-content:center;
+      padding:8px;background:var(--ink)}
+.dots i{width:8px;height:8px;border:2px solid var(--paper);display:block}
+.dots i.on{background:var(--accent-3);border-color:var(--accent-3)}
+.frame-no{position:absolute;top:-2.5px;left:-2.5px;font-family:var(--mono);font-size:.68rem;
+          font-weight:700;background:var(--ink);color:var(--paper);padding:4px 9px;z-index:2}
 
-        .site-title {
-            margin-right: auto;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--color-accent) !important;
-            letter-spacing: 1.5px;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .site-title:hover {
-             color: var(--color-text-primary) !important;
-        }
+.post h2{font-family:var(--display);font-size:clamp(1.4rem,3vw,2rem);line-height:1.06;
+         text-transform:uppercase;letter-spacing:-.015em;margin-bottom:10px}
+.meta{display:inline-block;font-family:var(--mono);font-size:.76rem;font-weight:700;
+      text-transform:uppercase;border:var(--bd-thin);padding:4px 10px;background:var(--accent-3);
+      transform:rotate(-1.2deg);margin-bottom:16px}
+.post p.txt{color:var(--ink-soft);font-size:1rem;max-width:56ch}
 
-        .nav-link {
-            text-decoration: none;
-            color: var(--color-text-primary);
-            font-size: 0.9rem;
-            font-weight: 400;
-            margin-left: 30px;
-            padding: 5px 0;
-            transition: color 0.3s;
-            position: relative;
-        }
+.back{display:inline-flex;align-items:center;gap:10px;margin-top:44px;
+  padding:12px 20px;border:var(--bd);background:var(--paper);box-shadow:var(--shadow-sm);
+  font-family:var(--mono);font-size:.84rem;font-weight:700;text-decoration:none;
+  transition:transform .1s,box-shadow .1s,background .1s}
+.back:hover{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink);background:var(--accent-3)}
+.back svg{width:19px;height:19px}
 
-        .nav-link:hover {
-            color: var(--color-accent);
-        }
+footer{position:relative;z-index:2;border-top:var(--bd);background:var(--ink);color:var(--paper);
+       padding:26px var(--gutter)}
+.foot-in{max-width:var(--shell);margin:0 auto;display:flex;flex-wrap:wrap;gap:10px 24px;
+         justify-content:space-between;font-family:var(--mono);font-size:.78rem}
+.foot-in a{color:var(--accent-3)}
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: var(--color-accent);
-            bottom: 0;
-            left: 0;
-            transition: width 0.3s ease-out;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* 3. Main Content Wrapper */
-        main {
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Reusable Section Styling (for single page content) */
-        .section-container {
-            padding: 120px 20px 100px 20px; 
-            max-width: 1000px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .section-heading {
-            font-size: 2.5rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 60px;
-            color: var(--color-accent); 
-            border-bottom: 1px solid var(--color-separator);
-            padding-bottom: 15px;
-            display: inline-block;
-        }
-        
-        .bio-text {
-            font-size: clamp(1rem, 1.2vw, 1.12rem);
-            margin-bottom: 3rem;
-            font-weight: 400;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-
-        /* --- Adventures Section (Image Grid with Context) --- */
-        #adventures {
-            min-height: 100vh;
-            padding-top: 120px;
-        }
-        
-        .adventure-grid {
-            display: flex;
-            flex-direction: column; 
-            gap: 60px; /* Space between each post */
-            text-align: left;
-        }
-
-        .adventure-post {
-            display: grid;
-            grid-template-columns: 1fr;
-            align-items: center;
-            gap: 30px;
-        }
-
-        /* Desktop: Alternating image/content layout */
-        .adventure-post:nth-child(even) {
-            grid-template-areas: "content image";
-        }
-        .adventure-post:nth-child(odd) {
-            grid-template-areas: "image content";
-        }
-
-        /* SLIDESHOW STYLES */
-        .slideshow-container {
-            position: relative;
-            /* Sets the aspect ratio for the container to hold absolute children */
-            padding-bottom: 60%; 
-            height: 0; 
-        }
-
-        .adventure-image-container {
-            grid-area: image;
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-        
-        .adventure-image-container:hover {
-            transform: translateY(-5px);
-        }
-        
-        .slide {
-            position: absolute; /* Stack slides on top of each other */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0; /* Hidden by default */
-            transition: opacity 1.0s ease-in-out; /* Smooth fade effect */
-        }
-        
-        .slide.active {
-            opacity: 1; /* Only the active slide is visible */
-        }
-        
-        /* END SLIDESHOW STYLES */
-
-        .adventure-content-text {
-            grid-area: content;
-        }
-
-        .adventure-content-text h4 {
-            color: var(--color-accent); 
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-        }
-
-        .adventure-content-text p.date {
-            font-size: 0.95rem;
-            color: var(--color-accent-red); 
-            margin-bottom: 15px;
-            font-weight: 400;
-        }
-        
-        .adventure-content-text p {
-            font-size: 1.02rem;
-            color: var(--color-text-primary);
-        }
-
-        @media (min-width: 768px) {
-            .adventure-post {
-                grid-template-columns: 1fr 1fr;
-            }
-            .adventure-post:nth-child(even) .adventure-image-container { order: 2; }
-            .adventure-post:nth-child(odd) .adventure-image-container { order: 1; }
-        }
-
-        /* --- Footer Styles (Minimal for the new page) --- */
-        .footer {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #fff;
-            border-top: 1px solid var(--color-separator);
-        }
-        .footer-link {
-            /* FIX: Use theme variable for link color */
-            color: #fff; 
-            text-decoration: none; 
-        }
-        .footer-link:hover {
-            text-decoration: underline; /* Add underline on hover for better user experience */
-        }
-
-    </style>
+@media (max-width:720px){
+  .burger{display:block}
+  .nav{position:fixed;inset:57px 0 auto 0;flex-direction:column;align-items:stretch;gap:0;
+       background:var(--paper);border-bottom:var(--bd);padding:8px var(--gutter) 16px;display:none}
+  .nav.open{display:flex}
+  .nav a{padding:12px 0;font-size:.95rem;border-bottom:2px dashed var(--ink)}
+  .nav a:last-child{border-bottom:0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+}
+</style>
 </head>
 <body>
 
-    <!-- 1. Canvas for the Animated Star Field (Fixed Z-Index 0) --><canvas id="starCanvas"></canvas>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="rough" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="1" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="0.9" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <g id="i-star">
+      <path d="M12 2.4c.9 4.6 2.1 6.9 6.9 7.8-4.8 1-6 3.2-6.9 7.8-.9-4.6-2.1-6.8-6.9-7.8 4.8-.9 6-3.2 6.9-7.8Z"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    </g>
+    <g id="i-moon">
+      <path d="M16.6 3.4A9 9 0 1 0 20.4 15 7.2 7.2 0 0 1 16.6 3.4Z" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="9.6" cy="13.6" r="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <circle cx="13.4" cy="17.8" r="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    </g>
+    <g id="i-arrow">
+      <path d="M20 12H4M10 6 4 12l6 6" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </defs>
+</svg>
 
-    <!-- 2. Sticky Navigation Header (Z-Index 10) -->
-    <header id="site-header">
-        <nav class="nav-menu">
-            <!-- Links back to the main index file, jumping to relevant sections -->
-            <a href="/#about" class="nav-link site-title">Shubh Mittal</a>
-            <a href="/#research" class="nav-link">Research</a>
-            <a href="/#publications" class="nav-link">Publications</a>
-            <a href="/#journey" class="nav-link">Journey</a>
-            <a href="adventures.html" class="nav-link" style="color: var(--color-accent);">Adventures</a>
-            <a href="/#contact" class="nav-link">Contact</a>
-        </nav>
-    </header>
+<div class="sky" id="sky" aria-hidden="true"></div>
 
-    <!-- 3. Main Content --><main>
-        
-        <!-- === SECTION: ADVENTURES & REFLECTIONS (Hobby Blog) === -->
-        <section id="adventures" class="section-container">
-            <h2 class="section-heading">ADVENTURES & REFLECTIONS</h2>
-            <p class="bio-text">Timestamps of some of the best moments of my life. This is where I share my perspective outside of core research.</p>
+<header>
+  <div class="bar">
+    <a href="/" class="brand">
+      <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-star"/></svg>
+      SHUBH MITTAL
+    </a>
+    <nav class="nav" id="nav">
+      <a href="/#research">Research</a>
+      <a href="/#publications">Papers</a>
+      <a href="/#journey">Journey</a>
+      <a href="adventures.html" class="here">Adventures</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
 
-            <div class="adventure-grid">
-                
-                <!-- Adventure Post 1 (DOT Visit - SLIDESHOW) -->
-                <div class="adventure-post" id="post-1">
-                    <div class="adventure-image-container">
-                        <div class="slideshow-container">
-                            <!-- Slide 1 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/dot1.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/D0A9A9?text=DOT+Telescope+1'" alt="DOT visit slide 1">
-                            <!-- Slide 2 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/dot2.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/ECECEC?text=DOT+Exterior+2'" alt="DOT visit slide 2">
-                            <!-- Slide 3 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/dot3.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/D0A9A9?text=DOT+Control+Room+3'" alt="DOT visit slide 3">
-                            <!-- Slide 3 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/dot4.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/D0A9A9?text=DOT+Control+Room+3'" alt="DOT visit slide 3">
-                            <!-- Slide 3 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/dot5.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/D0A9A9?text=DOT+Control+Room+3'" alt="DOT visit slide 3">
-                        </div>
-                    </div>
-                    <div class="adventure-content-text">
-                        <h4>Visiting the DOT!</h4>
-                        <p class="date">October 2025 | Devesthal Optical Observatory, India</p>
-                        <p>I had an incredible opportunity to visit the world class 3.6m Devesthal Optical Telescope. I honestly didn't realize how huge a 3.6m telescope is until I was standing right there. It gives you a new appreciation for the massive scale and the incredible precision engineering required to build and operate such a world-class facility. </p>
-                    </div>
-                </div>
+<main>
+  <section>
+    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-moon"/></svg>Field Notes</p>
+    <h1>Adventures &amp; Reflections</h1>
+    <p class="lede">
+      Telescopes I've stood under, places that shaped me, and the desks where the
+      actual work happened. Photographs from the road and the night sky.
+    </p>
 
-                <!-- Adventure Post 2 (Masters Convocation - SLIDESHOW) -->
-                <div class="adventure-post" id="post-2">
-                    <div class="adventure-image-container">
-                        <div class="slideshow-container">
-                             <!-- Slide 1 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/convo1.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/ECECEC?text=Convocation+Ceremony+1'" alt="Convocation slide 1">
-                            <!-- Slide 2 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/iiser2.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/D0A9A9?text=IISER+Campus+2'" alt="Convocation slide 2">
-                            <!-- Slide 3 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/iiser3.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/ECECEC?text=With+Friends+3'" alt="Convocation slide 3">
-                        </div>
-                    </div>
-                    <div class="adventure-content-text">
-                        <h4>Completing my Masters</h4>
-                        <p class="date">July 2025 | IISER Thiruvananthapuram</p>
-                        <p>Going to the place where I spent the best 2 years of my life filled me with joy as well as tears. The place transformed me into a person my younger self wanted to be. </p>
-                    </div>
-                </div>
+    <div class="posts">
 
-                <!-- Adventure Post 3 (Kerala Trip - SLIDESHOW) -->
-                
-                <!-- Adventure Post 4 (Workplace Reflection - SLIDESHOW) -->
-                <div class="adventure-post" id="post-4">
-                    <div class="adventure-image-container">
-                        <div class="slideshow-container">
-                             <!-- Slide 1 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/place1.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/ECECEC?text=My+Desk+with+Posters+1'" alt="My favourite workplace slide 1">
-                            <!-- Slide 2 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/iiser4.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/D0A9A9?text=Code+Screen+2'" alt="My favourite workplace slide 2">
-                            <!-- Slide 3 -->
-                            <img class="slide" loading="lazy" decoding="async" src="images2/iiser6.jpg" onerror="this.onerror=null; this.src='https://placehold.co/500x300/0A111E/ECECEC?text=Night+Study+3'" alt="My favourite workplace slide 3">
-                        </div>
-                    </div>
-                    <div class="adventure-content-text">
-                        <h4>My favourite workplace</h4>
-                        <p class="date">Jan 2025 | HPC, IISER TVM</p>
-                        <p>In my final year, I had a designated place for myself where I used to work on my Masters project. Having spent hours at this place, I enjoyed my every second. 
-                            Soon I decorated it with some cool JWST images to keep me motivated whenever I used to think I am can't find answers to the cosmic mysteries.</p>
-                    </div>
-                </div>
+      <article class="post">
+        <div class="shot">
+          <span class="frame-no">Fig. 01</span>
+          <div class="stage">
+            <img class="slide active" loading="lazy" decoding="async" src="images2/dot1.jpg" alt="The 3.6m Devasthal Optical Telescope">
+            <img class="slide" loading="lazy" decoding="async" src="images2/dot2.jpg" alt="Devasthal observatory exterior">
+            <img class="slide" loading="lazy" decoding="async" src="images2/dot3.jpg" alt="Devasthal control room">
+            <img class="slide" loading="lazy" decoding="async" src="images2/dot4.jpg" alt="Devasthal telescope detail">
+            <img class="slide" loading="lazy" decoding="async" src="images2/dot5.jpg" alt="Devasthal telescope structure">
+          </div>
+          <div class="dots" aria-hidden="true"></div>
+        </div>
+        <div>
+          <h2>Visiting the DOT</h2>
+          <p class="meta">Oct 2025 · Devasthal Optical Observatory, India</p>
+          <p class="txt">I had an incredible opportunity to visit the world-class 3.6&nbsp;m Devasthal
+             Optical Telescope. I honestly didn't realise how huge a 3.6&nbsp;m telescope is until I
+             was standing right there. It gives you a new appreciation for the massive scale and the
+             precision engineering required to build and operate such a facility.</p>
+        </div>
+      </article>
 
+      <article class="post">
+        <div class="shot">
+          <span class="frame-no">Fig. 02</span>
+          <div class="stage">
+            <img class="slide active" loading="lazy" decoding="async" src="images2/convo1.jpg" alt="Convocation ceremony">
+            <img class="slide" loading="lazy" decoding="async" src="images2/iiser2.jpg" alt="IISER Thiruvananthapuram campus">
+            <img class="slide" loading="lazy" decoding="async" src="images2/iiser3.jpg" alt="With friends at IISER">
+          </div>
+          <div class="dots" aria-hidden="true"></div>
+        </div>
+        <div>
+          <h2>Completing my Masters</h2>
+          <p class="meta">Jul 2025 · IISER Thiruvananthapuram</p>
+          <p class="txt">Going back to the place where I spent the best two years of my life filled me
+             with joy as well as tears. It transformed me into the person my younger self wanted to be.</p>
+        </div>
+      </article>
 
-            </div>
-        </section>
-        
-    </main>
+      <article class="post">
+        <div class="shot">
+          <span class="frame-no">Fig. 03</span>
+          <div class="stage">
+            <img class="slide active" loading="lazy" decoding="async" src="images2/place1.jpg" alt="My desk with posters">
+            <img class="slide" loading="lazy" decoding="async" src="images2/iiser4.jpg" alt="Code on screen">
+            <img class="slide" loading="lazy" decoding="async" src="images2/iiser6.jpg" alt="HPC room at IISER TVM">
+          </div>
+          <div class="dots" aria-hidden="true"></div>
+        </div>
+        <div>
+          <h2>My favourite workplace</h2>
+          <p class="meta">Jan 2025 · HPC, IISER TVM</p>
+          <p class="txt">In my final year I had a desk of my own where I worked on my Masters project.
+             Having spent hours at this place, I enjoyed every second of it.</p>
+        </div>
+      </article>
 
-    <footer class="footer">
-        © 2025 Shubh Mittal. All rights reserved.
-        <!-- <a href="index.html#about" class="footer-link">Back to Home</a>. -->
-    </footer>
+    </div>
 
+    <a class="back" href="/">
+      <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-arrow"/></svg>
+      Back to home
+    </a>
+  </section>
+</main>
 
-    <!-- 4. JavaScript for Canvas Star Animation (Realistic 3D Warp Effect) --><script>
-        const canvas = document.getElementById('starCanvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        const STAR_COUNT = 400; 
-        const MAX_Z = 1000;      
-        const SPEED = 1.5;       
-        const PERSPECTIVE = 300; 
-        const COLORS = ['#FFFFFF', '#ECECEC', '#D0A9A9'];
-        let nebulaTime = 0;
+<footer>
+  <div class="foot-in">
+    <span>© <span id="yr"></span> SHUBH MITTAL</span>
+    <span><a href="/">shubh-astro.github.io</a></span>
+  </div>
+</footer>
 
-        function getBackgroundColor() {
-            return getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim() || '#0A111E';
-        }
+<script>
+/* ---------- twinkling sketch stars ---------- */
+(function () {
+  const sky = document.getElementById('sky');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  let html = '';
+  for (let i = 0; i < 18; i++) {
+    const size = 9 + Math.random() * 15;
+    html += `<svg class="st" viewBox="0 0 24 24" style="left:${Math.random()*100}%;` +
+            `top:${Math.random()*100}%;width:${size}px;height:${size}px;color:#141414;opacity:.26;` +
+            `transform:rotate(${(Math.random()*40-20).toFixed(1)}deg);` +
+            `animation-delay:${(Math.random()*5).toFixed(2)}s;` +
+            `animation-duration:${reduce.matches ? '0s' : (3+Math.random()*4).toFixed(2)+'s'}">` +
+            `<use href="#i-star"/></svg>`;
+  }
+  sky.innerHTML = html;
+})();
 
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+/* ---------- slideshows: one timer, all stages, paused when off-screen ---------- */
+(function () {
+  const stages = [...document.querySelectorAll('.shot')].map(shot => {
+    const slides = [...shot.querySelectorAll('.slide')];
+    const dots = shot.querySelector('.dots');
+    dots.innerHTML = slides.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('');
+    return { slides, dots: [...dots.querySelectorAll('i')], i: 0, visible: true };
+  });
 
-            if (stars.length === 0) {
-                const halfWidth = canvas.width / 2;
-                const halfHeight = canvas.height / 2;
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      const st = stages.find(s => s.slides[0].closest('.shot') === e.target);
+      if (st) st.visible = e.isIntersecting;
+    }), { rootMargin: '120px' });
+    document.querySelectorAll('.shot').forEach(el => io.observe(el));
+  }
 
-                for (let i = 0; i < STAR_COUNT; i++) {
-                    stars.push({
-                        x: (Math.random() * canvas.width) - halfWidth, 
-                        y: (Math.random() * canvas.height) - halfHeight, 
-                        z: Math.random() * MAX_Z,
-                        radius: Math.random() * 1.5 + 0.5,
-                        color: COLORS[Math.floor(Math.random() * COLORS.length)], 
-                        twinkle: Math.random() * 0.5 + 0.5,
-                    });
-                }
-            }
-        }
+  setInterval(() => {
+    stages.forEach(st => {
+      if (!st.visible || st.slides.length < 2) return;
+      st.slides[st.i].classList.remove('active');
+      st.dots[st.i].classList.remove('on');
+      st.i = (st.i + 1) % st.slides.length;
+      st.slides[st.i].classList.add('active');
+      st.dots[st.i].classList.add('on');
+    });
+  }, 3200);
+})();
 
-        function drawMilkyWay() {
-            nebulaTime += 0.005;
-            
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const maxRadius = Math.max(canvas.width, canvas.height) * 1.5;
+/* ---------- mobile nav ---------- */
+(function () {
+  const nav = document.getElementById('nav');
+  const burger = document.getElementById('burger');
+  burger.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(open));
+  });
+})();
 
-            const coreShiftX = Math.sin(nebulaTime) * 300;
-            const coreShiftY = Math.cos(nebulaTime * 0.7) * 200;
-
-            const x0 = centerX + coreShiftX;
-            const y0 = centerY + coreShiftY;
-
-            const gradient = ctx.createRadialGradient(
-                x0, y0, maxRadius * 0.05,
-                x0, y0, maxRadius * 0.6
-            );
-
-            gradient.addColorStop(0, `rgba(236, 236, 236, 0.25)`);
-            gradient.addColorStop(0.3, `rgba(208, 169, 169, 0.15)`);
-            gradient.addColorStop(0.6, `rgba(10, 17, 30, 0.01)`);
-            gradient.addColorStop(1, `rgba(10, 17, 30, 0)`);
-            
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
-
-        function animateStars() {
-            ctx.fillStyle = getBackgroundColor();
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            drawMilkyWay();
-
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-
-            stars.forEach(star => {
-                star.z -= SPEED; 
-
-                if (star.z <= 1) { 
-                    star.z = MAX_Z;
-                    star.x = (Math.random() * canvas.width) - centerX;
-                    star.y = (Math.random() * canvas.height) - centerY;
-                }
-
-                const p = PERSPECTIVE / star.z; 
-                
-                const projectedX = star.x * p + centerX;
-                const projectedY = star.y * p + centerY;
-                
-                const size = star.radius * p; 
-
-                const opacity = star.twinkle + Math.sin(Date.now() * 0.001 * star.twinkle) * 0.5;
-                
-                if (projectedX > 0 && projectedX < canvas.width && 
-                    projectedY > 0 && projectedY < canvas.height && size > 0.5) {
-                    
-                    ctx.globalAlpha = opacity;
-                    ctx.fillStyle = star.color; 
-                    ctx.beginPath();
-                    ctx.arc(projectedX, projectedY, size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            });
-            
-            ctx.globalAlpha = 1.0; 
-            // Stop the loop while the tab is hidden, or when reduced motion is asked for,
-            // instead of animating forever in the background.
-            if (!starMotion.matches && !document.hidden) {
-                starRaf = requestAnimationFrame(animateStars);
-            } else {
-                starRaf = null;
-            }
-        }
-
-        const starMotion = matchMedia('(prefers-reduced-motion: reduce)');
-        let starRaf = null;
-        function startStars() {
-            if (starRaf === null && !starMotion.matches && !document.hidden) {
-                starRaf = requestAnimationFrame(animateStars);
-            }
-        }
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                if (starRaf) { cancelAnimationFrame(starRaf); starRaf = null; }
-            } else {
-                startStars();
-            }
-        });
-        starMotion.addEventListener('change', () => {
-            if (starMotion.matches) {
-                if (starRaf) { cancelAnimationFrame(starRaf); starRaf = null; }
-            } else {
-                startStars();
-            }
-        });
-
-        // --- SLIDESHOW LOGIC ---
-        let slideIndex = 0;
-        const slideshowContainers = document.querySelectorAll('.slideshow-container');
-
-        /**
-         * Cycles through the slides in all slideshow containers.
-         */
-        function showSlides() {
-            slideshowContainers.forEach((container, index) => {
-                const slides = container.querySelectorAll('.slide');
-                if (slides.length === 0) return;
-
-                // Hide all slides
-                slides.forEach(slide => {
-                    slide.classList.remove('active');
-                });
-                
-                // Determine the next slide index for this container
-                let currentSlide = (slideIndex) % slides.length;
-                
-                // Show the next slide
-                slides[currentSlide].classList.add('active');
-            });
-
-            // Increment the overall index for the next cycle
-            slideIndex++;
-        }
-
-        // --- Event Listeners and Initialization ---
-
-        window.addEventListener('resize', () => {
-             stars = []; 
-             initCanvas();
-        });
-
-        window.onload = function() {
-            initCanvas();
-            animateStars();   // draws one frame; keeps looping unless reduced motion is set
-            
-            // Start slideshows
-            showSlides(); // Show the first slide immediately
-            // Set interval to change slides every 2 seconds (2000ms)
-            setInterval(showSlides, 2000); 
-        };
-        
-    </script> 
+document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
