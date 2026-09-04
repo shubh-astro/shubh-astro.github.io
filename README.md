@@ -74,6 +74,13 @@ with the cursor.
 The decoration layer (`#sky`) is positioned against the document, not the viewport, so
 the objects spread down the whole page instead of piling into one screenful.
 
+`site.js` also loads the visitor counter. Set `CODE` in the last block to the site code
+from a [GoatCounter](https://www.goatcounter.com) account and every page reports its
+views to that dashboard, tagged with the visitor's country and the time of the visit.
+Localhost is skipped so local previews stay out of the numbers. GoatCounter sets no
+cookies and stores no personal data, so no consent banner is needed. Leaving `CODE`
+empty disables the whole thing.
+
 ## 3D models
 
 `models/` holds two interactive three.js models (a mass-losing massive star and a

@@ -118,3 +118,22 @@
     else running = false;
   }
 })();
+
+/* Visitor stats. GoatCounter is a hosted counter: it logs each page view with a
+   country and a timestamp, and shows them on a dashboard only I can see. No
+   cookies and no personal data are stored, so the site needs no consent banner.
+   Put your site code below — the "xxx" from https://xxx.goatcounter.com — and
+   stats start collecting. Left blank, this block does nothing. */
+(function () {
+  const CODE = 'shubhmittal';
+  if (!CODE) return;
+  /* Skip local previews so my own testing does not land in the numbers. */
+  const h = location.hostname;
+  if (h === 'localhost' || h === '127.0.0.1' || h === '') return;
+
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://gc.zgo.at/count.js';
+  s.dataset.goatcounter = `https://${CODE}.goatcounter.com/count`;
+  document.head.appendChild(s);
+})();
