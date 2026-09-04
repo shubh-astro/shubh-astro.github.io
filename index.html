@@ -267,6 +267,16 @@ a.pub-title:hover{color:var(--accent-ink)}
 .card h3{font-family:var(--display);font-size:.92rem;letter-spacing:.03em;text-transform:uppercase;margin-bottom:9px}
 .card p{color:var(--ink-soft);font-size:.96rem}
 
+/* ============ model cards ============ */
+.model-card{display:block;position:relative;padding-bottom:56px;text-decoration:none}
+.model-card .go{color:var(--accent-ink);display:inline-block;transition:transform .12s ease}
+.model-card:hover .go{transform:translateX(4px)}
+.model-card .tag{
+  position:absolute;left:24px;bottom:22px;font-family:var(--mono);font-size:.68rem;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--accent-3);color:var(--ink);border:var(--bd-thin);padding:3px 9px;
+}
+
 .contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
 
 footer{
@@ -413,6 +423,7 @@ footer{
     <nav class="nav" id="nav">
       <a href="#research">Research</a>
       <a href="#publications">Papers</a>
+      <a href="#models">Models</a>
       <a href="#journey">Journey</a>
       <a href="adventures.html">Adventures</a>
       <a href="#contact">Contact</a>
@@ -546,8 +557,34 @@ footer{
     </div>
   </section>
 
+  <section id="models" class="reveal">
+    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg>03 — Models</p>
+    <h2 class="sec">Objects I work on</h2>
+    <p class="lede">Interactive 3D models of the objects behind the research. Drag to orbit,
+       scroll to zoom; each one can be downloaded as OBJ&nbsp;+&nbsp;MTL or GLB.</p>
+    <div class="grid3" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+
+      <a class="card model-card" href="models/shedding-star.html">
+        <svg class="ic" viewBox="0 0 24 24"><use href="#i-star"/></svg>
+        <h3>Shedding Star <span class="go">&rarr;</span></h3>
+        <p>A massive star throwing off its outer layers, modelled after WR&nbsp;124: a blue-hot
+           Wolf-Rayet core inside nested shells of its own ejecta, the outer one torn open.</p>
+        <span class="tag">Mass loss</span>
+      </a>
+
+      <a class="card model-card" href="models/gamma-ray-burst.html">
+        <svg class="ic" viewBox="0 0 24 24"><use href="#i-comet"/></svg>
+        <h3>Gamma-Ray Burst <span class="go">&rarr;</span></h3>
+        <p>A collapsar: a black hole and accretion torus driving two ultra-relativistic jets out
+           through the dying envelope. Animated — the flow cools blue-white to orange as it runs.</p>
+        <span class="tag">Collapsar</span>
+      </a>
+
+    </div>
+  </section>
+
   <section id="journey" class="reveal">
-    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-orbit"/></svg>03 — Academic Journey</p>
+    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-orbit"/></svg>04 — Academic Journey</p>
     <h2 class="sec">Where I've been</h2>
     <div class="tl">
       <div class="tl-item">
@@ -580,7 +617,7 @@ footer{
   </section>
 
   <section id="beyond" class="reveal">
-    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-moon"/></svg>04 — Beyond Research</p>
+    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-moon"/></svg>05 — Beyond Research</p>
     <h2 class="sec">Off the telescope</h2>
     <p class="lede">
       Born and raised in Uttarakhand, which is probably why I say yes to every trek.
@@ -607,7 +644,7 @@ footer{
   </section>
 
   <section id="contact" class="reveal">
-    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-mail"/></svg>05 — Contact</p>
+    <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-mail"/></svg>06 — Contact</p>
     <h2 class="sec">Get in touch</h2>
     <p class="lede">
       Always open to collaborations, research enquiries, or a conversation about the cosmos.

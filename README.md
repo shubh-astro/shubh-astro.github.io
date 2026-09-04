@@ -61,3 +61,21 @@ Then open <http://localhost:8000>.
 
 GitHub Pages publishes `main` automatically. Push to `main` and the site
 updates within a minute or two.
+
+## 3D models
+
+`models/` holds two interactive three.js models (a mass-losing massive star and a
+gamma-ray burst collapsar), linked from the **Models** section on the homepage.
+Geometry is generated in the browser from a seeded RNG — there are no mesh files to
+ship, and each page can export the object it shows as OBJ + MTL or GLB.
+
+- `three-d-stage.js` — the `<three-d-stage>` custom element: renderer, lighting,
+  orbit controls, auto-framing, export toolbar.
+- `shedding-star.js`, `gamma-ray-burst.js` — one `build(THREE)` per model, shared by
+  the standalone pages. The GRB returns a `tick(dt)` so the host drives (and can
+  pause) the jet flow.
+- `shedding-star.html`, `gamma-ray-burst.html` — the standalone pages.
+
+three.js is loaded from a pinned, SRI-checked import map in each page's `<head>`.
+All five files must stay in the same folder — the pages resolve each other by
+relative path.
