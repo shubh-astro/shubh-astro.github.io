@@ -83,6 +83,12 @@ h1 em{font-style:normal;-webkit-text-stroke:2.5px var(--ink);color:transparent}
 .stagebox{border:var(--bd);box-shadow:var(--shadow);background:var(--paper);position:relative}
 three-d-stage{display:block;width:100%;height:clamp(440px,66vh,720px)}
 three-d-stage:not(:defined){visibility:hidden}
+#cursor-comet{
+  position:fixed;left:0;top:0;width:52px;height:26px;z-index:60;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;will-change:transform;
+}
+#cursor-comet.on{opacity:.9}
+@media (hover:none){#cursor-comet{display:none}}
 .stagebox .cap{position:absolute;left:-10px;bottom:-15px;font-family:var(--mono);font-size:.66rem;
   font-weight:700;text-transform:uppercase;background:var(--ink);color:var(--paper);
   padding:5px 10px;transform:rotate(-2deg);z-index:5}
@@ -113,22 +119,21 @@ three-d-stage:not(:defined){visibility:hidden}
 <header>
   <div class="bar">
     <a class="brand" href="../index.html"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg>SHUBH MITTAL</a>
-    <span class="tag"><i>[</i>3D · MASS LOSS<i>]</i></span>
+    <span class="tag"><i>[</i>3D · MASSIVE STAR<i>]</i></span>
   </div>
 </header>
 
 <main>
   <span class="stamp"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg>Object 01 — model</span>
   <h1>Massive Star<br><em>Shedding Layers</em></h1>
-  <p class="lede"><b>Massive evolved stars that show unpredictable and sometimes dramatic variations
-    in both their spectra and their brightness.</b> They undergo giant eruptions with substantial mass
-    loss, throwing off shells of their own material — modelled here as a blue-hot core inside nested
-    spherical shells of ejecta, the outer one torn open. <i>— Wikipedia.</i>
+  <p class="lede"><b>Massive evolved stars can undergo giant eruptions with substantial mass loss,
+    throwing off shells of their own material and varying unpredictably in both spectrum and
+    brightness.</b> <i>— Wikipedia.</i> The model shows one mid-eruption: a blue-hot core inside
+    nested spherical shells of ejecta, the outer one torn open.
     Drag to orbit, scroll to zoom.</p>
 
   <div class="stagebox">
     <three-d-stage no-export name="shedding-star" background="#F4F1E8" autorotate></three-d-stage>
-    <span class="cap">Mass loss · 7 materials</span>
   </div>
 
   <hr class="hr">
@@ -164,5 +169,6 @@ const { THREE } = await stage.ready;
 const m = build(THREE);
 stage.setObject(m.object);
 </script>
+<script src="../site.js" defer></script>
 </body>
 </html>

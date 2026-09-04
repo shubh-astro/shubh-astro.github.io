@@ -83,6 +83,12 @@ h1 em{font-style:normal;-webkit-text-stroke:2.5px var(--ink);color:transparent}
 .stagebox{border:var(--bd);box-shadow:var(--shadow);background:var(--paper);position:relative}
 three-d-stage{display:block;width:100%;height:clamp(440px,66vh,720px)}
 three-d-stage:not(:defined){visibility:hidden}
+#cursor-comet{
+  position:fixed;left:0;top:0;width:52px;height:26px;z-index:60;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;will-change:transform;
+}
+#cursor-comet.on{opacity:.9}
+@media (hover:none){#cursor-comet{display:none}}
 .stagebox .cap{position:absolute;left:-10px;bottom:-15px;font-family:var(--mono);font-size:.66rem;
   font-weight:700;text-transform:uppercase;background:var(--ink);color:var(--paper);
   padding:5px 10px;transform:rotate(-2deg);z-index:5}
@@ -129,7 +135,6 @@ three-d-stage:not(:defined){visibility:hidden}
 
   <div class="stagebox">
     <three-d-stage no-export name="gamma-ray-burst" background="#F4F1E8" autorotate></three-d-stage>
-    <span class="cap">Collapsar type · 10 materials</span>
   </div>
 
   <hr class="hr">
@@ -187,5 +192,6 @@ if (m.tick) {
   requestAnimationFrame(step);
 }
 </script>
+<script src="../site.js" defer></script>
 </body>
 </html>
