@@ -62,12 +62,25 @@ Then open <http://localhost:8000>.
 GitHub Pages publishes `main` automatically. Push to `main` and the site
 updates within a minute or two.
 
+## Shared page furniture
+
+`site.js` carries what both pages share: the sketch objects (black hole, galaxy, GRB,
+solar system) drifting down the left and right margins, and the comet that trails the
+pointer. Their four SVG symbols live in that file rather than in each page's sprite
+sheet. The comet is skipped entirely on touch devices and under
+`prefers-reduced-motion`, and its animation frame loop parks itself once it catches up
+with the cursor.
+
+The decoration layer (`#sky`) is positioned against the document, not the viewport, so
+the objects spread down the whole page instead of piling into one screenful.
+
 ## 3D models
 
 `models/` holds two interactive three.js models (a mass-losing massive star and a
 gamma-ray burst collapsar), linked from the **Models** section on the homepage.
-Geometry is generated in the browser from a seeded RNG — there are no mesh files to
-ship, and each page can export the object it shows as OBJ + MTL or GLB.
+Geometry is generated in the browser from a seeded RNG, so there are no mesh files to
+ship. The stage can export what it shows as OBJ + MTL or GLB; both pages pass
+`no-export` to hide that toolbar.
 
 - `three-d-stage.js` — the `<three-d-stage>` custom element: renderer, lighting,
   orbit controls, auto-framing, export toolbar.

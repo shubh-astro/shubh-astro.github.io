@@ -26,7 +26,7 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{
+body{position:relative;
   background:var(--paper);color:var(--ink);font-family:var(--body);
   font-size:clamp(16px,.4vw + 15px,17.5px);line-height:1.65;overflow-x:hidden;
   background-image:
@@ -38,8 +38,15 @@ img{max-width:100%;display:block}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
-.sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.sky .st{position:absolute;animation:tw 4s steps(2,end) infinite}
+.sky{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;
+     pointer-events:none;overflow:hidden}
+.sky .deco{position:absolute;color:var(--ink);opacity:.17}
+#cursor-comet{
+  position:fixed;left:0;top:0;width:46px;height:22px;z-index:60;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;will-change:transform;
+}
+#cursor-comet.on{opacity:.9}
+@media (hover:none){#cursor-comet{display:none}}
 @keyframes tw{0%,45%{opacity:1}50%,100%{opacity:.18}}
 
 header{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--paper);border-bottom:var(--bd)}
@@ -149,7 +156,7 @@ footer{position:relative;z-index:2;border-top:var(--bd);background:var(--ink);co
 
 <header>
   <div class="bar">
-    <a href="/" class="brand">
+    <a href="index.html" class="brand">
       <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-star"/></svg>
       SHUBH MITTAL
     </a>
@@ -228,16 +235,15 @@ footer{position:relative;z-index:2;border-top:var(--bd);background:var(--ink);co
           <div class="dots" aria-hidden="true"></div>
         </div>
         <div>
-          <h2>My favourite workplace</h2>
-          <p class="meta">Jan 2025 · HPC, IISER TVM</p>
-          <p class="txt">In my final year I had a desk of my own where I worked on my Masters project.
-             Having spent hours at this place, I enjoyed every second of it.</p>
+          <h2>Some more images from IISER TVM</h2>
+          <p class="meta">08/2023-05/2025</p>
+          <p class="txt">I should add more images.</p>
         </div>
       </article>
 
     </div>
 
-    <a class="back" href="/">
+    <a class="back" href="index.html">
       <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-arrow"/></svg>
       Back to home
     </a>
@@ -247,27 +253,11 @@ footer{position:relative;z-index:2;border-top:var(--bd);background:var(--ink);co
 <footer>
   <div class="foot-in">
     <span>© <span id="yr"></span> SHUBH MITTAL</span>
-    <span><a href="/">shubh-astro.github.io</a></span>
+    <span><a href="index.html">shubh-astro.github.io</a></span>
   </div>
 </footer>
 
 <script>
-/* ---------- twinkling sketch stars ---------- */
-(function () {
-  const sky = document.getElementById('sky');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  let html = '';
-  for (let i = 0; i < 18; i++) {
-    const size = 9 + Math.random() * 15;
-    html += `<svg class="st" viewBox="0 0 24 24" style="left:${Math.random()*100}%;` +
-            `top:${Math.random()*100}%;width:${size}px;height:${size}px;color:#141414;opacity:.26;` +
-            `transform:rotate(${(Math.random()*40-20).toFixed(1)}deg);` +
-            `animation-delay:${(Math.random()*5).toFixed(2)}s;` +
-            `animation-duration:${reduce.matches ? '0s' : (3+Math.random()*4).toFixed(2)+'s'}">` +
-            `<use href="#i-star"/></svg>`;
-  }
-  sky.innerHTML = html;
-})();
 
 /* ---------- slideshows: one timer, all stages, paused when off-screen ---------- */
 (function () {
@@ -310,5 +300,6 @@ footer{position:relative;z-index:2;border-top:var(--bd);background:var(--ink);co
 
 document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
+<script src="site.js" defer></script>
 </body>
 </html>

@@ -48,7 +48,7 @@
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{
+body{position:relative;
   background:var(--paper);
   color:var(--ink);
   font-family:var(--body);
@@ -66,11 +66,18 @@ a{color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
 /* ============ decorative sky ============ */
-.sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.sky .st{position:absolute;animation:tw 4s steps(2,end) infinite}
-@keyframes tw{0%,45%{opacity:1}50%,100%{opacity:.18}}
+.sky{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;
+     pointer-events:none;overflow:hidden}
+.sky .deco{position:absolute;color:var(--ink);opacity:.17}
+#cursor-comet{
+  position:fixed;left:0;top:0;width:46px;height:22px;z-index:60;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;will-change:transform;
+}
+#cursor-comet.on{opacity:.9}
+@media (hover:none){#cursor-comet{display:none}}
+
 .comet{
-  position:absolute;top:-60px;left:-120px;width:120px;
+  position:fixed;top:-60px;left:-120px;width:120px;
   animation:fly 14s linear infinite;
 }
 @keyframes fly{
@@ -179,14 +186,9 @@ h1 em{
 .btn.primary{background:var(--accent);color:var(--ink)}
 .btn.primary:hover{background:var(--ink);color:var(--paper)}
 
-/* portrait: brutalist frame + orbiting moon */
-.frame{position:relative;flex:none;width:clamp(184px,23vw,258px)}
+/* portrait */
+.frame{position:relative;flex:none;width:clamp(276px,34vw,387px)}
 .frame img{border:var(--bd);box-shadow:var(--shadow);filter:grayscale(1) contrast(1.12)}
-.frame .orbit{
-  position:absolute;inset:-30px;pointer-events:none;
-  animation:spin 26s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
 .frame .cap{
   position:absolute;left:-14px;bottom:-16px;
   font-family:var(--mono);font-size:.66rem;font-weight:700;text-transform:uppercase;
@@ -207,18 +209,18 @@ h1 em{
 @keyframes slide{to{transform:translateX(-50%)}}
 
 /* ============ cards ============ */
-.work{display:grid;gap:22px;margin-top:34px}
+.work{display:grid;gap:16px;margin-top:30px}
 .item{
   position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;
-  gap:8px 20px;align-items:start;padding:24px 26px;
+  gap:6px 17px;align-items:start;padding:17px 20px;
   border:var(--bd);background:var(--paper);box-shadow:var(--shadow);
   text-decoration:none;transition:transform .12s ease,box-shadow .12s ease,background .12s ease;
 }
 .item:not(.static):hover{transform:translate(5px,5px);box-shadow:0 0 0 var(--ink);background:var(--paper-2)}
 .item .idx{font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--accent-ink);padding-top:3px}
-.item h3{font-family:var(--display);font-size:1.16rem;line-height:1.2;margin-bottom:9px;
+.item h3{font-family:var(--display);font-size:1rem;line-height:1.2;margin-bottom:6px;
          text-transform:uppercase;letter-spacing:-.01em}
-.item p{color:var(--ink-soft);font-size:.98rem;max-width:62ch}
+.item p{color:var(--ink-soft);font-size:.9rem;line-height:1.55;max-width:66ch}
 .tag{
   align-self:start;font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;border:var(--bd-thin);padding:4px 9px;white-space:nowrap;
@@ -271,6 +273,7 @@ a.pub-title:hover{color:var(--accent-ink)}
 .model-card{display:block;position:relative;padding-bottom:56px;text-decoration:none}
 .model-card .go{color:var(--accent-ink);display:inline-block;transition:transform .12s ease}
 .model-card:hover .go{transform:translateX(4px)}
+.model-card .src{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);white-space:nowrap}
 .model-card .tag{
   position:absolute;left:24px;bottom:22px;font-family:var(--mono);font-size:.68rem;
   font-weight:700;letter-spacing:.08em;text-transform:uppercase;
@@ -293,8 +296,7 @@ footer{
 /* ============ responsive ============ */
 @media (max-width:880px){
   .hero{grid-template-columns:1fr}
-  .frame{order:-1;width:clamp(160px,42vw,220px);margin-left:22px}
-  .frame .orbit{inset:-20px}
+  .frame{order:-1;width:clamp(240px,60vw,330px)}
 }
 @media (max-width:720px){
   .burger{display:block}
@@ -416,7 +418,7 @@ footer{
 
 <header id="hdr">
   <div class="bar">
-    <a href="#about" class="brand">
+    <a href="index.html" class="brand">
       <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-star"/></svg>
       SHUBH MITTAL
     </a>
@@ -441,7 +443,7 @@ footer{
       <div>
         <span class="stamp">
           <svg viewBox="0 0 24 24" filter="url(#rough)"><use href="#i-comet"/></svg>
-          Prague · from Oct 2026
+          Probably looking at some data rn 🥀
         </span>
         <h1>Shubh<span class="l2"><em>Mittal</em></span></h1>
         <div class="spectrum" id="spectrum"></div>
@@ -476,16 +478,7 @@ footer{
       </div>
 
       <div class="frame">
-        <img src="images2/portrait.jpg" alt="Shubh Mittal" width="258" height="258" fetchpriority="high">
-        <svg class="orbit" viewBox="0 0 100 100">
-          <ellipse cx="50" cy="50" rx="48" ry="48" fill="none" stroke="#141414"
-                   stroke-width="1.6" stroke-dasharray="5 7"/>
-          <g transform="translate(50 2)">
-            <circle r="6.5" fill="#F4F1E8" stroke="#141414" stroke-width="2"/>
-            <circle cx="-1.6" cy="-1.4" r="1.5" fill="none" stroke="#141414" stroke-width="1.2"/>
-            <circle cx="2" cy="2.2" r="1" fill="none" stroke="#141414" stroke-width="1.2"/>
-          </g>
-        </svg>
+        <img src="images2/portrait.jpg" alt="Shubh Mittal" width="387" height="387" fetchpriority="high">
         <span class="cap">Obs. 2026</span>
       </div>
     </div>
@@ -496,7 +489,7 @@ footer{
 
   <section id="research" class="reveal">
     <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-telescope"/></svg>01 — Research</p>
-    <h2 class="sec">What I work on</h2>
+    <h2 class="sec">Research Experience</h2>
     <p class="lede">
       Massive stars and transients in wide-field time-domain surveys, high-resolution
       spectroscopy of variable stars — and the open-source software that keeps both
@@ -560,23 +553,26 @@ footer{
   <section id="models" class="reveal">
     <p class="eyebrow"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg>03 — Models</p>
     <h2 class="sec">Objects I work on</h2>
-    <p class="lede">Interactive 3D models of the objects behind the research. Drag to orbit,
-       scroll to zoom; each one can be downloaded as OBJ&nbsp;+&nbsp;MTL or GLB.</p>
+    <p class="lede">Interactive 3D models of the objects I study. Click to learn more about
+       my research.</p>
     <div class="grid3" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
 
       <a class="card model-card" href="models/shedding-star.html">
         <svg class="ic" viewBox="0 0 24 24"><use href="#i-star"/></svg>
-        <h3>Shedding Star <span class="go">&rarr;</span></h3>
-        <p>A massive star throwing off its outer layers, modelled after WR&nbsp;124: a blue-hot
-           Wolf-Rayet core inside nested shells of its own ejecta, the outer one torn open.</p>
+        <h3>Massive Star shedding its outer-layers <span class="go">&rarr;</span></h3>
+        <p>Massive evolved stars that show unpredictable and sometimes dramatic variations in both
+           their spectra and their brightness. They undergo giant eruptions with substantial mass
+           loss, throwing off shells of their own material. <span class="src">— Wikipedia</span></p>
         <span class="tag">Mass loss</span>
       </a>
 
       <a class="card model-card" href="models/gamma-ray-burst.html">
         <svg class="ic" viewBox="0 0 24 24"><use href="#i-comet"/></svg>
         <h3>Gamma-Ray Burst <span class="go">&rarr;</span></h3>
-        <p>A collapsar: a black hole and accretion torus driving two ultra-relativistic jets out
-           through the dying envelope. Animated — the flow cools blue-white to orange as it runs.</p>
+        <p>Extremely energetic events in distant galaxies, the brightest and most powerful class
+           of explosion in the universe. Most are a narrow beam of intense radiation released as a
+           rapidly rotating, high-mass star collapses into a black hole.
+           <span class="src">— Wikipedia</span></p>
         <span class="tag">Collapsar</span>
       </a>
 
@@ -697,26 +693,7 @@ const ORCID_ID = '0009-0000-5975-2213';
   document.head.appendChild(style);
 })();
 
-/* ---------- twinkling sketch stars ---------- */
-(function () {
-  const sky = document.getElementById('sky');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  const N = 22;
-  let html = '';
-  for (let i = 0; i < N; i++) {
-    const size = 9 + Math.random() * 16;
-    const x = Math.random() * 100, y = Math.random() * 100;
-    const delay = (Math.random() * 5).toFixed(2);
-    const dur = (3 + Math.random() * 4).toFixed(2);
-    const rot = (Math.random() * 40 - 20).toFixed(1);
-    html += `<svg class="st" viewBox="0 0 24 24" style="left:${x}%;top:${y}%;` +
-            `width:${size}px;height:${size}px;color:#141414;opacity:.28;` +
-            `transform:rotate(${rot}deg);animation-delay:${delay}s;` +
-            `animation-duration:${reduce.matches ? '0s' : dur + 's'}">` +
-            `<use href="#i-star"/></svg>`;
-  }
-  sky.insertAdjacentHTML('afterbegin', html);
-})();
+
 
 /* ---------- ticker ---------- */
 (function () {
@@ -833,5 +810,6 @@ const ORCID_ID = '0009-0000-5975-2213';
 
 document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
+<script src="site.js" defer></script>
 </body>
 </html>

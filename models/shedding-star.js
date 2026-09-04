@@ -1,4 +1,4 @@
-/* Massive star shedding its outer layers (WR 124 type).
+/* Massive star shedding its outer layers.
  * Deterministic: seeded RNG, identical geometry on every load. */
 export function build(THREE) {
 
@@ -41,7 +41,7 @@ const star = new THREE.Group();
 star.name = 'wr124-shedding-star';
 const add = (geo, mat, name) => { const m = new THREE.Mesh(geo, mat); m.name = name; star.add(m); return m; };
 
-/* ---- the star: a hot Wolf-Rayet core inside its own ejecta ---- */
+/* ---- the star: a hot core inside its own ejecta ---- */
 add(roughen(new THREE.SphereGeometry(0.46, 64, 40), 0.014, 13, 3.1), M.core, 'core-photosphere');
 
 /* the glow of the star, filling the cavity it cleared */
