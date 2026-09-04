@@ -84,10 +84,11 @@ h1 em{font-style:normal;-webkit-text-stroke:2.5px var(--ink);color:transparent}
 three-d-stage{display:block;width:100%;height:clamp(440px,66vh,720px)}
 three-d-stage:not(:defined){visibility:hidden}
 #cursor-comet{
-  position:fixed;left:0;top:0;width:52px;height:26px;z-index:60;pointer-events:none;
+  position:fixed;left:0;top:0;width:56px;height:33px;z-index:60;pointer-events:none;
   opacity:0;transition:opacity .18s ease;will-change:transform;
+  transform-origin:78.9% 47.7%;   /* the head, so it does not swing when turning */
 }
-#cursor-comet.on{opacity:.9}
+#cursor-comet.on{opacity:.92}
 @media (hover:none){#cursor-comet{display:none}}
 .stagebox .cap{position:absolute;left:-10px;bottom:-15px;font-family:var(--mono);font-size:.66rem;
   font-weight:700;text-transform:uppercase;background:var(--ink);color:var(--paper);

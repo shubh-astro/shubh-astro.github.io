@@ -78,18 +78,26 @@
 (function () {
   if (matchMedia('(hover:none)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   document.body.insertAdjacentHTML('beforeend',
-    '<svg id="cursor-comet" viewBox="0 0 52 26" aria-hidden="true">' +
-      /* dust tail sweeps low and wide, ion tail runs straighter above it */
-      '<path d="M42 13.4C33 12.6 21 15.4 3.5 21.4" fill="none" stroke="#141414" stroke-width="2"' +
-           ' stroke-linecap="round" stroke-dasharray="3 5"/>' +
-      '<path d="M42 11.6C32 9.8 20 8.8 5.5 8.2" fill="none" stroke="#141414" stroke-width="1.4"' +
-           ' stroke-linecap="round" stroke-dasharray="2 6" opacity=".7"/>' +
-      '<path d="M46.9 8.2a5.8 5.8 0 0 1 0 8.8" fill="none" stroke="#141414" stroke-width="1.4"' +
-           ' stroke-linecap="round" opacity=".75"/>' +
-      '<circle cx="43" cy="12.6" r="4.4" fill="#FF5A1F" stroke="#141414" stroke-width="2"/>' +
-      '<circle cx="41.5" cy="11.2" r="1.1" fill="#141414"/>' +
-      '<circle cx="26" cy="15.8" r=".9" fill="#141414"/>' +
-      '<circle cx="14.5" cy="18.6" r=".7" fill="#141414" opacity=".8"/>' +
+    '<svg id="cursor-comet" viewBox="0 0 44 26" aria-hidden="true">' +
+      /* the stream fades out along its length rather than ending on an edge */
+      '<defs><linearGradient id="cc-tail" x1="1" y1="0" x2="0" y2="0">' +
+        '<stop offset="0" stop-color="#141414" stop-opacity=".34"/>' +
+        '<stop offset="1" stop-color="#141414" stop-opacity="0"/>' +
+      '</linearGradient></defs>' +
+      '<path d="M29 11.2C20.5 9.4 10 7.8 0.5 7.2L1.6 18.8C11 17.4 20.5 14.6 29 13.4Z"' +
+           ' fill="url(#cc-tail)"/>' +
+      '<path d="M28.4 11.4C20.6 10.4 12 9.6 4.6 9.4" fill="none" stroke="#141414"' +
+           ' stroke-width="1.1" stroke-linecap="round" opacity=".32"/>' +
+      '<path d="M28.6 13.4C21 13.6 13 14.8 6 16.2" fill="none" stroke="#141414"' +
+           ' stroke-width="1" stroke-linecap="round" opacity=".24"/>' +
+      /* the head: a lumpy rock rather than a disc */
+      '<path d="M34.2 6.7l3.6 1.1 2.5 2.7.2 3.6-2.2 2.9-3.5 1.1-3.4-1-2.3-2.7-.2-3.6 2.1-2.9z"' +
+           ' fill="#FF5A1F" stroke="#141414" stroke-width="1.8" stroke-linejoin="round"/>' +
+      '<circle cx="32.6" cy="10.6" r="1.6" fill="none" stroke="#141414" stroke-width="1"/>' +
+      '<circle cx="36.9" cy="14.4" r="1.3" fill="none" stroke="#141414" stroke-width="1"/>' +
+      '<circle cx="36.3" cy="9.7" r=".85" fill="none" stroke="#141414" stroke-width=".9"/>' +
+      '<circle cx="32.3" cy="15.1" r=".8" fill="none" stroke="#141414" stroke-width=".9"/>' +
+      '<path d="M38.9 11.6a1.5 1.5 0 0 1 .6 1.5" fill="none" stroke="#141414" stroke-width=".9" stroke-linecap="round"/>' +
     '</svg>');
   const c = document.getElementById('cursor-comet');
   /* The comet lags the pointer, so its tail points back the way it came. */
@@ -104,7 +112,7 @@
     const dx = tx - x, dy = ty - y;
     x += dx * 0.18; y += dy * 0.18;
     if (Math.hypot(dx, dy) > 1.5) angle = Math.atan2(dy, dx) * 180 / Math.PI;
-    c.style.transform = `translate(${x - 43}px, ${y - 12.6}px) rotate(${angle}deg)`;
+    c.style.transform = `translate(${x - 44.2}px, ${y - 15.7}px) rotate(${angle}deg)`;
     /* Park the loop once it has caught up — no idle rAF while the mouse rests. */
     if (Math.hypot(tx - x, ty - y) > 0.4) requestAnimationFrame(step);
     else running = false;

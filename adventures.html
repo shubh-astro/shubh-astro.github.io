@@ -42,12 +42,12 @@ a{color:inherit}
      pointer-events:none;overflow:hidden}
 .sky .deco{position:absolute;color:var(--ink);opacity:.3}
 #cursor-comet{
-  position:fixed;left:0;top:0;width:52px;height:26px;z-index:60;pointer-events:none;
+  position:fixed;left:0;top:0;width:56px;height:33px;z-index:60;pointer-events:none;
   opacity:0;transition:opacity .18s ease;will-change:transform;
+  transform-origin:78.9% 47.7%;   /* the head, so it does not swing when turning */
 }
-#cursor-comet.on{opacity:.9}
+#cursor-comet.on{opacity:.92}
 @media (hover:none){#cursor-comet{display:none}}
-@keyframes tw{0%,45%{opacity:1}50%,100%{opacity:.18}}
 
 header{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--paper);border-bottom:var(--bd)}
 .bar{max-width:var(--shell);margin:0 auto;padding:12px var(--gutter);display:flex;align-items:center;gap:16px}
