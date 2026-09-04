@@ -83,10 +83,12 @@ empty disables the whole thing.
 
 ## 3D models
 
-`models/` holds two interactive three.js models (a mass-losing massive star and a
-gamma-ray burst collapsar), linked from the **Models** section on the homepage.
+`models/` holds three interactive three.js models (a mass-losing massive star, a
+gamma-ray burst collapsar and an RV Tauri pulsator), linked from the **Models**
+section on the homepage. The RV Tauri page plots a light curve from the same
+`magAt()` the geometry is derived from, so the star and the marker never disagree.
 Geometry is generated in the browser from a seeded RNG, so there are no mesh files to
-ship. The stage can export what it shows as OBJ + MTL or GLB; both pages pass
+ship. The stage can export what it shows as OBJ + MTL or GLB; all three pages pass
 `no-export` to hide that toolbar.
 
 - `three-d-stage.js` — the `<three-d-stage>` custom element: renderer, lighting,

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RV Tauri Variable — 3D model</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F4F1E8'/%3E%3Cpath d='M16 4l2.6 8.4L27 15l-8.4 2.6L16 26l-2.6-8.4L5 15l8.4-2.6z' fill='none' stroke='%23141414' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.184.0/build/three.module.js",
+    "three/addons/controls/OrbitControls.js": "https://unpkg.com/three@0.184.0/examples/jsm/controls/OrbitControls.js",
+    "three/addons/exporters/OBJExporter.js": "https://unpkg.com/three@0.184.0/examples/jsm/exporters/OBJExporter.js",
+    "three/addons/exporters/GLTFExporter.js": "https://unpkg.com/three@0.184.0/examples/jsm/exporters/GLTFExporter.js"
+  },
+  "integrity": {
+    "https://unpkg.com/three@0.184.0/build/three.module.js": "sha384-8FCZ1eVO6it4+pbec2aDtnTrwjWXZLJRC+MAGCIPDgsYnUrl/E0A2YlF8ioMKI/J",
+    "https://unpkg.com/three@0.184.0/build/three.core.js": "sha384-dw2ooPewaEIrAgl6oFDBmmBWCE9oW9LxRGcfwZ0hLvEprzo202wXl7vCYHRlSnOT",
+    "https://unpkg.com/three@0.184.0/examples/jsm/controls/OrbitControls.js": "sha384-4rziNxOBZKQ69i+w+f89KJ55TCYquwchVbByQwmaOeIOXdOU2PLDn3kOfXHwIJC9",
+    "https://unpkg.com/three@0.184.0/examples/jsm/exporters/OBJExporter.js": "sha384-nbwtoZENJD3Vq+ACK0CuGQdPMuDWHkamC2KJD70EV5nfg6jQjfppKOea07YJN+N3",
+    "https://unpkg.com/three@0.184.0/examples/jsm/exporters/GLTFExporter.js": "sha384-VofkvpG6HERhFCYbsUOHeNXBCqID2nfqkQqnVzE1jc/oPcz+qJ13ADdXH08hE+cQ"
+  }
+}
+</script>
+
+<style>
+:root{
+  --paper:#F4F1E8;
+  --paper-2:#EBE7DA;
+  --ink:#141414;
+  --ink-soft:#4B4A44;
+  --accent:#FF5A1F;
+  --accent-ink:#B93E05;
+  --accent-2:#1F3FD8;
+  --accent-3:#F5C518;
+  --bd:2.5px solid var(--ink);
+  --bd-thin:2px solid var(--ink);
+  --shadow:6px 6px 0 var(--ink);
+  --shadow-sm:4px 4px 0 var(--ink);
+  --display:'Archivo Black',system-ui,sans-serif;
+  --mono:'Space Mono',ui-monospace,monospace;
+  --body:'Inter',system-ui,sans-serif;
+  --shell:1180px;
+  --gutter:clamp(18px,4.5vw,42px);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--body);
+  font-size:clamp(16px,.4vw + 15px,17.5px);line-height:1.65;overflow-x:hidden;
+  background-image:
+    linear-gradient(rgba(20,20,20,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(20,20,20,.055) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+header{background:var(--paper);border-bottom:var(--bd)}
+.bar{max-width:var(--shell);margin:0 auto;padding:12px var(--gutter);display:flex;align-items:center;gap:16px}
+.brand{font-family:var(--mono);font-weight:700;font-size:.9rem;letter-spacing:.02em;text-decoration:none;
+  margin-right:auto;white-space:nowrap;display:inline-flex;align-items:center;gap:9px}
+.brand svg{width:20px;height:20px}
+.bar .tag{font-family:var(--mono);font-size:.8rem;color:var(--ink-soft)}
+.bar .tag i{font-style:normal;color:var(--accent-ink)}
+
+main{max-width:var(--shell);margin:0 auto;padding:clamp(34px,5vw,60px) var(--gutter) clamp(56px,7vw,90px)}
+
+.stamp{display:inline-flex;align-items:center;gap:9px;margin-bottom:20px;
+  font-family:var(--mono);font-size:.76rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  border:var(--bd-thin);padding:6px 13px;background:var(--accent-3);transform:rotate(-1.6deg)}
+.stamp svg{width:16px;height:16px}
+
+h1{font-family:var(--display);font-size:clamp(2.6rem,8.4vw,5.4rem);line-height:.87;
+  letter-spacing:-.035em;text-transform:uppercase;margin-bottom:18px}
+h1 em{font-style:normal;-webkit-text-stroke:2.5px var(--ink);color:transparent}
+.lede{max-width:62ch;color:var(--ink-soft);font-size:1.05rem;margin-bottom:30px}
+.lede b{color:var(--ink);font-weight:600}
+
+.stagebox{border:var(--bd);box-shadow:var(--shadow);background:var(--paper);position:relative}
+three-d-stage{display:block;width:100%;height:clamp(440px,66vh,720px)}
+three-d-stage:not(:defined){visibility:hidden}
+#cursor-comet{
+  position:fixed;left:0;top:0;width:56px;height:33px;z-index:60;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;will-change:transform;
+  transform-origin:78.9% 47.7%;   /* the head, so it does not swing when turning */
+}
+#cursor-comet.on{opacity:.92}
+@media (hover:none){#cursor-comet{display:none}}
+.stagebox .cap{position:absolute;left:-10px;bottom:-15px;font-family:var(--mono);font-size:.66rem;
+  font-weight:700;text-transform:uppercase;background:var(--ink);color:var(--paper);
+  padding:5px 10px;transform:rotate(-2deg);z-index:5}
+
+.hr{border:0;border-top:var(--bd);margin:46px 0 0}
+
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:0}
+.curve{border:var(--bd);border-top:0;background:var(--paper);padding:16px 20px 12px}
+.curve-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.curve-head h2{font-family:var(--mono);font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.curve-head span{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft)}
+.curve-head b{font-weight:700;color:var(--accent-ink)}
+.curve svg{display:block;width:100%;height:auto}
+.part{border-bottom:var(--bd-thin);border-right:var(--bd-thin);padding:18px 16px}
+.part:last-child{border-right:0}
+.chip{width:22px;height:22px;border:var(--bd-thin);margin-bottom:12px}
+.part h3{font-family:var(--mono);font-size:.78rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:6px}
+.part p{font-size:.9rem;color:var(--ink-soft);line-height:1.5}
+@media (max-width:980px){.legend{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .part:nth-child(2n){border-right:0}
+  .part:last-child{grid-column:1 / -1;border-right:0}}
+@media (max-width:560px){.legend{grid-template-columns:1fr}.part{border-right:0}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="i-star">
+    <path d="M12 2.4c.9 4.6 2.1 6.9 6.9 7.8-4.8 1-6 3.2-6.9 7.8-.9-4.6-2.1-6.8-6.9-7.8 4.8-.9 6-3.2 6.9-7.8Z"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+</defs></svg>
+
+<header>
+  <div class="bar">
+    <a class="brand" href="../index.html"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg>SHUBH MITTAL</a>
+    <span class="tag"><i>[</i>3D · RV TAURI<i>]</i></span>
+  </div>
+</header>
+
+<main>
+  <span class="stamp"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg>Object 03 — model</span>
+  <h1>RV Tauri<br><em>Pulsator</em></h1>
+  <p class="lede"><b>Luminous variable stars whose light alternates between deep and shallow
+    minima</b>, running 30 to 150 days from one deep minimum to the next and changing by as much as
+    four magnitudes. They are thought to be low-mass post-AGB stars, mostly binaries wrapped in a
+    dusty disc. <i>— Wikipedia.</i> At IUCAA I studied one of these in <b>NGC&nbsp;6441</b>, an
+    unusually metal-rich globular cluster in the Galactic bulge, measuring its physical and chemical
+    properties from high-resolution SALT spectra — the first high-resolution spectroscopic study of a
+    variable star in that cluster. The model shows one breathing: the photosphere swelling and cooling
+    toward minimum, shock fronts running out through the atmosphere, all of it inside the dust its own
+    mass loss has built. Drag to orbit, scroll to zoom.</p>
+
+  <div class="stagebox">
+    <three-d-stage no-export name="rv-tauri-pulsator" background="#F4F1E8"></three-d-stage>
+  </div>
+
+  <div class="curve">
+    <div class="curve-head">
+      <h2>Light curve</h2>
+      <span>Magnitudes, brighter upward · pulsation period <b id="pval">6.0 s</b> on screen, formal period twice that</span>
+      <span style="margin-left:auto">phase <b id="phase">0.00</b> · <b id="cyc">deep cycle</b></span>
+    </div>
+    <svg viewBox="0 0 800 186" preserveAspectRatio="none" aria-label="RV Tauri light curve with a moving phase marker">
+      <g id="axes"></g>
+      <g id="ticks"></g>
+      <path id="lc" fill="none" stroke="#141414" stroke-width="2.5" stroke-linejoin="round"/>
+      <line id="mline" x1="0" y1="16" x2="0" y2="132" stroke="#FF5A1F" stroke-width="2.5"/>
+      <circle id="mdot" cx="0" cy="0" r="6" fill="#FF5A1F" stroke="#141414" stroke-width="2"/>
+    </svg>
+  </div>
+
+  <hr class="hr">
+  <div class="legend">
+    <div class="part">
+      <div class="chip" style="background:#FFE9A8"></div>
+      <h3>Photosphere</h3>
+      <p>The pulsating surface — yellow-white when compressed, cooler and redder when swollen.</p>
+    </div>
+    <div class="part">
+      <div class="chip" style="background:#F6D9A6"></div>
+      <h3>Extended atmosphere</h3>
+      <p>A loosely bound ochre envelope that lags the photosphere as it breathes.</p>
+    </div>
+    <div class="part">
+      <div class="chip" style="background:#FFFBEF"></div>
+      <h3>Shock shells</h3>
+      <p>Two at once: one rising through the atmosphere, one fading as it reaches the top.</p>
+    </div>
+    <div class="part">
+      <div class="chip" style="background:#E4DCC8"></div>
+      <h3>Dust shell</h3>
+      <p>Circumstellar dust, built by the star's own mass loss over many cycles.</p>
+    </div>
+  </div>
+</main>
+
+<script src="three-d-stage.js"></script>
+<script type="module">
+import { build, magAt, cycleOf, CYCLES, PERIOD, DEEP } from './rv-tauri.js';
+const stage = document.querySelector('three-d-stage');
+const { THREE } = await stage.ready;
+const m = build(THREE);
+stage.setObject(m.object);
+
+/* ---- the plot, drawn from the same magAt() that drives the geometry ---- */
+const PAD_L = 48, PAD_R = 10, TOP = 16, BOT = 132, W = 800;
+const MAG_TOP = -0.1, MAG_BOT = 1.14;      // plotted magnitude range
+const xOf = (phi) => PAD_L + (phi / CYCLES) * (W - PAD_L - PAD_R);
+const yMag = (mag) => TOP + ((mag - MAG_TOP) / (MAG_BOT - MAG_TOP)) * (BOT - TOP);
+const yOf = (phi) => yMag(magAt(phi));
+const MONO = 'font-family="Space Mono, monospace" font-size="10.5" fill="#4B4A44"';
+{
+  let d = '';
+  for (let i = 0; i <= 1200; i++) {
+    const phi = (i / 1200) * CYCLES;
+    d += (i ? 'L' : 'M') + xOf(phi).toFixed(1) + ' ' + yOf(phi).toFixed(1) + ' ';
+  }
+  document.getElementById('lc').setAttribute('d', d.trim());
+
+  /* magnitude axis: inverted, brighter at the top */
+  let ax = '<line x1="' + PAD_L + '" y1="' + TOP + '" x2="' + PAD_L + '" y2="' + BOT +
+           '" stroke="#141414" stroke-width="2"/>' +
+           '<line x1="' + PAD_L + '" y1="' + BOT + '" x2="' + (W - PAD_R) + '" y2="' + BOT +
+           '" stroke="#141414" stroke-width="2"/>';
+  [0, 0.5, 1].forEach((mag) => {
+    const y = yMag(mag).toFixed(1);
+    ax += '<line x1="' + (PAD_L - 6) + '" y1="' + y + '" x2="' + PAD_L + '" y2="' + y +
+          '" stroke="#141414" stroke-width="2"/>' +
+          '<text x="' + (PAD_L - 10) + '" y="' + (+y + 4).toFixed(1) + '" text-anchor="end" ' + MONO + '>' +
+          (mag === 0 ? '0.0' : mag.toFixed(1)) + '</text>';
+  });
+  ax += '<text x="14" y="' + (yMag(0.5)).toFixed(1) + '" ' + MONO +
+        ' transform="rotate(-90 14 ' + (yMag(0.5)).toFixed(1) + ')" text-anchor="middle">Δm</text>';
+  document.getElementById('axes').innerHTML = ax;
+
+  /* minima labelled deep or shallow, plus a bracket for one formal period */
+  let ticks = '';
+  for (let c = 0; c < CYCLES; c++) {
+    const x = xOf(c + 0.47).toFixed(1);
+    ticks += '<line x1="' + x + '" y1="' + BOT + '" x2="' + x + '" y2="' + (BOT + 9) +
+             '" stroke="#141414" stroke-width="2"/>' +
+             '<text x="' + x + '" y="' + (BOT + 22) + '" text-anchor="middle" ' + MONO + '>' +
+             (cycleOf(c) === DEEP ? 'deep' : 'shallow') + '</text>';
+  }
+  const bx0 = xOf(0.47), bx1 = xOf(2.47), by = BOT + 36;
+  ticks += '<path d="M' + bx0.toFixed(1) + ' ' + (by - 5) + 'V' + by + 'H' + bx1.toFixed(1) + 'V' + (by - 5) +
+           '" fill="none" stroke="#141414" stroke-width="2"/>' +
+           '<text x="' + ((bx0 + bx1) / 2).toFixed(1) + '" y="' + (by + 14) + '" text-anchor="middle" ' +
+           MONO + '>formal period</text>';
+  document.getElementById('ticks').innerHTML = ticks;
+}
+const mline = document.getElementById('mline'), mdot = document.getElementById('mdot');
+const phaseOut = document.getElementById('phase'), cycOut = document.getElementById('cyc');
+document.getElementById('pval').textContent = PERIOD.toFixed(1) + ' s';
+
+/* One pump drives the star and the marker on the curve; it stops with the tab
+   and freezes at maximum light under prefers-reduced-motion. */
+const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+let last = performance.now(), lastUI = 0, run = true;
+addEventListener('visibilitychange', () => {
+  run = !document.hidden;
+  if (run) { last = performance.now(); requestAnimationFrame(step); }
+});
+function step(now) {
+  if (!run) return;
+  const phi = m.tick(reduce.matches ? 0 : (now - last) / 1000);
+  last = now;
+  if (now - lastUI > 60) {                             // the readouts and marker
+    lastUI = now;
+    mline.setAttribute('x1', xOf(phi)); mline.setAttribute('x2', xOf(phi));
+    mdot.setAttribute('cx', xOf(phi)); mdot.setAttribute('cy', yOf(phi));
+    phaseOut.textContent = phi.toFixed(2);
+    cycOut.textContent = cycleOf(phi) === DEEP ? 'deep cycle' : 'shallow cycle';
+  }
+  requestAnimationFrame(step);
+}
+requestAnimationFrame(step);
+</script>
+<script src="../site.js" defer></script>
+</body>
+</html>
