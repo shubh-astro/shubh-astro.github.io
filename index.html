@@ -13,7 +13,7 @@
 <meta property="og:title" content="Shubh Mittal | Observational Astrophysics">
 <meta property="og:description" content="Incoming doctoral student at the Astronomical Institute, Czech Academy of Sciences, Prague. Massive stars, transients, and high-resolution spectroscopy.">
 <meta property="og:url" content="https://shubh-astro.github.io/">
-<meta property="og:image" content="https://shubh-astro.github.io/images2/portrait.jpg">
+<meta property="og:image" content="https://shubh-astro.github.io/images2/profilepicture.jpeg">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F4F1E8'/%3E%3Cpath d='M16 4l2.6 8.4L27 15l-8.4 2.6L16 26l-2.6-8.4L5 15l8.4-2.6z' fill='none' stroke='%23141414' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -189,7 +189,9 @@ h1 em{
 
 /* portrait */
 .frame{position:relative;flex:none;width:clamp(276px,34vw,387px)}
-.frame img{border:var(--bd);box-shadow:var(--shadow);filter:grayscale(1) contrast(1.12)}
+.frame img{border:var(--bd);box-shadow:var(--shadow);filter:grayscale(1) contrast(1.12);
+  /* the source is a tall 3:4 photo; hold the square frame and crop to the face */
+  width:100%;height:auto;aspect-ratio:1;object-fit:cover;object-position:50% 24%}
 .frame .cap{
   position:absolute;left:-14px;bottom:-16px;
   font-family:var(--mono);font-size:.66rem;font-weight:700;text-transform:uppercase;
@@ -482,7 +484,7 @@ footer{
       </div>
 
       <div class="frame">
-        <img src="images2/portrait.jpg" alt="Shubh Mittal" width="387" height="387" fetchpriority="high">
+        <img src="images2/profilepicture.jpeg" alt="Shubh Mittal" width="387" height="387" fetchpriority="high">
         <span class="cap">Obs. 2026</span>
       </div>
     </div>
